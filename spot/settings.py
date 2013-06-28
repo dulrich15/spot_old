@@ -2,7 +2,6 @@ import os.path
 import random
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-PROJECT_NAME = PROJECT_PATH.split(os.path.sep)[-1]
 
 # Django settings for spot project.
 
@@ -17,7 +16,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'spot.db',
     }
 }
@@ -103,10 +102,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = '{}.urls'.format(PROJECT_NAME)
+ROOT_URLCONF = 'spot.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = '{}.wsgi.application'.format(PROJECT_NAME)
+WSGI_APPLICATION = 'spot.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -126,6 +125,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'south',
+    'spot.classroom',
 )
 
 # A sample logging configuration. The only tangible logging
