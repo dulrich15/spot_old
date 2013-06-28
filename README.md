@@ -17,29 +17,29 @@ This is my initial set of objectives, each corresponding to a separate app or mu
 
 1. Minimal course managment system
 
-    - Facilitate placement of course materials online
-    - Permission-based restriction of those documents (student-only, instrutor-only)
-    - Associating students with courses
-    - ? [ Storing student submissions ]
-    - ? [ Mediating communication between teachars, students ]
+   - Facilitate placement of course materials online
+   - Permission-based restriction of those documents (student-only, instrutor-only)
+   - Associating students with courses
+   - ? [ Storing student submissions ]
+   - ? [ Mediating communication between teachars, students ]
 
 2. Tracking student performance
     
-    - Web-based entry of assignments and grades
-    - Provide student access to their own grades
-    - Export for final calculation or simple record keeping
+   - Web-based entry of assignments and grades
+   - Provide student access to their own grades
+   - Export for final calculation or simple record keeping
 
 3. Create and maintain beautiful course materials
 
-    - Support multiple kinds of documents (syllabus, lecture notes, slides, homework, quizzes, labs, projects)
-    - Dead simple to update and recreate when necessary
-    - Publish in multiple formats, but primarily PDF with LaTeX support
+   - Support multiple kinds of documents (syllabus, lecture notes, slides, homework, quizzes, labs, projects)
+   - Dead simple to update and recreate when necessary
+   - Publish in multiple formats, but primarily PDF with LaTeX support
 
 4. Learning management system (LMS)
 
-    - Integrated content/assessment delivery
-    - Self-directed learning "shop" (modular)
-    - Record learning progress (Tin can API)
+   - Integrated content/assessment delivery
+   - Self-directed learning "shop" (modular)
+   - Record learning progress (Tin can API)
     
-The first three I have already done some development work on. The fourth is more of a catch-all to keep track of things
-that would be great to add on in the future to make this project into a true LMS.
+The first three I have already done some development work on. The fourth is more of a catch-all to keep track of 
+things that would be great to add on in the future to make this project into a true LMS.
