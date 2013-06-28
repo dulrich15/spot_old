@@ -42,4 +42,4 @@ This is my initial set of objectives, each corresponding to a separate app or mu
    - Record learning progress (Tin can API)
     
 The first three I have already done some development work on. The fourth is more of a catch-all to keep track of 
-things that would be great to add on in the future to make this project into a true LMS.
+things that would be great to add on in the future to turn this project into a true LMS.
