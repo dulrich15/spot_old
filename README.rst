@@ -4,8 +4,8 @@ spot
 Python based LMS using Django
 
 This is actually my third (or fifth depending on how you count) attempt to build something that is actually 
-useful in the management of my class. Originally I wanted something that would make beautiful documents for
-class, so I learned LaTeX. Next I wanted to serve them to students via the web, so I learned PHP. I knew that
+useful in the management of my class. Originally I wanted something that would make beautiful documents, so 
+I learned LaTeX. Next I wanted to serve them to students via the web, so I learned PHP. I knew that
 eventually I wanted to do more, so I learned Python. Then I found Django. After a brief stint with Flask, I
 have returned, and I am trying to start this off right.
 
