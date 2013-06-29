@@ -39,7 +39,26 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-SECRET_KEY = ''.join([random.choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+if not hasattr(globals(), 'SECRET_KEY'):
+    secret_file = os.path.join(PROJECT_PATH, '..', 'local', 'secret_key.txt')
+    try:
+        SECRET_KEY = open(secret_file).read().strip()
+    except IOError:
+        try:
+            chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+            SECRET_KEY = ''.join([random.choice(chars) for i in range(50)])
+
+            LOCAL_PATH = os.path.join(PROJECT_PATH, '..', 'local')
+            if not os.path.isdir(LOCAL_PATH):
+                os.mkdir(LOCAL_PATH)
+
+            secret = file(secret_file, 'w')
+            secret.write(SECRET_KEY)
+            secret.close()
+        except IOError:
+            raise Exception('Please create file %s filled with random characters'
+                            ' to serve as your secret key.' % secret_file)
+    del secret_file
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
