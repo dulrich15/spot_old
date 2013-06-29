@@ -17,7 +17,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'spot.db',
+        'NAME': os.path.join(PROJECT_PATH, 'spot.db'),
     }
 }
 

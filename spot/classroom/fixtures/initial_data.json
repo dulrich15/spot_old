@@ -1,0 +1,38 @@
+[
+    {
+        "pk": 1, 
+        "model": "classroom.classroominstructor", 
+        "fields": {
+            "website": "", 
+            "office_location": "", 
+            "office_hours": "", 
+            "public_name": "David J. Ulrich", 
+            "user": 1, 
+            "email": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "classroom.classroom", 
+        "fields": {
+            "term": "203", 
+            "scratchpad": "Really have to fill in that outline...", 
+            "subtitle": "", 
+            "outline": "", 
+            "overview": "", 
+            "is_active": true, 
+            "dept": "Physics", 
+            "instructor": 1, 
+            "first_day": "2013-06-24", 
+            "slug": "PHY203"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "classroom.classroomstudent", 
+        "fields": {
+            "classroom": 1, 
+            "user": 2
+        }
+    }
+]
