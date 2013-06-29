@@ -4,5 +4,7 @@
 *.pyc
 *.db
 
-local/*
 */temp.*
+
+local/*
+!__init__.py
