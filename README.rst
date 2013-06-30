@@ -21,7 +21,7 @@ This is my initial set of objectives, each corresponding to a separate app or mu
    - Permission-based restriction of those documents (student-only, instrutor-only)
    - Associating students with courses
    - ? [ Storing student submissions ]
-   - ? [ Mediating communication between teachars, students ]
+   - ? [ Mediating communication between teachers, students ]
 
 2. Tracking student performance
     
