@@ -1,0 +1,14 @@
+{% extends "website/layout.html" %}
+
+{% block page_title %}{{ classroom }}{% endblock %}
+
+{% block main_content %}
+<dl>
+<dt>Title</dt>
+<dd>{{ classroom.title }}</dd>
+<dt>First day</dt>
+<dd>{{ classroom.first_day }}</dd>
+<dt>Instructor</dt>
+<dd>{{ classroom.instructor }}</dd>
+</dl>
+{% endblock %}

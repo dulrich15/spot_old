@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.db.models import *
 
 
-class ClassroomInstructor(Model):
+class Instructor(Model):
     user = ForeignKey(User)
     public_name = CharField(max_length=200, blank=True)
     office_location = CharField(max_length=200, blank=True)
@@ -28,23 +28,38 @@ class ClassroomInstructor(Model):
         ordering = ['user__last_name', 'user__first_name']
 
 
+class Department(Model):
+    name = CharField(max_length=200, blank=True)
+    abbr = CharField(max_length=200, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
 class Classroom(Model):
     is_active = BooleanField(default=True)
-    slug = SlugField()
     first_day = DateField()
-    dept = CharField(max_length=200)
+    dept = ForeignKey(Department)
     term = CharField(max_length=200)
     
     subtitle = CharField(max_length=200, blank=True)
     overview = TextField(blank=True)
     outline = TextField(blank=True)
 
-    instructor = ForeignKey(ClassroomInstructor, null=True, blank=True)
+    instructor = ForeignKey(Instructor, null=True, blank=True)
     scratchpad = TextField(blank=True)
 
     @property
     def title(self):
         return '{self.dept} {self.term}'.format(self=self)
+        
+    @property
+    def slug(self):
+        '{self.dept.abbr}{self.term}'.format(self=self)
+    
     @property
     def year(self):
         return self.first_day.year
@@ -68,7 +83,7 @@ class Classroom(Model):
         ordering = ['-first_day']
 
         
-class ClassroomStudent(Model):
+class Student(Model):
     classroom = ForeignKey(Classroom)
     user = ForeignKey(User)
         
@@ -85,3 +100,5 @@ class ClassroomStudent(Model):
 
     class Meta:
         ordering = ['user__last_name', 'user__first_name']
+
+
