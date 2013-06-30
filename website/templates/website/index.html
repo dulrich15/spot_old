@@ -1,0 +1,12 @@
+{% extends "website/layout.html" %}
+
+{% block page_title %}Site index{% endblock %}
+
+{% block main_content %}
+<h1>App list</h1>
+<ul>
+{% for app in apps %}
+<li><a href="{{ app }}/">{{ app }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -2,7 +2,14 @@ import os.path
 import random
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-PROJECT_NAME = PROJECT_PATH.split(os.path.sep)[-2]
+PROJECT_NAME = PROJECT_PATH.split(os.path.sep)[-1]
+
+MY_APPS = (
+    'classroom',
+#     'docmaker',
+#     'gradebook',
+#     'mindmap',
+)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -77,9 +84,9 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'apps.urls'
+ROOT_URLCONF = 'website.urls'
 
-WSGI_APPLICATION = 'apps.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'website', 'templates')
@@ -95,10 +102,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'south',
-    'apps.website',
-    'apps.classroom',
 )
 
+for app in MY_APPS:
+    INSTALLED_APPS += ('apps.{}'.format(app),)
+    
 # TEX_PATH   = r'/home/dulrich/texlive/bin/i386-linux'
 # GS_CMD     = r'/usr/bin/gs'
 # PYTHON_CMD = r'python2.7'
