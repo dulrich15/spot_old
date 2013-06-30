@@ -1,6 +1,8 @@
 from django.contrib.admin import *
 from models import *
 
+
+site.register(Department)
     
 class ClassroomAdmin(ModelAdmin):
     def copy_classroom(self, request, queryset):
@@ -13,9 +15,11 @@ class ClassroomAdmin(ModelAdmin):
     
 site.register(Classroom, ClassroomAdmin)
 
-
 class ClassroomUserAdmin(ModelAdmin):
     list_filter = ['classroom']
 
-site.register(ClassroomStudent, ClassroomUserAdmin)
-site.register(ClassroomInstructor, ClassroomUserAdmin)
+site.register(Student, ClassroomUserAdmin)
+site.register(Instructor, ClassroomUserAdmin)
+
+
+

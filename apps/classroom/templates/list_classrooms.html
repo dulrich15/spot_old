@@ -1,0 +1,12 @@
+{% extends "website/layout.html" %}
+
+{% block page_title %}List classrooms{% endblock %}
+
+{% block main_content %}
+<h1>Classrooms</h1>
+<ul>
+{% for classroom in classrooms %}
+<li><a href="{% url show_classroom classroom.pk %}">{{ classroom }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

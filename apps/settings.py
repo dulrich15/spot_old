@@ -2,6 +2,7 @@ import os.path
 import random
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+PROJECT_NAME = PROJECT_PATH.split(os.path.sep)[-2]
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

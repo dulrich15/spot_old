@@ -1,7 +1,7 @@
 [
     {
         "pk": 1, 
-        "model": "classroom.classroominstructor", 
+        "model": "classroom.instructor", 
         "fields": {
             "website": "", 
             "office_location": "", 
@@ -9,6 +9,14 @@
             "public_name": "David J. Ulrich", 
             "user": 1, 
             "email": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "classroom.department", 
+        "fields": {
+            "name": "Physics", 
+            "abbr": "PHY"
         }
     }, 
     {
@@ -21,15 +29,14 @@
             "outline": "", 
             "overview": "", 
             "is_active": true, 
-            "dept": "Physics", 
+            "dept": 1, 
             "instructor": 1, 
-            "first_day": "2013-06-24", 
-            "slug": "PHY203"
+            "first_day": "2013-06-24"
         }
     }, 
     {
         "pk": 1, 
-        "model": "classroom.classroomstudent", 
+        "model": "classroom.student", 
         "fields": {
             "classroom": 1, 
             "user": 2
