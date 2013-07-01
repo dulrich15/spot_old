@@ -13,6 +13,7 @@ class TextPlainView(TemplateView):
 
 def user_logout(request):
     logout(request)
+    messages.info(request, 'You have been logged out.')
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 def user_login(request):
