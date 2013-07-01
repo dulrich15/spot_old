@@ -3,6 +3,7 @@
 <head>
     <title>{% block meta_title %}{% endblock %}</title>    
     <link rel="stylesheet" href="{{ STATIC_URL }}website/main.css" />
+    <script src="{{ STATIC_URL }}website/main.js"></script>
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -10,6 +11,14 @@
 <header>
     {% block header %}{% endblock %}
 </header>
+
+{% if messages %}
+<ul id="site_messages" onClick="Toggle('site_messages')">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 <div id="main_content">
     {% block main_content %}{% endblock %}

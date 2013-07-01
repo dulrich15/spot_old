@@ -10,7 +10,7 @@ header {
     text-align:center; 
     -moz-border-radius:8px;
     -webkit-border-radius:8px;
-    border-radius:8px; /* future proofing */
+    border-radius:8px;
 }
 footer { 
     clear:both; 

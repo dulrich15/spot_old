@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import messages
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
@@ -25,5 +26,6 @@ def user_login(request):
         
     if user and user.is_active:
         login(request, user)
+        messages.info(request, 'You have been logged in.')
         
     return redirect(request.META.get('HTTP_REFERER', '/')) 
