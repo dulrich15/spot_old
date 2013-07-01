@@ -25,10 +25,19 @@
 {% endblock %}
 
 {% block side_content %}
-    {% if classroom.schedule %}
-    <h3>Schedule</h3>
-    {% endif %}
+    <p id="login">
+        {% if user.is_authenticated %}
+        Hi {{ user.first_name }}.&nbsp;&nbsp;<a href="{% url logout %}" tabindex=1>Logout?</a>
+        {% else %}
+        <form method="post" action="{% url login %}">
+            <label for="pswd">Login:</label>
+            <input type="password" name="pswd" onLoad="this.focus()" tabindex=1 />
+            {% csrf_token %}
+        </form>
+        {% endif %}
+    </p>
 
+    <h3>Schedule</h3>
     <h3>Search</h3>
     <h3>Links</h3>
     
