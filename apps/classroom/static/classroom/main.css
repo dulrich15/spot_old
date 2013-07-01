@@ -31,9 +31,30 @@ dt {
     padding-left:1em;
     border-left:1px solid blue;
 }
+
 #action_links {
     float:right;
     margin:1em;
     font-size:75%;
     text-transform:uppercase;
+
+    padding:0.5em;
+    text-align:center;
+
+    line-height:2em;
+}
+#action_links li { 
+    padding:0;
+    margin:0;
+    display:inline;
+} 
+#action_links a { 
+    padding:0.3em 1em;
+    text-decoration:none;
+    color:blue;
+    border:1px solid #0000FF;
+    background:#EEEEEE;
+}
+#action_links a:hover { 
+    background:#FFFF00;
 }

@@ -40,6 +40,9 @@ def show_classroom(request, pk):
 
     
 def edit_classroom(request, pk):
+    if not request.user.is_staff:
+        return redirect('show_classroom', pk)
+        
     classroom = Classroom.objects.get(pk=pk)
     context = {
         'classroom': classroom,
@@ -53,5 +56,8 @@ def edit_classroom(request, pk):
 
     
 def post_classroom(request, pk):
+    if not request.user.is_staff:
+        return redirect('show_classroom', pk)
+        
     return redirect('show_classroom')
     
