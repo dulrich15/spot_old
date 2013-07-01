@@ -1,10 +1,27 @@
 <!doctype html>
 <html>
 <head>
-    <title>{% block page_title %}{% endblock %}</title>    
-    <link rel="stylesheet" href="{{ STATIC_URL }}website/css/main.css" />
+    <title>{% block meta_title %}{% endblock %}</title>    
+    <link rel="stylesheet" href="{{ STATIC_URL }}website/main.css" />
+    {% block head %}{% endblock %}
 </head>
 <body>
-{% block main_content %}{% endblock %}
+{% block body %}
+<header>
+    {% block header %}{% endblock %}
+</header>
+
+<div id="main_content">
+    {% block main_content %}{% endblock %}
+</div>
+
+<div id="side_content">
+    {% block side_content %}{% endblock %}
+</div>
+
+<footer>
+    {% block footer %}{% endblock %}
+</footer>
+{% endblock %}
 </body>
 </html>
