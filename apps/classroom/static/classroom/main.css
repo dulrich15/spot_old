@@ -1,3 +1,33 @@
+body { 
+    background:#FFFFFF; 
+    max-width:600px; 
+    margin:8px auto; 
+}
+header { 
+    background:#EEEEEE; 
+    border:1px solid blue; 
+    padding:3em; 
+    text-align:center; 
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+    border-radius:8px; /* future proofing */
+}
+footer { 
+    clear:both; 
+}
 dt {
     font-weight:bold;
+}
+
+#main_content { 
+    width:67%; 
+    float:left; 
+    margin-left:8px; 
+}
+#side_content { 
+    width:25%; 
+    float:left; 
+    margin-right:8px;
+    padding-left:1em;
+    border-left:1px solid blue;
 }
