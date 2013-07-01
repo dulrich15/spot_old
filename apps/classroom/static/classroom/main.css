@@ -31,3 +31,9 @@ dt {
     padding-left:1em;
     border-left:1px solid blue;
 }
+#action_links {
+    float:right;
+    margin:1em;
+    font-size:75%;
+    text-transform:uppercase;
+}
