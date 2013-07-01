@@ -24,10 +24,9 @@
         "model": "classroom.classroom", 
         "fields": {
             "term": "203", 
-            "scratchpad": "Really have to fill in that outline...", 
-            "subtitle": "", 
-            "outline": "", 
-            "overview": "", 
+            "scratchpad": "Really need to add an outline to the overview...", 
+            "subtitle": "The microscopic source of force", 
+            "overview": "This class rocks!", 
             "is_active": true, 
             "dept": 1, 
             "instructor": 1, 
