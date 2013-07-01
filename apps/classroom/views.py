@@ -10,6 +10,7 @@ from django.template import RequestContext
 from django.template import loader
 from django.shortcuts import redirect
 
+from decorators import *
 from models import *
 
 
@@ -38,11 +39,9 @@ def show_classroom(request, pk):
 
     return HttpResponse(t.render(c))
 
-    
+
+@verify_user_is_staff
 def edit_classroom(request, pk):
-    if not request.user.is_staff:
-        return redirect('show_classroom', pk)
-        
     classroom = Classroom.objects.get(pk=pk)
     context = {
         'classroom': classroom,
@@ -55,6 +54,7 @@ def edit_classroom(request, pk):
     return HttpResponse(t.render(c))
 
     
+@verify_user_is_staff
 def post_classroom(request, pk):
     if not request.user.is_staff:
         return redirect('show_classroom', pk)
