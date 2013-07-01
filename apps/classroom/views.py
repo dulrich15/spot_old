@@ -40,7 +40,7 @@ def show_classroom(request, pk):
     return HttpResponse(t.render(c))
 
 
-@verify_user_is_staff
+@verify_user_is_staff(redirect_url_name='show_classroom')
 def edit_classroom(request, pk):
     classroom = Classroom.objects.get(pk=pk)
     context = {
@@ -54,10 +54,8 @@ def edit_classroom(request, pk):
     return HttpResponse(t.render(c))
 
     
-@verify_user_is_staff
+@verify_user_is_staff(redirect_url_name='show_classroom')
 def post_classroom(request, pk):
-    if not request.user.is_staff:
-        return redirect('show_classroom', pk)
-        
+    
     return redirect('show_classroom')
     
