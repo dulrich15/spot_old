@@ -15,14 +15,15 @@ def user_logout(request):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 def user_login(request):
-    post = request.POST['pswd'].upper()
+    post = request.POST['password'].lower()
+    user = None
     
     # see http://stackoverflow.com/questions/4754980/how-to-manually-authenticate-after-get-django-user
-    if post.lower() == 'test':
-        user = User.objects.get(username='test')
+    if post in ['dave', 'test']:
+        user = User.objects.get(username=post)
         user.backend = 'django.contrib.auth.backends.ModelBackend' 
         
-    if user is not None and user.is_active:
+    if user and user.is_active:
         login(request, user)
         
     return redirect(request.META.get('HTTP_REFERER', '/')) 

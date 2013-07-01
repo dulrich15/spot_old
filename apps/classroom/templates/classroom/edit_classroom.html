@@ -13,12 +13,6 @@
 {% endblock %}
 
 {% block main_content %}
-    {% if user.is_staff %}
-    <ul id="action_links" class="horizontal_list">
-        <li><a href="{% url edit_classroom classroom.pk %}">Edit</a></li>
-    </ul>
-    {% endif %}
-    
     <h2>Course Overview</h2>
 
     <dl>
@@ -36,8 +30,8 @@
         Hi {% if user.first_name %}{{ user.first_name }}{% else %}there{% endif %}.&nbsp;&nbsp;<a href="{% url logout %}" tabindex=1>Logout?</a>
         {% else %}
         <form method="post" action="{% url login %}">
-            <label for="password">Login:</label>
-            <input type="password" name="password" tabindex=1 />
+            <label for="pswd">Login:</label>
+            <input type="password" name="pswd" onLoad="this.focus()" tabindex=1 />
             {% csrf_token %}
         </form>
         {% endif %}

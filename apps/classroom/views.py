@@ -37,4 +37,21 @@ def show_classroom(request, pk):
     t = loader.get_template(template)
 
     return HttpResponse(t.render(c))
+
+    
+def edit_classroom(request, pk):
+    classroom = Classroom.objects.get(pk=pk)
+    context = {
+        'classroom': classroom,
+    }
+    template = 'classroom/edit_classroom.html'
+
+    c = RequestContext(request, context)
+    t = loader.get_template(template)
+
+    return HttpResponse(t.render(c))
+
+    
+def post_classroom(request, pk):
+    return redirect('show_classroom')
     
