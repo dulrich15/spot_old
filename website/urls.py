@@ -4,6 +4,8 @@ from django.contrib import admin
 from django.views.generic.simple import direct_to_template
 # from django.views.generic.simple import redirect_to
 
+from . import views
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -14,6 +16,9 @@ urlpatterns = patterns('',
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^login/$', views.user_login, name='login'), 
+    url(r'^logout/$', views.user_logout, name='logout'), 
 
     url(r'^classroom/', include('apps.classroom.urls')), 
 )
