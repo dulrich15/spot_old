@@ -47,7 +47,6 @@ class Classroom(Model):
     
     subtitle = CharField(max_length=200, blank=True)
     overview = TextField(blank=True)
-    outline = TextField(blank=True)
 
     instructor = ForeignKey(Instructor, null=True, blank=True)
     scratchpad = TextField(blank=True)
