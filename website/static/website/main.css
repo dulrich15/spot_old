@@ -12,3 +12,9 @@
     content: '';
 }
 
+#site_messages {
+    margin:5px 0;
+    padding:0.5em 2em;
+    border:1px solid red;
+    background:#FFCCCC;
+}
