@@ -7,4 +7,4 @@ class verify_user_is_staff(object):
     def __call__(self, request, pk):
         if not request.user.is_staff:
             return redirect('show_classroom', pk)
-        self.f(request, pk)
+        return self.f(request, pk)
