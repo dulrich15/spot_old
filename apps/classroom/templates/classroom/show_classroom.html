@@ -1,15 +1,35 @@
 {% extends "website/layout.html" %}
+{% load rst_tags %}
 
-{% block page_title %}{{ classroom }}{% endblock %}
+{% block meta_title %}{{ classroom }}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}classroom/main.css" />
+{% endblock %}
+
+{% block header %}
+    <h1>{{ classroom.title }}</h1>
+    {% if classroom.subtitle %}<p>{{ classroom.subtitle }}</p>{% endif %}
+{% endblock %}
 
 {% block main_content %}
-<h1>{{ classroom }}</h1>
-<dl>
-<dt>Title</dt>
-<dd>{{ classroom.title }}</dd>
-<dt>Instructor</dt>
-<dd>{{ classroom.instructor }}</dd>
-<dt>First day</dt>
-<dd>{{ classroom.first_day }}</dd>
-</dl>
+    <h2>Course Overview</h2>
+
+    <dl>
+        <dt>Instructor</dt><dd>{{ classroom.instructor }}</dd>
+        <dt>First day</dt><dd>{{ classroom.first_day }}</dd>
+    </dl>
+    
+    {{ classroom.overview|rst2html }}
+    
+{% endblock %}
+
+{% block side_content %}
+    {% if classroom.schedule %}
+    <h3>Schedule</h3>
+    {% endif %}
+
+    <h3>Search</h3>
+    <h3>Links</h3>
+    
 {% endblock %}

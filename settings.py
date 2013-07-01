@@ -34,21 +34,19 @@ USE_I18N = False
 USE_L10N = True
 USE_TZ = True
 
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')    # used to hold user uploads
 
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = ()
-STATICFILES_FINDERS = (
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')  # used for collecstatic command in production
+STATICFILES_FINDERS = (                             # used for staticfiles app in development
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+STATICFILES_DIRS = ()                               # extra folders for staticfiles app
 
 if not hasattr(globals(), 'SECRET_KEY'):
-    secret_file = os.path.join(PROJECT_PATH, '..', 'local', 'secret_key.txt')
+    secret_file = os.path.join(PROJECT_PATH, 'local', 'secret_key.txt')
     try:
         SECRET_KEY = open(secret_file).read().strip()
     except IOError:
@@ -56,7 +54,7 @@ if not hasattr(globals(), 'SECRET_KEY'):
             chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
             SECRET_KEY = ''.join([random.choice(chars) for i in range(50)])
 
-            LOCAL_PATH = os.path.join(PROJECT_PATH, '..', 'local')
+            LOCAL_PATH = os.path.join(PROJECT_PATH, 'local')
             if not os.path.isdir(LOCAL_PATH):
                 os.mkdir(LOCAL_PATH)
 
@@ -102,6 +100,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'south',
+    'website',
 )
 
 for app in MY_APPS:
