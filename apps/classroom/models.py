@@ -117,12 +117,21 @@ class Student(Model):
         ordering = ['user__last_name', 'user__first_name']
 
 
+class Activity(Model):
+    classroom = ForeignKey(Classroom)
+    label = CharField(max_length=200)
+    
+    def __unicode__(self):
+        return self.label
+
+
 class ActivityBlock(Model):
     classroom = ForeignKey(Classroom)
     week = PositiveSmallIntegerField(null=True, blank=True)
     weekday_index = PositiveSmallIntegerField(choices=weekday_choices, verbose_name='weekday', null=True, blank=True)
     heading = CharField(max_length=200, null=True, blank=True)
     sort_order = PositiveSmallIntegerField(null=True, blank=True)
+    activities = ManyToManyField(Activity, null=True, blank=True)
     
     @property
     def weekday(self):
@@ -150,5 +159,17 @@ class ActivityBlock(Model):
             
     class Meta:
         ordering = ['sort_order', 'week', 'weekday_index', 'heading']
-        
-        
+
+
+# class Activity(Model):
+#     block = ForeignKey(ActivityBlock)
+#     label = CharField(max_length=200)
+#     
+#     @property
+#     def classroom(self):
+#         return self.block.classroom
+#         
+#     def __unicode__(self):
+#         return '{self.label} from {self.classroom}'.format(self=self)
+
+

@@ -32,7 +32,7 @@
 {% block side_content %}
     <p id="login">
         {% if user.is_authenticated %}
-        {% if user.first_name %}Hi {{ user.first_name }}.&nbsp;&nbsp;{% endif %}<a href="{% url logout %}" tabindex=1>Logout?</a>
+        {% if user.first_name %}Hi {{ user.first_name }}.&nbsp;&nbsp;{% endif %}<a href="{% url logout %}">Logout?</a>
         {% else %}
         <form method="post" action="{% url login %}">
             <label for="password">Login:</label>
