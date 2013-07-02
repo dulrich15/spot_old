@@ -1,9 +1,6 @@
 from __future__ import division
 from __future__ import unicode_literals
 
-import os
-from datetime import datetime
-
 from django.contrib import messages
 from django.http import HttpResponse
 from django.template import Context

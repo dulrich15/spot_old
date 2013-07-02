@@ -29,22 +29,3 @@
         {% csrf_token %}
     </form>
 {% endblock %}
-
-{% block side_content %}
-    <p id="login">
-        {% if user.is_authenticated %}
-        {% if user.first_name %}Hi {{ user.first_name }}.&nbsp;&nbsp;{% endif %}<a href="{% url logout %}" tabindex=1>Logout?</a>
-        {% else %}
-        <form method="post" action="{% url login %}">
-            <label for="password">Login:</label>
-            <input type="password" name="password" tabindex=1 />
-            {% csrf_token %}
-        </form>
-        {% endif %}
-    </p>
-
-    <h3>Schedule</h3>
-    <h3>Links</h3>
-    
-{% endblock %}
-
