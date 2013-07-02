@@ -4,6 +4,7 @@
 {% block meta_title %}{{ classroom }}{% endblock %}
 
 {% block head %}
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{ STATIC_URL }}classroom/main.css" />
 {% endblock %}
 
@@ -37,3 +38,30 @@
         {% endif %}
     </p>
 {% endblock %}
+=======
+    <link rel="stylesheet" href="{{ STATIC_URL }}classroom/main.css">
+{% endblock %}
+
+{% block header %}
+    <form method="post" action="{% url post_classroom classroom.pk %}">
+    <h1>{{ classroom.title }}</h1>
+    <input type="text" name="subtitle" value="{{ classroom.subtitle }}">
+{% endblock %}
+
+{% block main_content %}
+        <dl>
+            <dt>Instructor</dt>
+            <dd>{{ classroom.instructor }}</dd>
+            <dt>First day</dt>
+            <dd>{{ classroom.first_day }}</dd>
+            <dt>Overview</dt>
+            <dd><textarea name="overview">{{ classroom.overview }}</textarea></dd>
+        </dl>
+        <p>
+            <input type="submit" name="submit" value="Submit">
+            <input type="submit" name="cancel" value="Cancel">
+        </p>
+        {% csrf_token %}
+    </form>
+{% endblock %}
+>>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac

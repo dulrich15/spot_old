@@ -19,12 +19,19 @@
     </ul>
     {% endif %}
     
+<<<<<<< HEAD
     <h2>Course Overview</h2>
+=======
+>>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
     <dl>
         <dt>Instructor</dt><dd>{{ classroom.instructor }}</dd>
         <dt>First day</dt><dd>{{ classroom.first_day }}</dd>
     </dl>
     
+<<<<<<< HEAD
+=======
+    <h2>Course Overview</h2>
+>>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
     {{ classroom.overview|rst2html }}
     
 {% endblock %}
@@ -32,7 +39,11 @@
 {% block side_content %}
     <p id="login">
         {% if user.is_authenticated %}
+<<<<<<< HEAD
         Hi {% if user.first_name %}{{ user.first_name }}{% else %}there{% endif %}.&nbsp;&nbsp;<a href="{% url logout %}" tabindex=1>Logout?</a>
+=======
+        {% if user.first_name %}Hi {{ user.first_name }}.&nbsp;&nbsp;{% endif %}<a href="{% url logout %}" tabindex=1>Logout?</a>
+>>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
         {% else %}
         <form method="post" action="{% url login %}">
             <label for="password">Login:</label>
@@ -42,8 +53,17 @@
         {% endif %}
     </p>
 
+<<<<<<< HEAD
     <h3>Schedule</h3>
     <h3>Search</h3>
     <h3>Links</h3>
+=======
+    <h3>Go to&hellip;</h3>
+    <ul>
+        <li><a href="">Schedule</a></li>
+        <li><a href="">Documents</a></li>
+    </ul>
+    
+>>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
     
 {% endblock %}

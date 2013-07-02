@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 from django.conf import settings
+=======
+>>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
 from django.conf.urls.defaults import patterns, include, url
 from django.views import generic
 

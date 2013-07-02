@@ -18,18 +18,39 @@ footer {
 dt {
     font-weight:bold;
 }
+<<<<<<< HEAD
+=======
+dd {
+    margin-left:0;
+    margin-bottom:1em;
+}
+textarea {
+    width:90%;
+}
+header input[type="text"] {
+    width:100%;
+    text-align:center;
+}
+>>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
 
 #main_content { 
     width:67%; 
     float:left; 
     margin-left:8px; 
+<<<<<<< HEAD
+=======
+    border-right:1px solid blue;
+>>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
 }
 #side_content { 
     width:25%; 
     float:left; 
     margin-right:8px;
     padding-left:1em;
+<<<<<<< HEAD
     border-left:1px solid blue;
+=======
+>>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
 }
 
 #action_links {
