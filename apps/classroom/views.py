@@ -60,6 +60,7 @@ def post_classroom(request, pk):
     if 'submit' in request.POST.keys():
         classroom = Classroom.objects.get(pk=pk)
         classroom.overview = request.POST['overview'].strip()
+        classroom.subtitle = request.POST['subtitle'].strip()
         classroom.save()
         messages.info(request, "Classroom overview updated.")
     return redirect('show_classroom', pk)
