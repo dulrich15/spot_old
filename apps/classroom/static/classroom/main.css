@@ -18,6 +18,13 @@ footer {
 dt {
     font-weight:bold;
 }
+dd {
+    margin-left:0;
+    margin-bottom:1em;
+}
+textarea {
+    width:100%;
+}
 
 #main_content { 
     width:67%; 
