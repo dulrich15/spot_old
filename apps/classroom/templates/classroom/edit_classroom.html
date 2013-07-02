@@ -4,41 +4,6 @@
 {% block meta_title %}{{ classroom }}{% endblock %}
 
 {% block head %}
-<<<<<<< HEAD
-    <link rel="stylesheet" href="{{ STATIC_URL }}classroom/main.css" />
-{% endblock %}
-
-{% block header %}
-    <h1>{{ classroom.title }}</h1>
-    {% if classroom.subtitle %}<p>{{ classroom.subtitle }}</p>{% endif %}
-{% endblock %}
-
-{% block main_content %}
-    <h2>Course Overview</h2>
-
-    <dl>
-        <dt>Instructor</dt><dd>{{ classroom.instructor }}</dd>
-        <dt>First day</dt><dd>{{ classroom.first_day }}</dd>
-    </dl>
-    
-    {{ classroom.overview|rst2html }}
-    
-{% endblock %}
-
-{% block side_content %}
-    <p id="login">
-        {% if user.is_authenticated %}
-        Hi {% if user.first_name %}{{ user.first_name }}{% else %}there{% endif %}.&nbsp;&nbsp;<a href="{% url logout %}" tabindex=1>Logout?</a>
-        {% else %}
-        <form method="post" action="{% url login %}">
-            <label for="pswd">Login:</label>
-            <input type="password" name="pswd" onLoad="this.focus()" tabindex=1 />
-            {% csrf_token %}
-        </form>
-        {% endif %}
-    </p>
-{% endblock %}
-=======
     <link rel="stylesheet" href="{{ STATIC_URL }}classroom/main.css">
 {% endblock %}
 
@@ -64,4 +29,3 @@
         {% csrf_token %}
     </form>
 {% endblock %}
->>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac

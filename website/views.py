@@ -27,10 +27,6 @@ def user_login(request):
         
     if user and user.is_active:
         login(request, user)
-<<<<<<< HEAD
-        messages.info(request, 'You have been logged in.')
-=======
         messages.info(request, "You have been logged in.")
->>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
         
     return redirect(request.META.get('HTTP_REFERER', '/')) 

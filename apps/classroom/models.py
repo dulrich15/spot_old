@@ -2,13 +2,9 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import copy
-<<<<<<< HEAD
-
-=======
 import os
 
 from django.conf import settings
->>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
 from django.contrib.auth.models import User
 from django.db.models import *
 
@@ -63,11 +59,6 @@ class Classroom(Model):
         
     @property
     def slug(self):
-<<<<<<< HEAD
-        '{self.dept.abbr}{self.term}'.format(self=self)
-    
-    @property
-=======
         return '{self.dept.abbr}{self.term}'.format(self=self)
 
     @property
@@ -79,18 +70,12 @@ class Classroom(Model):
         return os.path.join(settings.MEDIA_ROOT, 'classroom', self.lib)
         
     @property
->>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
     def year(self):
         return self.first_day.year
 
     @property
-<<<<<<< HEAD
-    def season(self):
-        return ['Winter','Spring','Summer','Fall'][int(self.first_day.month / 3)]
-=======
     def season(self): # notice: June should be *summer* term
         return ['Winter','Spring','Summer','Fall'][int((self.first_day.month - 1)/ 3)]
->>>>>>> a9e833f86e0b972cfda2ca08e030ad60ab7b5bac
         
     def copy_instance(self):
         instance = copy.deepcopy(self)
