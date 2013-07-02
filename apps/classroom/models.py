@@ -2,12 +2,22 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import copy
+import datetime
 import os
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import *
 
+weekday_choices = (
+    (0, 'Mon'),
+    (1, 'Tue'),
+    (2, 'Wed'),
+    (3, 'Thu'),
+    (4, 'Fri'),
+    (5, 'Sat'),
+    (6, 'Sun'),
+)
 
 class Instructor(Model):
     user = ForeignKey(User)
@@ -42,15 +52,14 @@ class Department(Model):
 
 
 class Classroom(Model):
-    is_active = BooleanField(default=True)
-    first_day = DateField()
     dept = ForeignKey(Department)
     term = CharField(max_length=200)
+    first_day = DateField()
     
     subtitle = CharField(max_length=200, blank=True)
-    overview = TextField(blank=True)
-
     instructor = ForeignKey(Instructor, null=True, blank=True)
+
+    overview = TextField(blank=True)
     scratchpad = TextField(blank=True)
 
     @property
@@ -75,7 +84,7 @@ class Classroom(Model):
 
     @property
     def season(self): # notice: June should be *summer* term
-        return ['Winter','Spring','Summer','Fall'][int((self.first_day.month - 1)/ 3)]
+        return ['Winter','Spring','Summer','Fall'][int((self.first_day.month + 1)/ 3)]
         
     def copy_instance(self):
         instance = copy.deepcopy(self)
@@ -83,10 +92,7 @@ class Classroom(Model):
         instance.save()
 
     def __unicode__(self):
-        x = '{self.title}, {self.season} {self.year}'.format(self=self)
-        if not self.is_active:
-            x += ' [Inactive]'
-        return x
+        return '{self.title}, {self.season} {self.year}'.format(self=self)
 
     class Meta:
         ordering = ['-first_day']
@@ -111,3 +117,38 @@ class Student(Model):
         ordering = ['user__last_name', 'user__first_name']
 
 
+class ActivityBlock(Model):
+    classroom = ForeignKey(Classroom)
+    week = PositiveSmallIntegerField(null=True, blank=True)
+    weekday_index = PositiveSmallIntegerField(choices=weekday_choices, verbose_name='weekday', null=True, blank=True)
+    heading = CharField(max_length=200, null=True, blank=True)
+    sort_order = PositiveSmallIntegerField(null=True, blank=True)
+    
+    @property
+    def weekday(self):
+        if self.weekday_index is not None:
+            return weekday_choices[self.weekday_index][1]
+        else:
+            return None
+    
+    @property
+    def date(self):
+        if self.classroom.first_day and self.week and self.weekday:
+            return self.classroom.first_day + datetime.timedelta(7 * (self.week - 1) + self.weekday_index)
+        else:
+            return None
+
+    def __unicode__(self):
+        if self.date:
+            return '{self.weekday} Week {self.week}'.format(self=self)
+        elif self.week:
+            return 'Week {self.week}'.format(self=self)
+        elif self.heading:
+            return self.heading
+        else:
+            return 'Block id {self.id}'.format(self=self)
+            
+    class Meta:
+        ordering = ['sort_order', 'week', 'weekday_index', 'heading']
+        
+        

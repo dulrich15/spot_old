@@ -27,7 +27,6 @@
             "scratchpad": "Really need to add an outline to the overview...", 
             "subtitle": "The microscopic source of force", 
             "overview": "This class rocks!", 
-            "is_active": true, 
             "dept": 1, 
             "instructor": 1, 
             "first_day": "2013-06-24"
@@ -39,6 +38,28 @@
         "fields": {
             "classroom": 1, 
             "user": 2
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "classroom.activityblock", 
+        "fields": {
+            "classroom": 1, 
+            "week": 1, 
+            "sort_order": null, 
+            "heading": "", 
+            "weekday_index": 0
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "classroom.activityblock", 
+        "fields": {
+            "classroom": 1, 
+            "week": 1, 
+            "sort_order": null, 
+            "heading": "", 
+            "weekday_index": 2
         }
     }
 ]

@@ -21,5 +21,11 @@ class ClassroomUserAdmin(ModelAdmin):
 site.register(Student, ClassroomUserAdmin)
 site.register(Instructor, ClassroomUserAdmin)
 
+class ActivityBlockAdmin(ModelAdmin):
+    list_filter = ['classroom']
+    list_display = ['__unicode__', 'classroom']
+
+site.register(ActivityBlock, ActivityBlockAdmin)
+
 
 

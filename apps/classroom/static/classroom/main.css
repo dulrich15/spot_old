@@ -8,9 +8,6 @@ header {
     border:1px solid blue; 
     padding:2em; 
     text-align:center; 
-    -moz-border-radius:8px;
-    -webkit-border-radius:8px;
-    border-radius:8px;
 }
 footer { 
     clear:both; 

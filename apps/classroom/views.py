@@ -61,3 +61,20 @@ def post_classroom(request, pk):
         classroom.save()
         messages.info(request, "Classroom overview updated.")
     return redirect('show_classroom', pk)
+
+    
+def show_schedule(request, pk):
+    classroom = Classroom.objects.get(pk=pk)
+    blocks = ActivityBlock.objects.filter(classroom=classroom)
+    
+    classroom.schedule = blocks
+    
+    context = {
+        'classroom': classroom,
+    }
+    template = 'classroom/show_schedule.html'
+
+    c = RequestContext(request, context)
+    t = loader.get_template(template)
+
+    return HttpResponse(t.render(c))
