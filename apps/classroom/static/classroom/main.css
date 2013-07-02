@@ -14,10 +14,10 @@ footer {
 }
 dt {
     font-weight:bold;
+    margin-top:1em;
 }
 dd {
     margin-left:0;
-    margin-bottom:1em;
 }
 textarea {
     width:90%;

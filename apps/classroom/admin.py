@@ -24,7 +24,7 @@ site.register(Instructor, ClassroomUserAdmin)
 class ActivityBlockAdmin(ModelAdmin):
     list_filter = ['classroom']
     list_display = ['__unicode__', 'classroom', 'nbr_activities']
-    filter_horizontal = ['activities']
+    filter_vertical = ['activities']
 
     def nbr_activities(self, obj):
         return len(obj.activities.all())

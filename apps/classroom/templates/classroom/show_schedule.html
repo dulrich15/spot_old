@@ -21,19 +21,17 @@
 
     <h2>Schedule</h2>
     {% if classroom.schedule %}
-    <ul>
-    {% for block in classroom.schedule %}
-    <li>{{ block }}
-    {% if block.activities %}
-    <ul>
-    {% for activity in activities %}
-    <li>{{ activity }}</li>
-    {% endfor %}
-    </ul>
-    {% endif %}
-    </li>
-    {% endfor %}
-    </ul>
+    <dl>
+        {% for block in classroom.schedule %}
+        <dt>{{ block }}{% if block.date %} ({{ block.date }}){% endif %}</dt>
+        {% if block.activities %}
+        {% for activity in block.activities.all %}
+        <dd>{{ activity.label }}</dd>
+        {% endfor %}
+        {% endif %}
+        </li>
+        {% endfor %}
+    </dl>
     {% else %}
     <p>No activities have been scheduled.</p>
     {% endif %}

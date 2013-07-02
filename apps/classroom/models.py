@@ -119,10 +119,21 @@ class Student(Model):
 
 class Activity(Model):
     classroom = ForeignKey(Classroom)
-    label = CharField(max_length=200)
+    type = CharField(max_length=200)
+    title = CharField(max_length=200, null=True, blank=True)
+    
+    @property
+    def label(self):
+        if self.title:
+            return '{self.type}: {self.title}'.format(self=self)
+        else:
+            return '{self.type}: ID = {self.id}'.format(self=self)
     
     def __unicode__(self):
-        return self.label
+        return '[{self.classroom}] {self.label}'.format(self=self)
+        
+    class Meta:
+        verbose_name_plural = 'activities'
 
 
 class ActivityBlock(Model):
@@ -155,7 +166,7 @@ class ActivityBlock(Model):
         elif self.heading:
             return self.heading
         else:
-            return 'Block id {self.id}'.format(self=self)
+            return 'ID = {self.id}'.format(self=self)
             
     class Meta:
         ordering = ['sort_order', 'week', 'weekday_index', 'heading']
