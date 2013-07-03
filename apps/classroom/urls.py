@@ -1,15 +1,12 @@
 from django.conf.urls.defaults import patterns, include, url
-from django.views import generic
 
 from . import views
 
 urlpatterns = patterns('',
-    url(r'^$', views.list_classrooms, name='list_classrooms'),
-    url(r'^(\d+)/$', views.show_classroom, name='show_classroom'),
-    # url(r'^(\d+)/edit/$', views.edit_classroom, name='edit_classroom'),
-    # url(r'^(\d+)/post/$', views.post_classroom, name='post_classroom'),
-    
-    url(r'^(\d+)/schedule/$', views.show_schedule, name='show_schedule'),
-    url(r'^(\d+)/documents/$', views.show_documents, name='show_documents'),
-    url(r'^(\d+)/documents/([^/]+)$', views.serve_document, name='serve_document'),
+    url(r'classroom/^$', views.list_classrooms, name='list_classrooms'),
+    url(r'^classroom/(\d+)/$', views.show_classroom, name='show_classroom'),
+    url(r'^classroom/(\d+)/schedule/$', views.show_schedule, name='show_schedule'),
+    url(r'^classroom/(\d+)/document/$', views.list_documents, name='list_documents'),
+    url(r'^classroom/(\d+)/document/([^/]+)$', views.serve_document, name='serve_document'),
+    url(r'', include('apps.gradebook.urls')),
 )

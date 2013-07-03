@@ -1,0 +1,21 @@
+{% extends "classroom/root.html" %}
+
+{% block main_content %}
+    {% if user.is_staff %}
+    <ul class="action_links horizontal_list">
+        <li><a href="{% url admin:gradebook_assignment_changelist %}" target="_blank">Edit</a></li>
+    </ul>
+    {% endif %}
+
+    <h2>Assignments</h2>
+
+    {% if classroom.assignment_set.all %}
+    <ul>
+        {% for assignment in classroom.assignment_set.all %}
+        <li>{{ assignment }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No assignments assigned.</p>
+    {% endif %}
+{% endblock %}

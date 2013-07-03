@@ -41,31 +41,6 @@ def show_classroom(request, classroom_pk):
     return HttpResponse(t.render(c))
 
 
-# @verify_user_is_staff(redirect_url_name='show_classroom')
-# def edit_classroom(request, classroom_pk):
-    # classroom = Classroom.objects.get(pk=classroom_pk)
-    # context = {
-        # 'classroom': classroom,
-    # }
-    # template = 'classroom/edit_classroom.html'
-
-    # c = RequestContext(request, context)
-    # t = loader.get_template(template)
-
-    # return HttpResponse(t.render(c))
-
-    
-# @verify_user_is_staff(redirect_url_name='show_classroom')
-# def post_classroom(request, classroom_pk):
-    # if 'submit' in request.POST.keys():
-        # classroom = Classroom.objects.get(pk=classroom_pk)
-        # classroom.overview = request.POST['overview'].strip()
-        # classroom.subtitle = request.POST['subtitle'].strip()
-        # classroom.save()
-        # messages.info(request, "Classroom overview updated.")
-    # return redirect('show_classroom', classroom_pk)
-
-    
 def show_schedule(request, classroom_pk):
     classroom = Classroom.objects.get(pk=classroom_pk)
     context = {
@@ -78,13 +53,13 @@ def show_schedule(request, classroom_pk):
 
     return HttpResponse(t.render(c))
 
-    
-def show_documents(request, classroom_pk):
+
+def list_documents(request, classroom_pk):
     classroom = Classroom.objects.get(pk=classroom_pk)
     context = {
         'classroom': classroom,
     }
-    template = 'classroom/show_documents.html'
+    template = 'classroom/list_documents.html'
 
     c = RequestContext(request, context)
     t = loader.get_template(template)
@@ -103,7 +78,7 @@ def serve_document(request, classroom_pk, filename):
         user_access_index = 1
     else:
         user_access_index = 0
-        
+
     if user_access_index >= document.access_index:
         f = open(document.abspath, 'rb')
         response = HttpResponse(f.read(), mimetype=guess_type(document.basename)[0])

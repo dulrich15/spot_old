@@ -1,16 +1,4 @@
-{% extends "website/layout.html" %}
-{% load rst_tags %}
-
-{% block meta_title %}{{ classroom }}{% endblock %}
-
-{% block head %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}classroom/main.css" />
-{% endblock %}
-
-{% block header %}
-    <h1>{{ classroom.title }}</h1>
-    {% if classroom.subtitle %}<p>{{ classroom.subtitle }}</p>{% endif %}
-{% endblock %}
+{% extends "classroom/root.html" %}
 
 {% block main_content %}
     {% if user.is_staff %}
@@ -24,7 +12,7 @@
     <dl>
         {% for block in classroom.activityblock_set.all %}
         <dt>
-            {{ block }}{% if block.date %} ({{ block.date }}){% endif %}            
+            {{ block }}{% if block.date %} ({{ block.date }}){% endif %}
         </dt>
         {% if block.activities %}
         {% for activity in block.activities.all %}
@@ -37,26 +25,4 @@
     {% else %}
     <p>No activities have been scheduled.</p>
     {% endif %}
-    
-{% endblock %}
-
-{% block side_content %}
-    <p id="login">
-        {% if user.is_authenticated %}
-        {% if user.first_name %}Hi {{ user.first_name }}.&nbsp;&nbsp;{% endif %}<a href="{% url logout %}">Logout?</a>
-        {% else %}
-        <form method="post" action="{% url login %}">
-            <label for="password">Login:</label>
-            <input type="password" name="password" tabindex=1 />
-            {% csrf_token %}
-        </form>
-        {% endif %}
-    </p>
-
-    <h3>Go to&hellip;</h3>
-    <ul>
-        <li><a href="{% url show_classroom classroom.pk %}">Overview</a></li>
-        <li><a href="{% url show_documents classroom.pk %}">Documents</a></li>
-    </ul>
-    
 {% endblock %}

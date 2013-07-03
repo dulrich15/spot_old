@@ -7,7 +7,7 @@ PROJECT_NAME = PROJECT_PATH.split(os.path.sep)[-1]
 MY_APPS = (
     'classroom',
 #     'docmaker',
-#     'gradebook',
+    'gradebook',
 #     'mindmap',
 )
 
@@ -105,7 +105,7 @@ INSTALLED_APPS = (
 
 for app in MY_APPS:
     INSTALLED_APPS += ('apps.{}'.format(app),)
-    
+
 # TEX_PATH   = r'/home/dulrich/texlive/bin/i386-linux'
 # GS_CMD     = r'/usr/bin/gs'
 # PYTHON_CMD = r'python2.7'
