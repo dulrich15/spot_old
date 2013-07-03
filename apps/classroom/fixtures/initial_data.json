@@ -42,13 +42,46 @@
     }, 
     {
         "pk": 1, 
+        "model": "classroom.activity", 
+        "fields": {
+            "classroom": 1, 
+            "documents": [], 
+            "type": "Lecture", 
+            "title": "Electric force and potential"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "classroom.activity", 
+        "fields": {
+            "classroom": 1, 
+            "documents": [], 
+            "type": "Quiz", 
+            "title": ""
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "classroom.activity", 
+        "fields": {
+            "classroom": 1, 
+            "documents": [], 
+            "type": "Lab", 
+            "title": "Electric field mapping"
+        }
+    }, 
+    {
+        "pk": 1, 
         "model": "classroom.activityblock", 
         "fields": {
             "classroom": 1, 
             "week": 1, 
+            "activities": [
+                1
+            ], 
             "sort_order": null, 
-            "heading": "", 
-            "weekday_index": 0
+            "weekday_index": 0, 
+            "heading": ""
         }
     }, 
     {
@@ -57,9 +90,13 @@
         "fields": {
             "classroom": 1, 
             "week": 1, 
+            "activities": [
+                2, 
+                3
+            ], 
             "sort_order": null, 
-            "heading": "", 
-            "weekday_index": 2
+            "weekday_index": 2, 
+            "heading": ""
         }
     }
 ]

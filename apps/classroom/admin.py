@@ -12,12 +12,10 @@ class ClassroomAdmin(ModelAdmin):
     copy_classroom.short_description = 'Copy selected classroom'
 
     actions = [copy_classroom]
-    
 site.register(Classroom, ClassroomAdmin)
 
 class ClassroomUserAdmin(ModelAdmin):
     list_filter = ['classroom']
-
 site.register(Student, ClassroomUserAdmin)
 site.register(Instructor, ClassroomUserAdmin)
 
@@ -28,9 +26,18 @@ class ActivityBlockAdmin(ModelAdmin):
 
     def nbr_activities(self, obj):
         return len(obj.activities.all())
-
 site.register(ActivityBlock, ActivityBlockAdmin)
-site.register(Activity)
+
+class ActivityAdmin(ModelAdmin):
+    list_filter = ['classroom']
+    list_display = ['__unicode__', 'classroom', 'nbr_documents']
+    filter_vertical = ['documents']
+
+    def nbr_documents(self, obj):
+        return len(obj.documents.all())
+site.register(Activity, ActivityAdmin)
+
+site.register(Document)
 
 
 

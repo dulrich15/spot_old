@@ -34,8 +34,8 @@ USE_I18N = False
 USE_L10N = True
 USE_TZ = True
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')    # used to hold user uploads
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'uploads')    # used to hold user uploads
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')  # used for collecstatic command in production

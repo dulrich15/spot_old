@@ -15,15 +15,17 @@
 {% block main_content %}
     {% if user.is_staff %}
     <ul id="action_links" class="horizontal_list">
-        <li><a href="{% url admin:classroom_activityblock_changelist %}">Edit</a></li>
+        <li><a href="{% url admin:classroom_activityblock_changelist %}" target="_blank">Edit</a></li>
     </ul>
     {% endif %}
 
     <h2>Schedule</h2>
-    {% if classroom.schedule %}
+    {% if classroom.activityblock_set.all %}
     <dl>
-        {% for block in classroom.schedule %}
-        <dt>{{ block }}{% if block.date %} ({{ block.date }}){% endif %}</dt>
+        {% for block in classroom.activityblock_set.all %}
+        <dt>
+            {{ block }}{% if block.date %} ({{ block.date }}){% endif %}            
+        </dt>
         {% if block.activities %}
         {% for activity in block.activities.all %}
         <dd>{{ activity.label }}</dd>
@@ -54,7 +56,7 @@
     <h3>Go to&hellip;</h3>
     <ul>
         <li><a href="{% url show_classroom classroom.pk %}">Overview</a></li>
-        <li><a href="">Documents</a></li>
+        <li><a href="{% url show_documents classroom.pk %}">Documents</a></li>
     </ul>
     
 {% endblock %}

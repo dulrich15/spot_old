@@ -10,5 +10,5 @@ urlpatterns = patterns('',
     # url(r'^(\d+)/post/$', views.post_classroom, name='post_classroom'),
     
     url(r'^(\d+)/schedule/$', views.show_schedule, name='show_schedule'),
-    # url(r'^(\d+)/blocks/$', views.list_activityblocks, name='list_activityblocks'),
+    url(r'^(\d+)/documents/$', views.show_documents, name='show_documents'),
 )

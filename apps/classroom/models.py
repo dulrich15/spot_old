@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import copy
 import datetime
 import os
+import posixpath
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -68,15 +69,11 @@ class Classroom(Model):
         
     @property
     def slug(self):
-        return '{self.dept.abbr}{self.term}'.format(self=self)
-
-    @property
-    def lib(self):
-        return '{self.slug} {self.first_day}'.format(self=self)
+        return '{self.dept.abbr}{self.term}_{self.first_day}'.format(self=self)
     
     @property
     def document_path(self):
-        return os.path.join(settings.MEDIA_ROOT, 'classroom', self.lib)
+        return os.path.join(settings.PROJECT_PATH, 'apps', 'classroom', 'content', self.slug)
         
     @property
     def year(self):
@@ -117,10 +114,22 @@ class Student(Model):
         ordering = ['user__last_name', 'user__first_name']
 
 
+        
+class Document(Model):
+    document_path = os.path.join(settings.PROJECT_PATH, 'apps', 'classroom', 'content')
+    
+    classroom = ForeignKey(Classroom)
+    file = FilePathField(path=document_path, recursive=True)
+    
+    def __unicode__(self):
+        return '[{self.classroom}] {self.file}'.format(self=self)
+
+        
 class Activity(Model):
     classroom = ForeignKey(Classroom)
     type = CharField(max_length=200)
     title = CharField(max_length=200, null=True, blank=True)
+    documents = ManyToManyField(Document, null=True, blank=True)
     
     @property
     def label(self):
@@ -171,16 +180,5 @@ class ActivityBlock(Model):
     class Meta:
         ordering = ['sort_order', 'week', 'weekday_index', 'heading']
 
-
-# class Activity(Model):
-#     block = ForeignKey(ActivityBlock)
-#     label = CharField(max_length=200)
-#     
-#     @property
-#     def classroom(self):
-#         return self.block.classroom
-#         
-#     def __unicode__(self):
-#         return '{self.label} from {self.classroom}'.format(self=self)
 
 

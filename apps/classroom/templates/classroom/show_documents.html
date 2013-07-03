@@ -15,17 +15,20 @@
 {% block main_content %}
     {% if user.is_staff %}
     <ul id="action_links" class="horizontal_list">
-        <li><a href="{% url admin:classroom_classroom_change classroom.pk %}" target="_blank">Edit</a></li>
+        <li><a href="{% url admin:classroom_document_changelist %}" target="_blank">Edit</a></li>
     </ul>
     {% endif %}
-    
-    <dl>
-        <dt>Instructor</dt><dd>{{ classroom.instructor }}</dd>
-        <dt>First day</dt><dd>{{ classroom.first_day }}</dd>
-    </dl>
-    
-    <h2>Course Overview</h2>
-    {{ classroom.overview|rst2html }}
+
+    <h2>Documents</h2>
+    {% if classroom.document_set.all %}
+    <ul>
+        {% for document in classroom.document_set.all %}
+        <li>{{ document }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No documents yet.</p>
+    {% endif %}
     
 {% endblock %}
 
@@ -44,8 +47,8 @@
 
     <h3>Go to&hellip;</h3>
     <ul>
+        <li><a href="{% url show_classroom classroom.pk %}">Overview</a></li>
         <li><a href="{% url show_schedule classroom.pk %}">Schedule</a></li>
-        <li><a href="{% url show_documents classroom.pk %}">Documents</a></li>
     </ul>
     
 {% endblock %}
