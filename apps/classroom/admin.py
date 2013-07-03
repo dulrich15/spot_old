@@ -4,6 +4,7 @@ from models import *
 
 site.register(Department)
     
+
 class ClassroomAdmin(ModelAdmin):
     def copy_classroom(self, request, queryset):
         for classroom in queryset:
@@ -14,30 +15,38 @@ class ClassroomAdmin(ModelAdmin):
     actions = [copy_classroom]
 site.register(Classroom, ClassroomAdmin)
 
+
 class ClassroomUserAdmin(ModelAdmin):
     list_filter = ['classroom']
 site.register(Student, ClassroomUserAdmin)
 site.register(Instructor, ClassroomUserAdmin)
 
+
 class ActivityBlockAdmin(ModelAdmin):
+    def nbr_activities(self, obj):
+        return len(obj.activities.all())
+
     list_filter = ['classroom']
     list_display = ['__unicode__', 'classroom', 'nbr_activities']
     filter_vertical = ['activities']
-
-    def nbr_activities(self, obj):
-        return len(obj.activities.all())
 site.register(ActivityBlock, ActivityBlockAdmin)
 
+
 class ActivityAdmin(ModelAdmin):
+    def nbr_documents(self, obj):
+        return len(obj.documents.all())
+
     list_filter = ['classroom']
     list_display = ['__unicode__', 'classroom', 'nbr_documents']
     filter_vertical = ['documents']
-
-    def nbr_documents(self, obj):
-        return len(obj.documents.all())
 site.register(Activity, ActivityAdmin)
 
-site.register(Document)
+
+class DocumentAdmin(ModelAdmin):
+    list_filter = ['classroom']
+    list_display = ['__unicode__', 'classroom', 'access']
+
+site.register(Document, DocumentAdmin)
 
 
 

@@ -20,16 +20,39 @@
     {% endif %}
 
     <h2>Documents</h2>
-    {% if classroom.document_set.all %}
+
+    {% if classroom.documents %}
     <ul>
-        {% for document in classroom.document_set.all %}
+        {% for document in classroom.documents %}
         <li>{{ document }}</li>
         {% endfor %}
     </ul>
-    {% else %}
-    <p>No documents yet.</p>
     {% endif %}
-    
+
+    {% if classroom.activityblock_set.all %}
+    <dl>
+        {% for block in classroom.activityblock_set.all %}
+        <dt>
+            {{ block }}{% if block.date %} ({{ block.date }}){% endif %}            
+        </dt>
+        {% if block.activities %}
+        {% for activity in block.activities.all %}
+        <dd>{{ activity.label }}
+            {% if activity.documents %}
+            <ul>
+                {% for document in activity.documents.all %}
+                <li>{{ document }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </dd>
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+    </dl>
+    {% else %}
+    <p>No activities have been scheduled.</p>
+    {% endif %}    
 {% endblock %}
 
 {% block side_content %}

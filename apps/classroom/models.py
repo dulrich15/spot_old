@@ -20,6 +20,13 @@ weekday_choices = (
     (6, 'Sun'),
 )
 
+access_choices = (
+    (0, 'Public'),
+    (1, 'Student'),
+    (2, 'Instructor'),
+    (3, 'Admin'),
+)
+
 class Instructor(Model):
     user = ForeignKey(User)
     public_name = CharField(max_length=200, blank=True)
@@ -69,12 +76,8 @@ class Classroom(Model):
         
     @property
     def slug(self):
-        return '{self.dept.abbr}{self.term}_{self.first_day}'.format(self=self)
+        return '{self.dept.abbr}{self.term}'.format(self=self)
     
-    @property
-    def document_path(self):
-        return os.path.join(settings.PROJECT_PATH, 'apps', 'classroom', 'content', self.slug)
-        
     @property
     def year(self):
         return self.first_day.year
@@ -82,6 +85,12 @@ class Classroom(Model):
     @property
     def season(self): # notice: June should be *summer* term
         return ['Winter','Spring','Summer','Fall'][int((self.first_day.month + 1)/ 3)]
+
+    @property
+    def documents(self):
+        q = Document.objects.filter(classroom=self)
+        q = q.exclude(activity__in=self.activity_set.all())
+        return q
         
     def copy_instance(self):
         instance = copy.deepcopy(self)
@@ -114,15 +123,27 @@ class Student(Model):
         ordering = ['user__last_name', 'user__first_name']
 
 
-        
 class Document(Model):
     document_path = os.path.join(settings.PROJECT_PATH, 'apps', 'classroom', 'content')
+
+    classroom = ForeignKey('Classroom')
+    filepath = FilePathField(path=document_path, match='.*', recursive=True)
+    access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
     
-    classroom = ForeignKey(Classroom)
-    file = FilePathField(path=document_path, recursive=True)
+    @property
+    def access(self):
+        return access_choices[self.access_index][1]
     
+    @property
+    def abspath(self):
+        return os.path.abspath(os.path.join(self.__class__.document_path, self.filepath))
+
+    @property
+    def basename(self):
+        return os.path.split(self.abspath)[1]
+
     def __unicode__(self):
-        return '[{self.classroom}] {self.file}'.format(self=self)
+        return self.basename
 
         
 class Activity(Model):
@@ -179,6 +200,4 @@ class ActivityBlock(Model):
             
     class Meta:
         ordering = ['sort_order', 'week', 'weekday_index', 'heading']
-
-
 
