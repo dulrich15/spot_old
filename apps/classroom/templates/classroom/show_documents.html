@@ -14,7 +14,7 @@
 
 {% block main_content %}
     {% if user.is_staff %}
-    <ul id="action_links" class="horizontal_list">
+    <ul class="action_links horizontal_list">
         <li><a href="{% url admin:classroom_document_changelist %}" target="_blank">Edit</a></li>
     </ul>
     {% endif %}

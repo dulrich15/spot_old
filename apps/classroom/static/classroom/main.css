@@ -1,7 +1,8 @@
 body { 
     background:#FFFFFF; 
     max-width:600px; 
-    margin:8px auto; 
+    margin:0 auto;
+    padding:8px; 
 }
 header { 
     background:#EEEEEE; 
@@ -9,8 +10,9 @@ header {
     padding:2em; 
     text-align:center; 
 }
-footer { 
-    clear:both; 
+header input[type="text"] {
+    width:100%;
+    text-align:center;
 }
 dt {
     font-weight:bold;
@@ -22,25 +24,12 @@ dd {
 textarea {
     width:90%;
 }
-header input[type="text"] {
-    width:100%;
-    text-align:center;
+footer { 
+    clear:both; 
 }
 
-#main_content { 
-    width:67%; 
-    float:left; 
-    margin-left:8px; 
-    border-right:1px solid blue;
-}
-#side_content { 
-    width:25%; 
-    float:left; 
-    margin-right:8px;
-    padding-left:1em;
-}
 
-#action_links {
+.action_links {
     float:right;
     margin:1em;
     font-size:75%;
@@ -51,18 +40,38 @@ header input[type="text"] {
 
     line-height:2em;
 }
-#action_links li { 
+.action_links li { 
     padding:0;
     margin:0;
     display:inline;
 } 
-#action_links a { 
+.action_links a { 
     padding:0.3em 1em;
     text-decoration:none;
     color:blue;
     border:1px solid #0000FF;
     background:#EEEEEE;
 }
-#action_links a:hover { 
+.action_links a:hover { 
     background:#FFFF00;
+}
+
+
+#main_content {}
+#side_content {}
+
+@media screen and (min-width:480px) {
+    #main_content { 
+        width:67%; 
+        float:left; 
+        margin-left:8px; 
+        border-right:1px solid blue;
+    }
+    #side_content { 
+        width:25%; 
+        float:left; 
+        margin-right:8px;
+        padding-left:1em;
+    }
+
 }
