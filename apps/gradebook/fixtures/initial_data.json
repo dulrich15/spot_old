@@ -1,0 +1,22 @@
+[
+    {
+        "pk": 1, 
+        "model": "gradebook.assignmentcategory", 
+        "fields": {
+            "name": "Quiz"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "gradebook.assignment", 
+        "fields": {
+            "classroom": 1, 
+            "category": 1, 
+            "due_date": null, 
+            "is_graded": false, 
+            "title": "", 
+            "curve_points": 0, 
+            "max_points": 0
+        }
+    }
+]

@@ -8,13 +8,11 @@ from apps.classroom.models import Classroom #, Student
 
 class AssignmentCategory(Model):
     name = CharField(max_length=200)
-    sort_order = PositiveSmallIntegerField(default=0)
 
     def __unicode__(self):
         return self.name
 
     class Meta:
-        ordering = ['sort_order']
         verbose_name_plural = 'assignment categories'
 
 
