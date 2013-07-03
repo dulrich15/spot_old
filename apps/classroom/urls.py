@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     
     url(r'^(\d+)/schedule/$', views.show_schedule, name='show_schedule'),
     url(r'^(\d+)/documents/$', views.show_documents, name='show_documents'),
+    url(r'^(\d+)/documents/([^/]+)$', views.serve_document, name='serve_document'),
 )

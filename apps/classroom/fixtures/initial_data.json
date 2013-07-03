@@ -42,10 +42,52 @@
     }, 
     {
         "pk": 1, 
+        "model": "classroom.document", 
+        "fields": {
+            "classroom": 1, 
+            "access_index": 2, 
+            "label": "Quiz Problems", 
+            "filepath": "/home/dave/Repos/github/spot/apps/classroom/content/PHY203/2013-06-24/test.txt"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "classroom.document", 
+        "fields": {
+            "classroom": 1, 
+            "access_index": 1, 
+            "label": "Homework Set", 
+            "filepath": "/home/dave/Repos/github/spot/apps/classroom/content/PHY203/2013-06-24/hw.csv"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "classroom.document", 
+        "fields": {
+            "classroom": 1, 
+            "access_index": 0, 
+            "label": "Syllabus", 
+            "filepath": "/home/dave/Repos/github/spot/apps/classroom/content/PHY203/2013-06-24/sy.rst"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "classroom.document", 
+        "fields": {
+            "classroom": 1, 
+            "access_index": 0, 
+            "label": "Lecture Notes", 
+            "filepath": "/home/dave/Repos/github/spot/apps/classroom/content/PHY203/2013-06-24/2013p203ln01.pdf"
+        }
+    }, 
+    {
+        "pk": 1, 
         "model": "classroom.activity", 
         "fields": {
             "classroom": 1, 
-            "documents": [], 
+            "documents": [
+                2
+            ], 
             "type": "Lecture", 
             "title": "Electric force and potential"
         }
@@ -55,7 +97,9 @@
         "model": "classroom.activity", 
         "fields": {
             "classroom": 1, 
-            "documents": [], 
+            "documents": [
+                1
+            ], 
             "type": "Quiz", 
             "title": ""
         }

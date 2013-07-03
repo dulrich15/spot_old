@@ -24,7 +24,11 @@
     {% if classroom.documents %}
     <ul>
         {% for document in classroom.documents %}
-        <li>{{ document }}</li>
+        {% if document.access_index == 0 or document.access_index == 1 or user.is_staff %}
+        {% if document.access_index == 0 or user.is_active %}
+        <li><a href="{% url serve_document classroom.pk document.basename %}">{{ document }}</a></li>
+        {% endif %}
+        {% endif %}
         {% endfor %}
     </ul>
     {% endif %}
@@ -41,7 +45,11 @@
             {% if activity.documents %}
             <ul>
                 {% for document in activity.documents.all %}
-                <li>{{ document }}</li>
+                {% if document.access_index == 0 or document.access_index == 1 or user.is_staff %}
+                {% if document.access_index == 0 or user.is_active %}
+                <li><a href="{% url serve_document classroom.pk document.basename %}">{{ document }}</a></li>
+                {% endif %}
+                {% endif %}
                 {% endfor %}
             </ul>
             {% endif %}

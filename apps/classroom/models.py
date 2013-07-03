@@ -79,6 +79,10 @@ class Classroom(Model):
         return '{self.dept.abbr}{self.term}'.format(self=self)
     
     @property
+    def document_path(self):
+        return '/'.join([self.slug, str(self.first_day)])
+        
+    @property
     def year(self):
         return self.first_day.year
 
@@ -124,10 +128,11 @@ class Student(Model):
 
 
 class Document(Model):
-    document_path = os.path.join(settings.PROJECT_PATH, 'apps', 'classroom', 'content')
+    document_path = '/'.join([settings.PROJECT_PATH, 'apps', 'classroom', 'content'])
 
     classroom = ForeignKey('Classroom')
     filepath = FilePathField(path=document_path, match='.*', recursive=True)
+    label = CharField(max_length=200, null=True, blank=True)
     access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
     
     @property
@@ -136,14 +141,17 @@ class Document(Model):
     
     @property
     def abspath(self):
-        return os.path.abspath(os.path.join(self.__class__.document_path, self.filepath))
+        return os.path.abspath(self.filepath)
 
     @property
     def basename(self):
         return os.path.split(self.abspath)[1]
 
     def __unicode__(self):
-        return self.basename
+        if self.label:
+            return self.label
+        else:
+            return self.basename
 
         
 class Activity(Model):
