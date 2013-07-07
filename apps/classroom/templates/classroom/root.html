@@ -32,7 +32,9 @@
         <li><a href="{% url show_classroom classroom.pk %}">Overview</a></li>
         <li><a href="{% url show_schedule classroom.pk %}">Schedule</a></li>
         <li><a href="{% url list_documents classroom.pk %}">Documents</a></li>
+        {% if user.is_active %}
         <li><a href="{% url list_assignments classroom.pk %}">Assignments</a></li>
-    {% comment %}    <li><a href="{% url show_grades classroom.pk %}">Grades</a></li>{% endcomment %}
+        <li><a href="{% url show_grades classroom.pk %}">Grades</a></li>
+        {% endif %}
     </ul>
 {% endblock %}

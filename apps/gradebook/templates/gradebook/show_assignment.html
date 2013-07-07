@@ -1,0 +1,12 @@
+{% extends "classroom/root.html" %}
+
+{% block main_content %}
+    {% if user.is_staff %}
+    <ul class="action_links horizontal_list">
+        <li><a href="{% url admin:gradebook_assignment_change assignment.pk %}" target="_blank">Edit</a></li>
+    </ul>
+    {% endif %}
+
+    <h2>Assignments</h2>
+    {{ assignment }}
+{% endblock %}

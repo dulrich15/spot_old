@@ -1,0 +1,24 @@
+{% extends "classroom/root.html" %}
+
+{% block main_content %}
+    {% if user.is_staff %}
+    <ul class="action_links horizontal_list">
+        <li><a href="" target="_blank">Edit</a></li>
+    </ul>
+    {% endif %}
+
+    <h2>{{ student.full_name }}</h2>
+
+    {% if student.grades %}
+    <table>
+        {% for grade in student.grades %}
+        <tr>
+        <td>{{ grade.assignment }}</td>
+        <td>{{ grade.points }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No grades yet. Chillax.</p>
+    {% endif %}
+{% endblock %}

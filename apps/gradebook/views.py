@@ -28,30 +28,62 @@ def list_assignments(request, classroom_pk):
     return HttpResponse(t.render(c))
 
 
-# def show_classroom(request, classroom_pk):
-#     classroom = Classroom.objects.get(pk=classroom_pk)
-#     context = {
-#         'classroom': classroom,
-#     }
-#     template = 'classroom/show_classroom.html'
-#
-#     c = RequestContext(request, context)
-#     t = loader.get_template(template)
-#
-#     return HttpResponse(t.render(c))
+def show_assignment(request, classroom_pk, assignment_pk):
+    classroom = Classroom.objects.get(pk=classroom_pk)
+    assignment = Assignment.objects.get(pk=assignment_pk)
+    context = {
+        'classroom': classroom,
+        'assignment': assignment,
+    }
+    template = 'gradebook/show_assignment.html'
+
+    c = RequestContext(request, context)
+    t = loader.get_template(template)
+
+    return HttpResponse(t.render(c))
 
 
-# @verify_user_is_staff(redirect_url_name='show_classroom')
-# def edit_classroom(request, classroom_pk):
-    # classroom = Classroom.objects.get(pk=classroom_pk)
-    # context = {
-        # 'classroom': classroom,
-    # }
-    # template = 'classroom/edit_classroom.html'
+def show_grades(request, classroom_pk):
+    if request.user.is_staff:
+        return list_students(request, classroom_pk)
+    elif request.user.is_active:
+        return show_student(request, classroom_pk)
+    else:
+        return redirect('show_classroom', classroom_pk)
 
-    # c = RequestContext(request, context)
-    # t = loader.get_template(template)
 
-    # return HttpResponse(t.render(c))
+@verify_user_is_staff(redirect_url_name='show_classroom')
+def list_students(request, classroom_pk):
+    classroom = Classroom.objects.get(pk=classroom_pk)
+    context = {
+        'classroom': classroom,
+    }
+    template = 'gradebook/list_students.html'
+
+    c = RequestContext(request, context)
+    t = loader.get_template(template)
+
+    return HttpResponse(t.render(c))
+
+
+@verify_user_is_active(redirect_url_name='show_classroom')
+def show_student(request, classroom_pk, student_pk=None):
+    classroom = Classroom.objects.get(pk=classroom_pk)
+    if not student_pk:
+        user = request.user
+        student = Student.objects.get(user=user, classroom=classroom)
+    else:
+        student = Student.objects.get(pk=student_pk)
+
+    context = {
+        'classroom': classroom,
+        'student': student,
+    }
+    template = 'gradebook/show_student.html'
+
+    c = RequestContext(request, context)
+    t = loader.get_template(template)
+
+    return HttpResponse(t.render(c))
 
 

@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db.models import *
 
-from apps.classroom.models import Classroom #, Student
+from apps.classroom.models import Classroom, Student
 
 
 class AssignmentCategory(Model):

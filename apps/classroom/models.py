@@ -40,7 +40,7 @@ class Instructor(Model):
             return self.public_name
         else:
             return self.user.get_full_name()
-        
+
     def __unicode__(self):
         return self.get_public_name()
 
@@ -63,7 +63,7 @@ class Classroom(Model):
     dept = ForeignKey(Department)
     term = CharField(max_length=200)
     first_day = DateField()
-    
+
     subtitle = CharField(max_length=200, blank=True)
     instructor = ForeignKey(Instructor, null=True, blank=True)
 
@@ -73,15 +73,15 @@ class Classroom(Model):
     @property
     def title(self):
         return '{self.dept} {self.term}'.format(self=self)
-        
+
     @property
     def slug(self):
         return '{self.dept.abbr}{self.term}'.format(self=self)
-    
+
     @property
     def document_path(self):
         return '/'.join([self.slug, str(self.first_day)])
-        
+
     @property
     def year(self):
         return self.first_day.year
@@ -95,7 +95,7 @@ class Classroom(Model):
         q = Document.objects.filter(classroom=self)
         q = q.exclude(activity__in=self.activity_set.all())
         return q
-        
+
     def copy_instance(self):
         instance = copy.deepcopy(self)
         instance.id = None
@@ -107,11 +107,11 @@ class Classroom(Model):
     class Meta:
         ordering = ['-first_day']
 
-        
+
 class Student(Model):
     classroom = ForeignKey(Classroom)
     user = ForeignKey(User)
-        
+
     @property
     def last_name(self):
         return self.user.last_name
@@ -119,9 +119,13 @@ class Student(Model):
     @property
     def first_name(self):
         return self.user.first_name
-        
+
+    @property
+    def full_name(self):
+        return '{self.last_name}, {self.first_name}'.format(self=self)
+
     def __unicode__(self):
-        return '{self.last_name}, {self.first_name} in {self.classroom}'.format(self=self)
+        return '{self.full_name} in {self.classroom}'.format(self=self)
 
     class Meta:
         ordering = ['user__last_name', 'user__first_name']
@@ -134,11 +138,11 @@ class Document(Model):
     filepath = FilePathField(path=document_path, match='.*', recursive=True)
     label = CharField(max_length=200, null=True, blank=True)
     access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
-    
+
     @property
     def access(self):
         return access_choices[self.access_index][1]
-    
+
     @property
     def abspath(self):
         return os.path.abspath(self.filepath)
@@ -153,23 +157,23 @@ class Document(Model):
         else:
             return self.basename
 
-        
+
 class Activity(Model):
     classroom = ForeignKey(Classroom)
     type = CharField(max_length=200)
     title = CharField(max_length=200, null=True, blank=True)
     documents = ManyToManyField(Document, null=True, blank=True)
-    
+
     @property
     def label(self):
         if self.title:
             return '{self.type}: {self.title}'.format(self=self)
         else:
             return '{self.type}: ID = {self.id}'.format(self=self)
-    
+
     def __unicode__(self):
         return '[{self.classroom}] {self.label}'.format(self=self)
-        
+
     class Meta:
         verbose_name_plural = 'activities'
 
@@ -181,14 +185,14 @@ class ActivityBlock(Model):
     heading = CharField(max_length=200, null=True, blank=True)
     sort_order = PositiveSmallIntegerField(null=True, blank=True)
     activities = ManyToManyField(Activity, null=True, blank=True)
-    
+
     @property
     def weekday(self):
         if self.weekday_index is not None:
             return weekday_choices[self.weekday_index][1]
         else:
             return None
-    
+
     @property
     def date(self):
         if self.classroom.first_day and self.week and self.weekday:
@@ -205,7 +209,7 @@ class ActivityBlock(Model):
             return self.heading
         else:
             return 'ID = {self.id}'.format(self=self)
-            
+
     class Meta:
         ordering = ['sort_order', 'week', 'weekday_index', 'heading']
 
