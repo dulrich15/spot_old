@@ -1,4 +1,4 @@
-{% extends "classroom/root.html" %}
+{% extends "gradebook/root.html" %}
 
 {% block main_content %}
     {% if user.is_staff %}
@@ -23,14 +23,14 @@
 
     <form action="{% url post_grades classroom.pk assignment.pk %}" method="post">
         <p>
-        <table id="grade_edit_table">
+        <table class="grade_table">
             <tr>
                 <th>Max</th>
-                <td><input class="c" name="max_points" type="text" size=2 value="{{ assignment.max_points }}" tabindex="1"></td>
+                <td><input name="max_points" type="text" size=2 value="{{ assignment.max_points }}" tabindex="1"></td>
             </tr>
             <tr>
                 <th>Curve</th>
-                <td><input class="c" name="curve_points" type="text" size=2 value="{{ assignment.curve_points }}" tabindex="1"></td>
+                <td><input name="curve_points" type="text" size=2 value="{{ assignment.curve_points }}" tabindex="1"></td>
             </tr>
             <tr>
                 <th>Graded?</td>
@@ -39,7 +39,7 @@
         </table>
         </p>
         <p>
-        <table>
+        <table class="grade_table">
             <tr>
                 <th>Name</th>
                 <th>Pts</th>
@@ -49,8 +49,8 @@
             {% for grade in assignment.grades %}
             <tr>
                 <td class="l">{{ grade.student.full_name }}</td>
-                <td><input class="c" name="earned_points_{{ grade.student.pk }}" type="text" size=2 value="{{ grade.earned_points }}" tabindex="1"></td>
-                <td><input class="c" name="extra_points_{{ grade.student.pk }}" type="text" size=2 value="{{ grade.extra_points }}"></td>
+                <td><input name="earned_points_{{ grade.student.pk }}" type="text" size=2 value="{{ grade.earned_points }}" tabindex="1"></td>
+                <td><input name="extra_points_{{ grade.student.pk }}" type="text" size=2 value="{{ grade.extra_points }}"></td>
                 <td><input name="is_excused_{{ grade.student.pk }}" type="checkbox"{% if grade.is_excused %} checked{% endif %}></td>
             </tr>
         {% endfor %}

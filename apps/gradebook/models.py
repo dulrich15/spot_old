@@ -34,7 +34,7 @@ class Assignment(Model):
         return AssignmentGrade.objects.filter(assignment=self).order_by('student')
     
     def __unicode__(self):
-        return '%s in %s' % (self.label, self.classroom)
+        return '{self.label} in {self.classroom}'.format(self=self)
 
     class Meta:
         ordering = ['classroom', 'category', 'due_date']
@@ -48,11 +48,19 @@ class AssignmentGrade(Model):
     is_excused = BooleanField()
     note = TextField(blank=True)
 
-    def points(self):
-        return self.earned_points + self.extra_points
+    @property
+    def total_points(self):
+        return self.earned_points + self.extra_points + self.assignment.curve_points
 
+    @property
+    def percent(self):
+        if self.assignment.max_points: # when wouldn't it be there, really?
+            return self.total_points / self.assignment.max_points
+        else:
+            return None
+        
     def __unicode__(self):
-        return u'%s for %s' % (self.assignment, self.student)
+        return u'{self.assignment.label} for {self.student}'.format(self=self)
 
 
 # class AssignmentGradeWeight(Model):

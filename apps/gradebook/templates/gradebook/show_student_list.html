@@ -1,9 +1,9 @@
-{% extends "classroom/root.html" %}
+{% extends "gradebook/root.html" %}
 
 {% block main_content %}
     {% if user.is_staff %}
     <ul class="action_links">
-        <li><a href="{% url edit_grades classroom.pk %}">Edit</a></li>
+        <li><a href="{% url edit_grades classroom.pk %}">Input</a></li>
     </ul>
     {% endif %}
 
@@ -12,7 +12,7 @@
     {% if classroom.student_set.all %}
     <ul>
         {% for student in classroom.student_set.all %}
-        <li><a href="{% url show_student classroom.pk student.pk %}">{{ student.full_name }}</a></li>
+        <li><a href="{% url show_student_grades classroom.pk student.pk %}">{{ student.full_name }}</a></li>
         {% endfor %}
     </ul>
     {% else %}

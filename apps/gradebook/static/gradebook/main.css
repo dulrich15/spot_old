@@ -1,0 +1,24 @@
+.grade_table {
+    background:#CCCCCC;
+}
+.grade_table * {
+    background:white;
+}
+.grade_table th,td {
+    padding:5px 10px;
+    text-align:center;
+}
+.grade_table th {
+    background:#EEEEEE;
+}
+.grade_table td {
+    background:transparent;
+}
+.grade_table input[type="text"] {
+    border:0;
+    text-align:center;
+    background:transparent
+}
+.grade_table tr:hover {
+    background:#FFFFCC;
+}

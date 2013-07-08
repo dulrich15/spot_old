@@ -1,0 +1,31 @@
+{% extends "gradebook/root.html" %}
+{% load percentage %}
+
+{% block main_content %}
+    <h2>{{ student.full_name }}</h2>
+
+    {% if student.assignmentgrade_set.all %}
+    <table class="grade_table">
+        <tr>
+            <th></th>
+            <th>Pts</th>
+            <th>Max</th>
+            <th>%</th>
+        </tr>
+        {% for grade in student.assignmentgrade_set.all %}
+        <tr>
+            <td>{{ grade.assignment.label }}</td>
+            {% if grade.is_excused %}
+            <td colspan="3">&mdash;&nbsp;Excused&nbsp;&mdash;</td>
+            {% else %}
+            <td title="Earned: {{ grade.earned_points }}&#xD;Extra: {{ grade.extra_points }}&#xD;Curve: {{ grade.assignment.curve_points }}">{{ grade.total_points }}</td>
+            <td>{{ grade.assignment.max_points }}</td>
+            <td>{{ grade.percent|pct0 }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No grades yet. Chillax.</p>
+    {% endif %}
+{% endblock %}

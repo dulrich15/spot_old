@@ -53,7 +53,7 @@ def show_grades(request, classroom_pk):
 
 
 @verify_user_is_active(redirect_url_name='show_classroom')
-def show_student(request, classroom_pk, student_pk=None):
+def show_student_grades(request, classroom_pk, student_pk=None):
     classroom = Classroom.objects.get(pk=classroom_pk)
     if not student_pk:
         user = request.user
@@ -65,7 +65,7 @@ def show_student(request, classroom_pk, student_pk=None):
         'classroom': classroom,
         'student': student,
     }
-    template = 'gradebook/show_student.html'
+    template = 'gradebook/show_student_grades.html'
 
     c = RequestContext(request, context)
     t = loader.get_template(template)

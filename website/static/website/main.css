@@ -2,6 +2,10 @@
     display:none; 
 }
 
+.l { text-align:left }
+.c { text-align:center }
+.r { text-align:right }
+
 .horizontal_list li {
     display:inline;
 }
