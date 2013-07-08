@@ -1,0 +1,70 @@
+{% extends "classroom/root.html" %}
+
+{% block main_content %}
+    {% if user.is_staff %}
+    <ul class="action_links">
+        <li><a href="{% url admin:gradebook_assignmentgrade_changelist %}" target="_blank">Edit</a></li>
+    </ul>
+    {% endif %}
+
+    {% if assignment %}
+    <p>
+    <form action="{% url grade_edit classroom.pk assignment.pk %}" method="post">
+        <select onChange="this.form.submit()">
+            {% for a in classroom.assignment_set.all %}
+            <option value="{{ a.pk }}"{% if a.pk == assignment.pk %} selected="selected"{% endif %}>{{ a.name }}</option>
+            {% endfor %}
+        </select>
+        <noscript><input value="Submit"></noscript>
+        {% csrf_token %}
+    </form>
+    </p>
+
+    <p>Category weight = {{ assignment.category.weight }}
+    <br>Due date: {{ assignment.due_date }}</p>
+
+    <form action="{% url post_grades classroom.pk assignment.pk %}" method="post">
+        <p>
+        <table>
+            <tr>
+                <th>Max</th>
+                <td><input class="c" name="max_points" type="text" size=2 value="{{ assignment.max_points }}" tabindex="1" /></td>
+            </tr>
+            <tr>
+                <th>Curve</th>
+                <td><input class="c" name="curve_points" type="text" size=2 value="{{ assignment.curve_points }}" tabindex="1" /></td>
+            </tr>
+            <tr>
+                <th>Graded?</td>
+                <td><input name="is_graded" type="checkbox"{% if assignment.is_graded %} checked{% endif %} tabindex="1" /></td>
+            </tr>
+        </table>
+        </p>
+        <p>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Pts</th>
+                <th>Xtr</th>
+                <th>Ex?</th>
+                <th>Note</th>
+            </tr>
+            {% for s in students %}
+            <tr>
+                <td class="l">{{ s.get_full_name }}</td>
+                <td><input class="c" name="earned_points_{{ s.pk }}" type="text" size=2 value="{{ s.grade.earned_points }}" tabindex="2" /></td>
+                <td><input class="c" name="extra_points_{{ s.pk }}" type="text" size=2 value="{{ s.grade.extra_points }}" tabindex="3" /></td>
+                <td><input name="is_excused_{{ s.pk }}" type="checkbox"{% if s.grade.is_excused %} checked{% endif %} tabindex="4" /></td>
+                <td><input name="note_{{ s.pk }}" type="text" size=50 value="{{ s.grade.note }}" tabindex="5" /></td>
+            </tr>
+        {% endfor %}
+        </table>
+        </p>
+        <p><input name="submit_grades" type="submit" value="Submit" tabindex="3" /></p>    
+        <input name="pk" type="hidden" value="{{ assignment.pk }}" />
+        {% csrf_token %}
+    </form>
+    {% else %}
+    <p>There are no assignments here!</p>
+    {% endif %}
+{% endblock %}

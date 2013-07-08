@@ -36,22 +36,19 @@ class Assignment(Model):
         ordering = ['classroom', 'category', 'due_date']
 
 
-# class AssignmentGrade(Model):
-#     assignment = ForeignKey(Assignment)
-#     student = ForeignKey(CourseStudent)
-#     earned_points = PositiveSmallIntegerField(default=0)
-#     extra_points = PositiveSmallIntegerField(default=0)
-#     is_excused = BooleanField()
-#     note = TextField(blank=True)
-#
-#     def points(self):
-#         return self.earned_points + self.extra_points
-#
-#     def csv_data(self):
-#         return '{0},{1},{2},{3},'.format(self.assignment.pk, self.student.pk, self.earned_points, self.extra_points)
-#
-#     def __unicode__(self):
-#         return u'%s for %s' % (self.assignment.name, self.student)
+class AssignmentGrade(Model):
+    assignment = ForeignKey(Assignment)
+    student = ForeignKey(Student)
+    earned_points = PositiveSmallIntegerField(default=0)
+    extra_points = PositiveSmallIntegerField(default=0)
+    is_excused = BooleanField()
+    note = TextField(blank=True)
+
+    def points(self):
+        return self.earned_points + self.extra_points
+
+    def __unicode__(self):
+        return u'%s for %s' % (self.assignment, self.student)
 
 
 # class AssignmentGradeWeight(Model):

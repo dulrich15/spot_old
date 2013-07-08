@@ -87,9 +87,28 @@ def show_student_list(request, classroom_pk):
     return HttpResponse(t.render(c))
     
     
+@verify_user_is_staff(redirect_url_name='show_classroom')
 def edit_grades(request, classroom_pk, assignment_pk=None):
-    pass
+    classroom = Classroom.objects.get(pk=classroom_pk)
+    assignments = Assignment.objects.filter(classroom=classroom)
+    
+    if assignment_pk:
+        assignment = assignments.get(pk=assignment_pk)
+    else:
+        assignment = assignments[0]
+        
+    context = {
+        'classroom': classroom,
+        'assignment': assignment
+    }
+    template = 'gradebook/edit_grades.html'
+
+    c = RequestContext(request, context)
+    t = loader.get_template(template)
+
+    return HttpResponse(t.render(c))
     
     
+@verify_user_is_staff(redirect_url_name='show_classroom')
 def post_grades(request, classroom_pk, assignment_pk=None):
-    pass
+    return redirect('show_classroom', classroom_pk)
