@@ -88,27 +88,24 @@ def show_student_list(request, classroom_pk):
 
 
 @verify_user_is_staff(redirect_url_name='show_classroom')
-def input_grades(request, classroom_pk, assignment_pk=None):
-    classroom = Classroom.objects.get(pk=classroom_pk)
-
+def edit_grades(request, classroom_pk, assignment_pk=None):
     if 'assignment_pk' in request.POST:
-        return redirect('grade_input', classroom_pk, request.POST['assignment_pk'])
+        return redirect('grade_edit', classroom_pk, request.POST['assignment_pk'])
 
-
-
-
-    assignments = Assignment.objects.filter(classroom=classroom)
-
-    if assignment_pk:
-        assignment = assignments.get(pk=assignment_pk)
-    else:
-        assignment = assignments[0]
+    classroom = Classroom.objects.get(pk=classroom_pk)
+    try:
+        assignment = Assignment.objects.get(pk=assignment_pk)
+    except:
+        try:
+            assignment = Assignment.objects.filter(classroom=classroom)[0]
+        except:
+            assignment = None
 
     context = {
         'classroom': classroom,
-        'assignment': assignment
+        'assignment': assignment,
     }
-    template = 'gradebook/input_grades.html'
+    template = 'gradebook/edit_grades.html'
 
     c = RequestContext(request, context)
     t = loader.get_template(template)
@@ -117,5 +114,41 @@ def input_grades(request, classroom_pk, assignment_pk=None):
 
 
 @verify_user_is_staff(redirect_url_name='show_classroom')
-def post_grades(request, classroom_pk, assignment_pk=None):
-    return redirect('show_classroom', classroom_pk)
+def post_grades(request, classroom_pk, assignment_pk):
+    classroom = Classroom.objects.get(pk=classroom_pk)
+    assignment = Assignment.objects.get(pk=assignment_pk)
+
+    try:
+        pts = request.POST['max_points']
+        assignment.max_points = int(pts)
+    except:
+        assignment.max_points = 0
+    try:
+        pts = request.POST['curve_points']
+        assignment.curve_points = int(pts)
+    except:
+        assignment.curve_points = 0
+    assignment.is_graded = ( 'is_graded' in request.POST )
+    assignment.save()
+    
+    for student in classroom.student_set.all():
+        try:
+            g = AssignmentGrade.objects.get(student=student,assignment=assignment)
+        except:
+            g = AssignmentGrade(student=student,assignment=assignment)
+
+        try:
+            pts = request.POST['earned_points_{}'.format(student.pk)]
+            g.earned_points = int(pts)
+        except:
+            g.earned_points = 0
+        try:
+            pts = request.POST['extra_points_{}'.format(student.pk)]
+            g.extra_points = int(pts)
+        except:
+            g.extra_points = 0
+        g.is_excused = ( 'is_excused_{}'.format(student.pk) in request.POST )
+        g.save()
+        
+    messages.info(request, "Grades have been updated.")
+    return redirect('grade_edit', classroom_pk, assignment_pk)

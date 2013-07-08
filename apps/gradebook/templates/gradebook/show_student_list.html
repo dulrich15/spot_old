@@ -3,7 +3,7 @@
 {% block main_content %}
     {% if user.is_staff %}
     <ul class="action_links">
-        <li><a href="{% url input_grades classroom.pk %}">Input</a></li>
+        <li><a href="{% url edit_grades classroom.pk %}">Edit</a></li>
     </ul>
     {% endif %}
 

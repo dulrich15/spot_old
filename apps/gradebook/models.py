@@ -29,6 +29,10 @@ class Assignment(Model):
     def label(self):
         return self.category
     
+    @property
+    def grades(self):
+        return AssignmentGrade.objects.filter(assignment=self).order_by('student')
+    
     def __unicode__(self):
         return '%s in %s' % (self.label, self.classroom)
 
