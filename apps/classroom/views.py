@@ -11,7 +11,7 @@ from django.template import loader
 from django.shortcuts import redirect
 from django.views.static import serve
 
-from decorators import *
+from website.decorators import *
 from models import *
 
 
@@ -85,3 +85,17 @@ def serve_document(request, classroom_pk, filename):
         return response
     else:
         return redirect('show_documents', classroom_pk)
+
+        
+@verify_user_is_staff(redirect_url_name='show_classroom')
+def list_students(request, classroom_pk):
+    classroom = Classroom.objects.get(pk=classroom_pk)
+    context = {
+        'classroom': classroom,
+    }
+    template = 'classroom/list_students.html'
+
+    c = RequestContext(request, context)
+    t = loader.get_template(template)
+
+    return HttpResponse(t.render(c))

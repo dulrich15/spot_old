@@ -25,8 +25,12 @@ class Assignment(Model):
     curve_points = PositiveSmallIntegerField(default=0)
     is_graded = BooleanField(default=False)
 
+    @property
+    def label(self):
+        return self.category
+    
     def __unicode__(self):
-        return '%s in %s' % (self.category, self.classroom)
+        return '%s in %s' % (self.label, self.classroom)
 
     class Meta:
         ordering = ['classroom', 'category', 'due_date']

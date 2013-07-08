@@ -36,5 +36,8 @@
         <li><a href="{% url list_assignments classroom.pk %}">Assignments</a></li>
         <li><a href="{% url show_grades classroom.pk %}">Grades</a></li>
         {% endif %}
+        {% if user.is_staff %}
+        <li><a href="{% url list_students classroom.pk %}">Students</a></li>
+        {% endif %}
     </ul>
 {% endblock %}

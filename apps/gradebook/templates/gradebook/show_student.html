@@ -1,12 +1,6 @@
 {% extends "classroom/root.html" %}
 
 {% block main_content %}
-    {% if user.is_staff %}
-    <ul class="action_links horizontal_list">
-        <li><a href="" target="_blank">Edit</a></li>
-    </ul>
-    {% endif %}
-
     <h2>{{ student.full_name }}</h2>
 
     {% if student.grades %}

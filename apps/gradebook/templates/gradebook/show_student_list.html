@@ -1,0 +1,21 @@
+{% extends "classroom/root.html" %}
+
+{% block main_content %}
+    {% if user.is_staff %}
+    <ul class="action_links">
+        <li><a href="{% url edit_grades classroom.pk %}">Edit</a></li>
+    </ul>
+    {% endif %}
+
+    <h2>Students</h2>
+
+    {% if classroom.student_set.all %}
+    <ul>
+        {% for student in classroom.student_set.all %}
+        <li><a href="{% url show_student classroom.pk student.pk %}">{{ student.full_name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No students assigned.</p>
+    {% endif %}
+{% endblock %}

@@ -11,7 +11,7 @@ from django.template import loader
 from django.shortcuts import redirect
 from django.views.static import serve
 
-from decorators import *
+from website.decorators import *
 from models import *
 
 
@@ -45,25 +45,11 @@ def show_assignment(request, classroom_pk, assignment_pk):
 
 def show_grades(request, classroom_pk):
     if request.user.is_staff:
-        return list_students(request, classroom_pk)
+        return show_student_list(request, classroom_pk)
     elif request.user.is_active:
         return show_student(request, classroom_pk)
     else:
         return redirect('show_classroom', classroom_pk)
-
-
-@verify_user_is_staff(redirect_url_name='show_classroom')
-def list_students(request, classroom_pk):
-    classroom = Classroom.objects.get(pk=classroom_pk)
-    context = {
-        'classroom': classroom,
-    }
-    template = 'gradebook/list_students.html'
-
-    c = RequestContext(request, context)
-    t = loader.get_template(template)
-
-    return HttpResponse(t.render(c))
 
 
 @verify_user_is_active(redirect_url_name='show_classroom')
@@ -87,3 +73,23 @@ def show_student(request, classroom_pk, student_pk=None):
     return HttpResponse(t.render(c))
 
 
+@verify_user_is_staff(redirect_url_name='show_classroom')
+def show_student_list(request, classroom_pk):
+    classroom = Classroom.objects.get(pk=classroom_pk)
+    context = {
+        'classroom': classroom,
+    }
+    template = 'gradebook/show_student_list.html'
+
+    c = RequestContext(request, context)
+    t = loader.get_template(template)
+
+    return HttpResponse(t.render(c))
+    
+    
+def edit_grades(request, classroom_pk, assignment_pk=None):
+    pass
+    
+    
+def post_grades(request, classroom_pk, assignment_pk=None):
+    pass
