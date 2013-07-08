@@ -8,17 +8,17 @@
     {% endif %}
 
     {% if assignment %}
-    <p>
-    <form action="{% url grade_edit classroom.pk assignment.pk %}" method="post">
-        <select onChange="this.form.submit()">
-            {% for a in classroom.assignment_set.all %}
-            <option value="{{ a.pk }}"{% if a.pk == assignment.pk %} selected="selected"{% endif %}>{{ a.name }}</option>
-            {% endfor %}
-        </select>
-        <noscript><input value="Submit"></noscript>
-        {% csrf_token %}
+    <form action="{% url input_grades classroom.pk %}" method="post">
+        <p>
+            <select name="assignment_pk" onChange="this.form.submit()">
+                {% for a in classroom.assignment_set.all %}
+                <option value="{{ a.pk }}"{% if a.pk == assignment.pk %} selected="selected"{% endif %}>{{ a.label }}</option>
+                {% endfor %}
+            </select>
+            <noscript><input type="submit" value="Submit"></noscript>
+            {% csrf_token %}
+        </p>
     </form>
-    </p>
 
     <p>Category weight = {{ assignment.category.weight }}
     <br>Due date: {{ assignment.due_date }}</p>
@@ -49,9 +49,9 @@
                 <th>Ex?</th>
                 <th>Note</th>
             </tr>
-            {% for s in students %}
+            {% for s in classroom.student_set.all %}
             <tr>
-                <td class="l">{{ s.get_full_name }}</td>
+                <td class="l">{{ s.full_name }}</td>
                 <td><input class="c" name="earned_points_{{ s.pk }}" type="text" size=2 value="{{ s.grade.earned_points }}" tabindex="2" /></td>
                 <td><input class="c" name="extra_points_{{ s.pk }}" type="text" size=2 value="{{ s.grade.extra_points }}" tabindex="3" /></td>
                 <td><input name="is_excused_{{ s.pk }}" type="checkbox"{% if s.grade.is_excused %} checked{% endif %} tabindex="4" /></td>
@@ -60,7 +60,7 @@
         {% endfor %}
         </table>
         </p>
-        <p><input name="submit_grades" type="submit" value="Submit" tabindex="3" /></p>    
+        <p><input name="submit_grades" type="submit" value="Submit" tabindex="3" /></p>
         <input name="pk" type="hidden" value="{{ assignment.pk }}" />
         {% csrf_token %}
     </form>
