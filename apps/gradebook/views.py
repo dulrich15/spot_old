@@ -47,7 +47,7 @@ def show_grades(request, classroom_pk):
     if request.user.is_staff:
         return show_student_list(request, classroom_pk)
     elif request.user.is_active:
-        return show_student(request, classroom_pk)
+        return show_student_grades(request, classroom_pk)
     else:
         return redirect('show_classroom', classroom_pk)
 
@@ -130,12 +130,12 @@ def post_grades(request, classroom_pk, assignment_pk):
         assignment.curve_points = 0
     assignment.is_graded = ( 'is_graded' in request.POST )
     assignment.save()
-    
+
     for student in classroom.student_set.all():
         try:
-            g = AssignmentGrade.objects.get(student=student,assignment=assignment)
+            g = AssignmentGrade.objects.get(student=student, assignment=assignment)
         except:
-            g = AssignmentGrade(student=student,assignment=assignment)
+            g = AssignmentGrade(student=student, assignment=assignment)
 
         try:
             pts = request.POST['earned_points_{}'.format(student.pk)]
@@ -149,6 +149,6 @@ def post_grades(request, classroom_pk, assignment_pk):
             g.extra_points = 0
         g.is_excused = ( 'is_excused_{}'.format(student.pk) in request.POST )
         g.save()
-        
+
     messages.info(request, "Grades have been updated.")
     return redirect('grade_edit', classroom_pk, assignment_pk)

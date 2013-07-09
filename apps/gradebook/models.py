@@ -28,7 +28,7 @@ class Assignment(Model):
     @property
     def label(self):
         return self.category
-    
+
     @property
     def grades(self):
         grades = []
@@ -41,7 +41,7 @@ class Assignment(Model):
             grade.student = student
             grades.append(grade)
         return grades
-    
+
     def __unicode__(self):
         return '{self.label} in {self.classroom}'.format(self=self)
 
@@ -67,16 +67,16 @@ class AssignmentGrade(Model):
             return self.total_points / self.assignment.max_points
         else:
             return None
-        
+
     def __unicode__(self):
-        return u'{self.assignment.label} for {self.student}'.format(self=self)
+        return '{self.assignment.label} for {self.student}'.format(self=self)
 
 
 class AssignmentGradeWeight(Model):
     classroom = ForeignKey(Classroom)
     category = ForeignKey(AssignmentCategory)
     weight_raw = PositiveSmallIntegerField(default=1)
-    
+
     # if_missing_use = ForeignKey('AssignmentGradeWeight',null=True,blank=True,related_name='*')
     # drop_worst = BooleanField(default=False)
     # drop_best = BooleanField(default=False)
