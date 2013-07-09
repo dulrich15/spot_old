@@ -6,9 +6,10 @@ PROJECT_NAME = PROJECT_PATH.split(os.path.sep)[-1]
 
 MY_APPS = (
     'classroom',
-#     'docmaker',
+    'docmaker',
     'gradebook',
 #     'mindmap',
+#     'picmaker',
 )
 
 DEBUG = True

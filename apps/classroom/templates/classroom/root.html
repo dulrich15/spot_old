@@ -42,6 +42,7 @@
     {% if user.is_staff %}
     <ul>
         <li><a href="{% url list_students classroom.pk %}">Students</a></li>
+        <li><a href="{% url list_docmaker classroom.pk %}">Docmaker</a></li>
     </ul>
     {% endif %}
 {% endblock %}
