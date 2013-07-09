@@ -1,46 +1,7 @@
 # from __future__ import division
-# # from __future__ import unicode_literals
+# from __future__ import unicode_literals
 
-# import codecs
-# import csv
-# import datetime
-# import hashlib
-# import operator
-# import os
-# import random
-# import re
-# import shutil
-# import sqlite3
-# import sys
-# import yaml
 
-# from subprocess import Popen
-# from subprocess import PIPE
-
-# from flask import Flask
-# from flask import Markup
-
-# from flask import _app_ctx_stack
-# from flask import abort
-# from flask import flash
-# # from flask import g
-# from flask import redirect
-# from flask import render_template
-# from flask import request
-# from flask import send_from_directory
-# from flask import session
-# from flask import url_for
-
-# from flask.ext.login import AnonymousUser
-# from flask.ext.login import LoginManager
-# from flask.ext.login import UserMixin
-
-# from flask.ext.login import current_user
-# from flask.ext.login import login_required
-# from flask.ext.login import login_user
-# from flask.ext.login import logout_user
-
-    
 # def make_pdf(latex):    
     
     # curdir = os.getcwd()
@@ -241,27 +202,4 @@
         # shutil.move(pdfpath, docpath) # this will overwrite
         
         # print 'Just created {}'.format(docpath)
-     
-                
-# def get_quote():
-    # db = get_db()
-    # sql = '''
-        # SELECT 
-            # a.text, 
-            # d.first_name, 
-            # d.last_name
-        # FROM quotes_quote AS a
-        # INNER JOIN quotes_quote_topic AS b
-        # INNER JOIN quotes_topic AS c
-        # INNER JOIN quotes_author AS d
-        # ON b.quote_id = a.id
-        # AND b.topic_id = c.id
-        # AND a.author_id = d.id
-        # WHERE c.name != "Religion" 
-        # ORDER BY RANDOM()
-        # LIMIT 1
-    # '''
-    # row = db.execute(sql).fetchone()
-    # quote = dict(zip(row.keys(), row))
-    # quote['author'] = '{} {}'.format(quote['first_name'], quote['last_name'])
-    # return quote
+    

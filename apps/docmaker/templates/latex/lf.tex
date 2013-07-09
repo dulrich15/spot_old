@@ -1,0 +1,72 @@
+\documentclass{article}
+
+\usepackage[margin=1.5in]{geometry}
+\usepackage{p200}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+
+\hypersetup{pdftitle = {{ '{' }}{{ course.title }} Lab Equipment{{ '}' }} }
+\hypersetup{pdfauthor = {{ '{' }}{{ course.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
+
+\pagestyle{plain}
+
+\renewcommand{\arraystretch}{1.5}
+\renewcommand{\tabcolsep}{0.2cm}
+
+\begin{document}
+
+\begin{center}
+
+\textbf{\large LABORATORY EQUIPMENT REQUEST FORM}
+
+\vspace{0.2in}
+
+\begin{tabular}{p{1.25in}p{1.25in}p{1.25in}p{1.25in}}
+INSTRUCTOR: & {{ course.instructor.name }} & LAB SECTION: & {{ course.abbr }} \\
+DATE(S) NEEDED: & \textbf{{ '{' }}{{ event.date.strftime('%b %d, %Y') }}{{ '}' }} & TIME NEEDED: & \textbf{6:00 pm} \\
+LAB TITLE: & \multicolumn{3}{l}{{ '{' }}\textbf{{ '{' }}{{ lab.title }}{{ '}' }}{{ '}' }} \\
+&&& \\
+FILLED BY: & \underline{\makebox[1in]{}} 
+& DATE FILLED: & \underline{\makebox[1in]{}} \\
+\end{tabular}
+
+\vspace{0.2in}
+
+\begin{tabular}{|c|p{2.5in}|l|}
+\hline
+\makebox[1.0in]{\textbf{Quantity}} & 
+\makebox[2.5in]{\textbf{\centering Items}} & 
+\makebox[1.0in]{\textbf{Location}} \\
+\hline
+{% for e in lab.equipment %}
+{{ e.quantity }} & 
+{{ e.item|rst2latex }} & 
+\begin{minipage}{1.0in} 
+\raggedright 
+\vspace{1ex}
+{{ e.location|rst2latex }} \par
+\vspace{1ex}
+\end{minipage}
+\\
+{% endfor %}
+\hline
+\end{tabular}
+
+\end{center}
+
+\vspace{0.2in}
+
+Special Instructions: \par
+
+{% for line in lab.notes %}
+\underline{\makebox[\textwidth]{\textbf{
+{{ line }}
+}}} \par
+{% endfor %}
+{% for i in range(3 - lab.notes|count) %}
+\underline{\makebox[\textwidth]{\textbf{}}} \par
+{% endfor %}
+\vspace{0.2in}
+
+Please allow \underline{two weeks} to process requests.
+
+\end{document}

@@ -1,0 +1,158 @@
+\documentclass{article}
+
+\usepackage[margin=1.33in]{geometry}
+\usepackage{p200}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+
+\hypersetup{pdftitle = {{ '{' }}{{ course.title }} Syllabus{{ '}' }} }
+\hypersetup{pdfauthor = {{ '{' }}{{ course.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
+
+\pagestyle{plain}
+
+\begin{document}
+
+\begin{center}
+{{ '{' }}\LARGE {{ course.title }} Syllabus{{ '}' }}
+\vskip 0.25cm
+{{ '{' }}\large {{ course.subtitle }}{{ '}' }}
+\vskip 0.25cm
+\includegraphics[width=\textwidth]{{ '{' }}{{ course.banner_path|latex_path }}{{ '}' }}
+\vskip 0.25cm
+{{ '{' }}\large {{ course.season }} {{ course.year }}{{ '}' }}
+\end{center}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\renewcommand{\tabcolsep}{0.2cm}
+\begin{tabular}{ll} 
+\hline
+CRN          & {{ course.crns }} (3 credits) \\ 
+Date/Time    & {{ course.meeting.time }} \\ 
+Campus       & {{ course.meeting.address }} \\ 
+Room         & {{ course.meeting.room }} \\ 
+Instructor   & {{ course.instructor.name }} \\ 
+Website      & \url{{ '{' }}{{ course.instructor.website }}{{ '}' }} \\ 
+E-mail       & \texttt{{ '{' }}{{ course.instructor.email }}{{ '}' }} \\ 
+Office       & {{ course.instructor.office.location }} \\ 
+Office Hours & {{ course.instructor.office.hours }} \\ 
+\hline
+\end{tabular}
+\end{center}
+
+\section{Course Overview}
+
+This course will cover such topics as {{ course.topics.main|textjoin }}. {% if course.topics.also %} In addition, we will touch on some subjects 
+related to {{ course.topics.also|textjoin }}. {% endif %}{% if course.textbook %}Our textbook will be \emph{{ '{' }}{{ course.textbook.title }} 
+{% if course.textbook.edition %}({{ course.textbook.edition|ordinalize }} edition){% endif %}{{ '}' }} by {{ course.textbook.author }}. 
+{% if course.textbook.chapters %}We will be covering chapters {{ course.textbook.chapters }} in this course.{% endif %}{% endif %}
+
+The Course Content and Outcome Guide can be obtained online via the following hyperlink: 
+\url{{ '{' }}http://www.pcc.edu/ccog/default.cfm?fa=ccog&subject={{ course.dept_abbr }}&course={{ course.term }}{{ '}' }}. 
+This includes more course detail and outlines the course prerequisites.
+
+{{ course.notes|rst2latex }}
+
+\clearpage
+
+{% if course.outcomes %}
+
+\section{Intended Outcomes}
+
+After completion of this course, students will
+
+{{ course.outcomes|rst2latex }}
+
+{% endif %}
+
+\section{Grading Scheme}
+
+Your total grade will be a weighted average of all the assignments in class. The weight for each category of assignments is in the following table.
+
+\begin{center}
+
+\renewcommand{\arraystretch}{1.5}
+\renewcommand{\tabcolsep}{0.2cm}
+
+\begin{tabular}{lc} 
+\hline
+\textbf{Category} & \textbf{Weight} \\ 
+\hline
+{% for x in course.grading.scheme %}
+{{ x.category }} & {{ '{0:.0f}'.format(x.weight * 100) }}\% \\
+{% endfor %}
+\hline
+\end{tabular}
+ 
+\end{center}
+
+{{ course.grading.notes|rst2latex }}
+
+See \url{http://www.pcc.edu/resources/academic/standards-practices/} for more detail on PCC Grading Guidlines.
+
+
+\section{Miscellaneous}
+
+\begin{description}
+\item[{Attendance and make-up policies}] \leavevmode 
+Attendance is required for any lab, quiz, or exam. The instructor reserves the right to administer or refuse to admininster any make-up work for lack of attendance.
+
+\item[{Instructional ADA statement}] \leavevmode 
+If you require specific instructional accommodations, please notify me early in the course. A request for accommodation may require documentation of disability through the Office for Students with Disabilities at 977-4341.
+
+\item[{Code of student conduct}] \leavevmode 
+Information may be found through this \url{http://www.pcc.edu/about/policy/student-rights/}.
+
+\item[{Academic integrity statement}] \leavevmode 
+Students are required to complete this course in accordance with the Student Rights and Responsibilities Handbook. Dishonest activities such as cheating on exams and submitting or copying work done by others will result in disciplinary actions including but not limited to receiving a failing grade. See the Academic Integrity Policy for further details: \url{http://www.pcc.edu/about/policy/student-rights/}.
+
+\item[{Flexibility statement}] \leavevmode 
+The instructor reserves the right to modify course content and/or substitute assignments and learning activities in response to institutional, weather, and class problems.
+
+\item[{Withdrawal policy}] \leavevmode 
+As the student, it is your responsibility to process a Drop via the Web or at a Registration Office within the specified time periods set forth by PCC. Deadlines can be located at \url{http://www.pcc.edu/registration/dropping.html}.
+
+\end{description}
+
+\clearpage
+
+\section{Class Schedule}
+
+This following schedule should be considered tentative. In particular, based on class progress, we may slow down or speed up the lecture schedule.
+
+\begin{center}
+
+\renewcommand{\arraystretch}{1.5}
+\renewcommand{\tabcolsep}{0.2cm}
+
+\begin{tabular}{@{}cccp{16mm}p{64mm}@{}}
+%\begin{tabular}{cccll}
+\hline
+\textbf{Wk} &
+\textbf{Day} &
+\textbf{Date} &
+\textbf{Type} &
+\textbf{Title} &
+\hline
+{% for event in course.schedule %}
+{{ event.week }} &
+{{ event.weekday }} &
+{{ event.date.strftime('%b %d') }} &
+{{ event.type }} &
+{{ event.heading }} \\
+{% endfor %}
+\hline
+\end{tabular}
+
+\end{center}
+
+{% if course.outline %}
+
+\clearpage
+
+\section{Course Content}
+
+{{ course.outline|rst2latex }}
+
+{% endif %}
+
+\end{document}

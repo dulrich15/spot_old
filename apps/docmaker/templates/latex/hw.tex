@@ -1,0 +1,33 @@
+\documentclass{article}
+
+\usepackage[margin=0.625in, rmargin=3in]{geometry}
+\usepackage{p200}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+
+\hypersetup{pdftitle = {{ '{' }}{{ course.title }} Homework{{ '}' }} }
+\hypersetup{pdfauthor = {{ '{' }}{{ course.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
+
+\pagestyle{plain}
+
+\begin{document}
+
+\newpage
+
+\begin{center}
+\LARGE{{ '{' }}{{ course.title }} {{ activity.label }}{{ '}' }} \\[2mm] 
+\small{{ '{' }}\sf {{ event.date.strftime('%b %d, %Y') }}{{ '}' }}
+\end{center}
+
+{% for p in problems %}
+\textbf{{ '{' }}{{ loop.index }}.{{ '}' }}
+{% if show.answers %}% 
+\marginpar{{ '{' }}\footnotesize\sf {{ p.answer|rst2latex }}{{ '}' }}
+{% endif %}%
+\quad {{ p.question|rst2latex }}
+{% if show.solutions %}%
+\par \textbf{Solution} 
+\par {{ p.solution|rst2latex }}
+{% endif %}%
+{% endfor %}
+
+\end{document}

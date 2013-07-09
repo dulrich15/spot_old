@@ -1,0 +1,30 @@
+\documentclass{article}
+
+\usepackage[margin=0.625in, rmargin=3in]{geometry}
+\usepackage{p200}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+
+\hypersetup{pdftitle = {{ '{' }}{{ course.title }} Lab{{ '}' }} }
+\hypersetup{pdfauthor = {{ '{' }}{{ course.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
+
+\pagestyle{plain}
+
+\begin{document}
+
+\begin{center}
+\LARGE{{ '{' }}{{ lab.title }}{{ '}' }} \\[5mm]
+\small{{ '{' }}\sf {{ course.title }} {{ activity.label }}{{ '}' }} \\[2mm]
+\small{{ '{' }}\sf {{ event.date.strftime('%b %d, %Y') }}{{ '}' }}
+\end{center}
+
+\section{Equipment}
+
+\begin{itemize}
+{% for e in lab.equipment %}
+\item {{ e.item }}
+{% endfor %}
+\end{itemize}
+
+{{ lab.worksheet|rst2latex }}
+
+\end{document}
