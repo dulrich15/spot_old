@@ -3,18 +3,31 @@
         "pk": 1, 
         "model": "gradebook.assignmentcategory", 
         "fields": {
-            "name": "Quiz"
+            "label": "Quiz"
         }
     }, 
     {
         "pk": 2, 
         "model": "gradebook.assignmentcategory", 
         "fields": {
-            "name": "Lab"
+            "label": "Lab"
         }
     }, 
     {
         "pk": 1, 
+        "model": "gradebook.assignment", 
+        "fields": {
+            "classroom": 1, 
+            "category": 1, 
+            "due_date": null, 
+            "is_graded": false, 
+            "title": "", 
+            "curve_points": 0, 
+            "max_points": 20
+        }
+    }, 
+    {
+        "pk": 3, 
         "model": "gradebook.assignment", 
         "fields": {
             "classroom": 1, 
@@ -33,10 +46,34 @@
             "classroom": 1, 
             "category": 2, 
             "due_date": null, 
-            "is_graded": false, 
+            "is_graded": true, 
             "title": "", 
             "curve_points": 0, 
             "max_points": 1
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "gradebook.assignmentgrade", 
+        "fields": {
+            "earned_points": 12, 
+            "is_excused": false, 
+            "assignment": 1, 
+            "extra_points": 0, 
+            "note": "", 
+            "student": 1
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "gradebook.assignmentgrade", 
+        "fields": {
+            "earned_points": 0, 
+            "is_excused": true, 
+            "assignment": 2, 
+            "extra_points": 0, 
+            "note": "", 
+            "student": 1
         }
     }
 ]
