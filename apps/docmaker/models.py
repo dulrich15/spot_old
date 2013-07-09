@@ -1,6 +1,53 @@
-from django.db import models
+from __future__ import division
+from __future__ import unicode_literals
 
+from django.db.models import *
+from apps.classroom.models import Activity
 
+        
+class ExerciseSource(Model):
+    title = CharField(max_length=200)
+    author = CharField(max_length=200,blank=True) 
+
+    def __unicode__(self):
+        return self.title
+        
+        
+class ExerciseProblem(Model):
+    key = SlugField()
+    source = ForeignKey(ExerciseSource)
+    
+    question = TextField()
+    answer = TextField(blank=True)
+    solution = TextField(blank=True)
+    notes = TextField(blank=True)
+
+    @property
+    def title(self):
+        if len(self.question) > 97:
+            return self.question[:97] + '...'
+        else:
+            return self.question
+    
+    def __unicode__(self):
+        return '[{self.key}] {self.title}'.format(self=self)
+    
+    class Meta:
+        ordering = ['key']
+
+ 
+class ExerciseSet(Model):
+    activity = ForeignKey(Activity)
+    title2 = CharField(max_length=200, blank=True)
+    problems = ManyToManyField(ExerciseProblem, blank=True)
+
+    def __unicode__(self):
+        return '{self.activity}'.format(self=self)
+    
+
+## -------------------------------------------------------------------------- ##
+
+        
 # class StudyLecture(NumberedActivity):
     # def get_document_path(self, filename):
         # return posixpath.join('docs', self.course.tag(), filename)
@@ -67,8 +114,10 @@ from django.db import models
         
     # class Meta:
         # ordering = ['lecture', 'sort_order']
+
         
 ## -------------------------------------------------------------------------- ##
+
         
 # class LabEquipment(Model):
     # item = CharField(max_length=200)
@@ -121,57 +170,3 @@ from django.db import models
     # class Meta:
         # ordering = ['equipment__location']
         
-## -------------------------------------------------------------------------- ##
-        
-# class ExerciseSource(Model):
-    # title = CharField(max_length=200)
-    # author = CharField(max_length=200,blank=True) 
-
-    # def __unicode__(self):
-        # return u'%s' % truncate(self.title)
-        
-        
-# class ExerciseProblem(Model):
-    # key = SlugField()
-    # source = ForeignKey(ExerciseSource)
-    
-    # question = TextField()
-    # answer = TextField()
-    # solution = TextField(blank=True)
-    # notes = TextField(blank=True)
-
-    # def __unicode__(self):
-        # return u'[%s] %s' % (self.key, truncate(self.question))
-    
-    # class Meta:
-        # ordering = ['key']
-
- 
-# class ExerciseSet(NumberedActivity):
-    # title = CharField(max_length=200, blank=True)
-    # problems = ManyToManyField(ExerciseProblem, blank=True)
-    # truefalse = ManyToManyField(ExerciseTrueFalse, blank=True)
-
-    # scratchpad = TextField(blank=True)
-    
-    # def doctag(self):
-        # if self.activity_label.name == 'Homework':
-            # return 'h'
-        # elif self.activity_label.name == 'Quiz':
-            # return 'q'
-        # else:
-            # return 'x'
-        
-    # def documents(self):
-        # documents = []
-        # documents.append(ActivityDocument(self, 'Problems', '{}p'.format(self.doctag()), 1))
-        # documents.append(ActivityDocument(self, 'Solutions', '{}s'.format(self.doctag()), 1))
-        # return documents
-        
-    # def copy(self):
-        # exercise_set = deepcopy(self)
-        # exercise_set.pk = None
-        # exercise_set.id = None
-        # exercise_set.save()
-        # exercise_set.problems = self.problems.all()
-

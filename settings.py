@@ -14,9 +14,8 @@ MY_APPS = (
 #     'wiki',
 )
 
-DOCMAKER_PATH = os.path.join(PROJECT_PATH, 'apps', 'docmaker')
-TEMP_PATH = os.path.join(DOCMAKER_PATH, '_')
-IMAGE_PATH = os.path.join(DOCMAKER_PATH, 'static', 'docmaker', 'images')
+TEMP_PATH = os.path.join(PROJECT_PATH, 'apps', 'docmaker', '_')
+IMAGE_PATH = os.path.join(PROJECT_PATH, 'content', 'images')
 IMAGE_URL = '/static/docmaker/images/'
 
 DEBUG = True

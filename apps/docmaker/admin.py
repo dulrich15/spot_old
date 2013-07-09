@@ -1,91 +1,34 @@
 from django.contrib.admin import *
 from models import *
 
-# ## -------------------------------------------------------------------------- ##
 
-# class ActivityLabelAdmin(ModelAdmin):
-    # list_display = ['name', 'sort_order', 'restriction']
+site.register(ExerciseSource)
 
-# site.register(ActivityLabel, ActivityLabelAdmin)
-
-# class ActivityAdmin(ModelAdmin):
-    # # def copy_activity(self, request, queryset):
-        # # for activity in queryset:
-            # # activity.copy()
-            # # self.message_user(request, 'Copied {0}'.format(activity))
-    # # copy_activity.short_description = 'Copy selected activity'
-    # # actions = [copy_activity]
+class ExerciseProblemAdmin(ModelAdmin):
+    def answered(self, obj):         
+        return (obj.answer != '')
+    answered.boolean = True
     
-    # list_display = ['full_title', 'course', 'week', 'weekday']
-    # list_filter = ['course', 'activity_label']
-
-# site.register(Activity, ActivityAdmin)
-
-# ## -------------------------------------------------------------------------- ##
-
-# class NullActivityAdmin(ActivityAdmin):
-    # def copy_null_activity(self, request, queryset):
-        # for null_activity in queryset:
-            # null_activity.copy()
-            # self.message_user(request, 'Copied {0}'.format(null_activity))
-    # copy_null_activity.short_description = 'Copy selected null activity'
-    # actions = [copy_null_activity]
+    def solved(self, obj):         
+        return (obj.solution != '')
+    solved.boolean = True
     
-    # list_display = ['full_title', 'course', 'week', 'weekday']
+    list_display = ['__unicode__', 'answered', 'solved']
+    list_filter = ['source']
+site.register(ExerciseProblem, ExerciseProblemAdmin)
 
-# site.register(NullActivity, NullActivityAdmin)
+# class ExerciseSetProblemInline(TabularInline):
+    # model = ExerciseSetProblem
+    # extra = 0
 
-# ## -------------------------------------------------------------------------- ##
-
-# class ExerciseProblemAdmin(ModelAdmin):
-    # def answered(self, obj):         
-        # return (obj.answer != '')
-    # answered.boolean = True
-    
-    # def solved(self, obj):         
-        # return (obj.solution != '')
-    # solved.boolean = True
-    
-    # list_display = ['__unicode__', 'answered', 'solved']
-    # list_filter = ['source']
-    
-# site.register(ExerciseSource)
-# site.register(ExerciseProblem, ExerciseProblemAdmin)
-
-# class ExerciseTrueFalseAdmin(ModelAdmin):
-    # def rationale_given(self, obj):         
-        # return (obj.rationale != '')
-    # rationale_given.boolean = True
-    
-    # list_display = ['__unicode__', 'rationale_given']
-    
-# site.register(ExerciseTrueFalse, ExerciseTrueFalseAdmin)
-
-# # class ExerciseSetProblemInline(TabularInline):
-    # # model = ExerciseSetProblem
-    # # extra = 0
-
-# class ExerciseSetAdmin(ActivityAdmin):
-    # def copy_exercise_set(self, request, queryset):
-        # for exercise_set in queryset:
-            # exercise_set.copy()
-            # self.message_user(request, 'Copied {0}'.format(exercise_set))
-    # copy_exercise_set.short_description = 'Copy selected exercise set'
-    # actions = [copy_exercise_set]
-    
-    # def nbr_problems(self, obj):
-        # return len(obj.problems.all())
+class ExerciseSetAdmin(ModelAdmin):
+    def nbr_problems(self, obj):
+        return len(obj.problems.all())
         
-    # list_display = ['full_title', 'course', 'week', 'weekday', 'nbr_problems']
-    # filter_horizontal = ['problems']
-    # # inlines = [ExerciseSetProblemInline]
-
-# site.register(ExerciseSet, ExerciseSetAdmin)
-
-# class ExerciseEquationAdmin(ModelAdmin):
-    # pass
-
-# site.register(ExerciseEquation, ExerciseEquationAdmin)
+    list_display = ['__unicode__', 'nbr_problems']
+    filter_horizontal = ['problems']
+    # inlines = [ExerciseSetProblemInline]
+site.register(ExerciseSet, ExerciseSetAdmin)
 
 # ## -------------------------------------------------------------------------- ##
 
