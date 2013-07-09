@@ -10,7 +10,14 @@ MY_APPS = (
     'gradebook',
 #     'mindmap',
 #     'picmaker',
+#     'quotes',
+#     'wiki',
 )
+
+DOCMAKER_PATH = os.path.join(PROJECT_PATH, 'apps', 'docmaker')
+TEMP_PATH = os.path.join(DOCMAKER_PATH, '_')
+IMAGE_PATH = os.path.join(DOCMAKER_PATH, 'static', 'docmaker', 'images')
+IMAGE_URL = '/static/docmaker/images/'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -112,6 +119,6 @@ for app in MY_APPS:
 # PYTHON_CMD = r'python2.7'
 
 try:
-    from local.settings import *
+    from local.config import *
 except ImportError:
     pass

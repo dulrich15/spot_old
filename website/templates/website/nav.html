@@ -1,0 +1,17 @@
+<ul>
+    <li><a href="{% url show_classroom classroom.pk %}">Overview</a></li>
+    <li><a href="{% url show_schedule classroom.pk %}">Schedule</a></li>
+    <li><a href="{% url list_documents classroom.pk %}">Documents</a></li>
+</ul>
+{% if user.is_active %}
+<ul>
+    <li><a href="{% url list_assignments classroom.pk %}">Assignments</a></li>
+    <li><a href="{% url show_grades classroom.pk %}">Grades</a></li>
+</ul>
+{% endif %}
+{% if user.is_staff %}
+<ul>
+    <li><a href="{% url list_students classroom.pk %}">Students</a></li>
+    <li><a href="{% url list_docmakers classroom.pk %}">Docmaker</a></li>
+</ul>
+{% endif %}

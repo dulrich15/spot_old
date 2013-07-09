@@ -21,5 +21,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', views.user_logout, name='logout'),
 
     url(r'', include('apps.classroom.urls')),
+    url(r'', include('apps.gradebook.urls')),
+    url(r'', include('apps.docmaker.urls')),
 )
 

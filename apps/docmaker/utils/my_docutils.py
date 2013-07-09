@@ -11,14 +11,16 @@ My docutils extensions and helps.
 __docformat__ = 'reStructuredText'
 
 import os, sys, codecs, shutil, hashlib, posixpath
-from subprocess import Popen, PIPE 
+from subprocess import Popen, PIPE
 from PIL import Image
+
+from django.conf import settings
 
 from docutils import nodes
 from docutils.parsers import rst
 from docutils.core import publish_parts, publish_string
 
-from config import PROJECT_PATH, PROJECT_NAME, TEMP_PATH, IMAGE_PATH, IMAGE_URL
+from settings import PROJECT_PATH, TEMP_PATH, IMAGE_PATH, IMAGE_URL
 from local.config import TEX_PATH, GS_CMD, PYTHON_CMD
 
 ## -------------------------------------------------------------------------- ##
@@ -36,28 +38,28 @@ class MyLatexWriter(latex2e.Writer):
             self.translator_class = MyLatexTranslator1
         else:
             self.translator_class = MyLatexTranslator0
-        
+
 class MyLatexTranslator2(latex2e.LaTeXTranslator):
     section_level = 2
-    
+
     def __init__(self, node):
         latex2e.LaTeXTranslator.__init__(self, node)
         self._section_number = self.section_level*[0]
 
 class MyLatexTranslator1(latex2e.LaTeXTranslator):
     section_level = 1
-    
+
     def __init__(self, node):
         latex2e.LaTeXTranslator.__init__(self, node)
         self._section_number = self.section_level*[0]
-        
+
 class MyLatexTranslator0(latex2e.LaTeXTranslator):
     section_level = 0
-    
+
     def __init__(self, node):
         latex2e.LaTeXTranslator.__init__(self, node)
         self._section_number = self.section_level*[0]
-    
+
 ## -------------------------------------------------------------------------- ##
 
 def rst2latex(source, overrides={}):
@@ -81,7 +83,7 @@ def rst2latex(source, overrides={}):
         latex = latex.replace('-{}','-') # unwind this manipulation from docutils
     else:
         latex = ''
-        
+
     return latex.strip()
 
 def rst2html(source, overrides={}):
@@ -110,12 +112,12 @@ def rst2html(source, overrides={}):
         html = html.replace('...','&hellip;')
     else:
         html = ''
-        
+
     return html.strip()
 
 
 def get_latex_path(filename):
-    filename = filename.split(os.path.sep)                
+    filename = filename.split(os.path.sep)
     for i in range(len(filename)):
         if ' ' in filename[i]:
             filename[i] = '"%s"' % filename[i]
@@ -127,54 +129,54 @@ def get_latex_path(filename):
 FIG_TEMPLATE = {
 'default' : r'''
 \begin{center}
-%(figtext)s 
-%(caption)s 
-%(label)s 
+%(figtext)s
+%(caption)s
+%(label)s
 \end{center}
 '''
 ,
 'left' : r'''
-%(figtext)s 
-%(caption)s 
-%(label)s 
+%(figtext)s
+%(caption)s
+%(label)s
 '''
 ,
 'side' : r'''
-\marginpar{ 
+\marginpar{
 \vspace{%(offset)s}
-\vspace{0.1in} 
-\centering 
-%(figtext)s 
-%(caption)s 
-%(label)s 
+\vspace{0.1in}
+\centering
+%(figtext)s
+%(caption)s
+%(label)s
 }
 '''
 ,
 'sidecap' : r'''
-\vspace{0.1in} 
+\vspace{0.1in}
 \begin{adjustwidth}{}{\adjwidth}
-\begin{minipage}[c]{\picwidth} 
-\centering 
-%(figtext)s 
-\end{minipage} 
+\begin{minipage}[c]{\picwidth}
+\centering
+%(figtext)s
+\end{minipage}
 \hfill
-\begin{minipage}[c]{\capwidth} 
-%(caption)s 
-%(label)s 
+\begin{minipage}[c]{\capwidth}
+%(caption)s
+%(label)s
 \end{minipage}
 \end{adjustwidth}
-\vspace{0.1in} 
+\vspace{0.1in}
 '''
 ,
 'full' : r'''
-\vspace{0.1in} 
+\vspace{0.1in}
 \begin{adjustwidth}{}{\adjwidth}
-\centering 
-%(figtext)s 
-%(caption)s 
-%(label)s 
+\centering
+%(figtext)s
+%(caption)s
+%(label)s
 \end{adjustwidth}
-\vspace{0.1in} 
+\vspace{0.1in}
 '''
 }
 
@@ -182,7 +184,7 @@ TBL_TEMPLATE = r'''
 \renewcommand{\arraystretch}{1.5}
 \renewcommand{\tabcolsep}{0.2cm}
 
-\begin{tabular}{%(tblspec)s} 
+\begin{tabular}{%(tblspec)s}
 %(tbldata)s
 \end{tabular}
 '''
@@ -231,29 +233,29 @@ class fig_directive(rst.Directive):
         .. fig:: Some image here
             :image: image-filename.png
             :scale: 0.75
-            
+
         .. fig:: Sample Trapezoid
             :position: side
             :label: trapezoid
 
-            \begin{tikzpicture}            
-            \draw [fill=black!10] (-1,0.7) -- (1,0.7) 
+            \begin{tikzpicture}
+            \draw [fill=black!10] (-1,0.7) -- (1,0.7)
             -- (0.7,-0.7) -- (-0.7,-0.7) -- cycle;
             \end{tikzpicture}
-            
+
     Options
     -------
 
     :image:     Used to insert images. Any content will be ignored. A label
                 will be inserted with the image's filename.
     :scale:     Used to scale the image.
-    :label:     Used for hyperlinks references. See ``fig`` role. 
-    :position:  Used to position figure within document. There are three 
+    :label:     Used for hyperlinks references. See ``fig`` role.
+    :position:  Used to position figure within document. There are three
                 possible values:
-                
+
                 :inline:    Placement within flow of text [default].
                 :side:      Placement in side margin.
-                :full:      Used for large figures---will not respect 
+                :full:      Used for large figures---will not respect
                             margins but will center across the full page.
 
     Notes
@@ -263,7 +265,7 @@ class fig_directive(rst.Directive):
     * Argument used for figure caption (optional).
     * If the image option is used, the label defaults to image name.
     """
-    
+
     required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = True
@@ -275,11 +277,11 @@ class fig_directive(rst.Directive):
         'offset'    : rst.directives.unchanged,
         }
     has_content = True
-    
+
     def run(self):
-    
+
         node_list = []
-        
+
         try:
             scale = float(self.options['scale'])
         except:
@@ -296,7 +298,7 @@ class fig_directive(rst.Directive):
             offset = self.options['offset']
         else:
             offset = '0pt'
-            
+
         if self.arguments:
             caption = rst2latex(self.arguments[0])
             caption = r'\captionof{figure}{%s}' % caption
@@ -311,17 +313,17 @@ class fig_directive(rst.Directive):
 
         if 'image' in self.options.keys():
             image = self.options['image']
-            
+
             if str(image).rsplit('.',1)[1] in ['png','jpg','gif','pdf']:
-            
+
                 check_path = os.path.join(IMAGE_PATH, image)
                 check_path = os.path.normpath(check_path)
 
-                if not os.path.exists(check_path): 
+                if not os.path.exists(check_path):
                     print 'Could not locate "%s"' % check_path
-            
+
                 latex_path = get_latex_path(check_path)
-                
+
                 figtext = r'\includegraphics[scale=%s]{%s}'
                 figtext = figtext % (scale, latex_path)
                 if not label:
@@ -335,10 +337,10 @@ class fig_directive(rst.Directive):
         text = FIG_TEMPLATE[position] % {
             'offset'    : offset,
             'caption'   : caption,
-            'label'     : label, 
-            'figtext'   : figtext, 
+            'label'     : label,
+            'figtext'   : figtext,
             }
-        
+
         node = nodes.raw(text=text, format='latex', **self.options)
         node_list += [node]
 
@@ -346,10 +348,10 @@ class fig_directive(rst.Directive):
 
         if 'image' in self.options.keys():
             image = self.options['image']
-            
+
             check_path = os.path.join(IMAGE_PATH, image)
             check_path = os.path.normpath(check_path)
-            
+
             if os.path.exists(check_path):
                 img_width, img_height = Image.open(check_path).size
                 fig_width = int(img_width*scale*0.50)
@@ -358,8 +360,8 @@ class fig_directive(rst.Directive):
                     label = nodes.make_id(self.options['label'])
                 else:
                     label = nodes.make_id(image)
-                 
-                figtext = '\n'   
+
+                figtext = '\n'
                 if 'side' in position:
                     # figtext += '<div id="fig:{0}" class="my-docutils fig {1}" style="width:{2}px;">\n'
                     figtext += '<div id="fig:{0}" class="my-docutils fig {1}">\n'
@@ -371,16 +373,16 @@ class fig_directive(rst.Directive):
                 html_path = os.path.join(IMAGE_URL, image)
                 figtext += '<a href="{0}"><img width="{1}px" src="{0}"></a>\n'.format(html_path, fig_width)
                 # figtext += '<a href="{0}"><img src="{0}"></a>\n'.format(html_path, fig_width)
-                
+
                 if self.arguments:
                     figtext += rst2html(self.arguments[0])
-                
+
                 figtext += '</div>\n'
-                
+
             else:
                 print 'Could not locate "%s"' % check_path
                 figtext = '\n<p style="padding:0.5em;border:1px solid red">Missing image</p>\n'
-                
+
         else: # try to construct the image
             # Unlike a normal image, our reference will come from the content...
             content = '\n'.join(self.content).replace('\\\\','\\')
@@ -389,15 +391,15 @@ class fig_directive(rst.Directive):
             image_path = os.path.join(IMAGE_PATH, 'latex', image_name)
             image_url = posixpath.normpath(os.path.join(IMAGE_URL, 'latex', image_name))
             self.options['uri'] = image_url
-                
+
             try:
                 # Maybe we already made it? If not, make it now...
                 if not os.path.isfile(image_path):
-                
+
                     print 'Making image %s' % image_name
                     print image_path
                     print image_url
-                    
+
                     # Set up our folders and filename variables
                     curdir = os.getcwd()
 
@@ -436,10 +438,10 @@ class fig_directive(rst.Directive):
                     img_width = int(img_scale * img.size[0])
                     img_height = int(img_scale * img.size[1])
                     img = img.resize((img_width, img_height), Image.ANTIALIAS)
-                    img.save('temp.png', 'png') 
-                    
+                    img.save('temp.png', 'png')
+
                     # Finally, move the image file and clean up
-                    
+
                     shutil.copyfile('temp.png', image_path)
                     # os.remove('rm temp.*')
                     os.chdir(curdir)
@@ -448,34 +450,34 @@ class fig_directive(rst.Directive):
 
                 img_width, img_height = Image.open(image_path).size
                 fig_width = int(img_width*scale*0.50)
-                
+
                 if 'label' in self.options.keys():
                     label = nodes.make_id(self.options['label'])
                 else:
                     label = nodes.make_id(image_name)
-                 
-                figtext = '\n'   
+
+                figtext = '\n'
                 # figtext += '\n<div id="fig:{0}" class="my-docutils fig {1}" style="width:{2}px;">\n'
                 figtext += '\n<div id="fig:{0}" class="my-docutils fig {1}">\n'
                 figtext = figtext.format(label, position, fig_width)
 
                 figtext += '<a href="{0}"><img width="{1}px" src="{0}"></a>\n'.format(image_url, fig_width)
                 # figtext += '<a href="{0}"><img src="{0}"></a>\n'.format(image_url, fig_width)
-                
+
                 if self.arguments:
                     figtext += rst2html(self.arguments[0])
-                
+
                 figtext += '</div>\n'
-                
+
             except:
                 print 'Could not locate "%s"' % image_path
                 figtext = '\n<div style="padding:0.5em;border:1px solid red"><code>' + '<br>'.join(self.content) + '</code></div>\n'
 
         text = figtext
-        
+
         node = nodes.raw(text=text, format='html', **self.options)
         node_list += [node]
-                
+
         return node_list
 
 rst.directives.register_directive('fig', fig_directive)
@@ -499,18 +501,18 @@ class plt_directive(rst.Directive):
             plt.plot([1,2,3,4], [1,4,9,16], 'ro')
             plt.axis([0, 6, 0, 20])
             plt.ylabel('some numbers')
-            
+
     Options
     -------
 
     :scale:     Used to scale the image.
-    :label:     Used for hyperlinks references. See ``plt`` role. 
-    :position:  Used to position figure within document. There are three 
+    :label:     Used for hyperlinks references. See ``plt`` role.
+    :position:  Used to position figure within document. There are three
                 possible values:
-                
+
                 :inline:    Placement within flow of text [default].
                 :side:      Placement in side margin.
-                :full:      Used for large figures---will not respect 
+                :full:      Used for large figures---will not respect
                             margins but will center across the full page.
 
     Notes
@@ -520,7 +522,7 @@ class plt_directive(rst.Directive):
     * Argument used for figure caption (optional).
     * If the image option is used, the label defaults to image name.
     """
-    
+
     required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = True
@@ -531,16 +533,16 @@ class plt_directive(rst.Directive):
         'offset'    : rst.directives.unchanged,
         }
     has_content = True
-    
+
     def run(self):
-    
+
         node_list = []
 
         # Unlike a normal image, our reference will come from the content...
         content = '\n'.join(self.content).replace('\\\\','\\')
-        
+
         # Have to have some serious protection here....
-        if '\nimport' in content: 
+        if '\nimport' in content:
             assert False
 
         # Define image name and location
@@ -552,11 +554,11 @@ class plt_directive(rst.Directive):
 
         # Maybe we already made it? If not, make it now...
         if not os.path.isfile(image_path):
-        
+
             print 'Making image %s' % image_name
             print image_path
             print image_url
-            
+
             # Set up our folders and filename variables
             curdir = os.getcwd()
 
@@ -565,13 +567,13 @@ class plt_directive(rst.Directive):
             f = codecs.open('temp.py', 'w', 'utf-8')
             f.write(MATPLOTLIB_TEMPLATE % content)
             f.close()
-            
+
             # Run matplotlib ...
             cmd = [PYTHON_CMD, 'temp.py']
             p = Popen(cmd,stdout=PIPE,stderr=PIPE)
             out, err = p.communicate()
 
-            # Move the image file and clean up            
+            # Move the image file and clean up
             shutil.copyfile('temp.png', image_path)
             # os.remove('rm temp.*')
             os.chdir(curdir)
@@ -587,14 +589,14 @@ class plt_directive(rst.Directive):
             position = 'default'
 
         check_path = image_path
-        
+
 # LaTeX writer specifics start (offset is ignored for HTML writer)
 
         if 'offset' in self.options.keys():
             offset = self.options['offset']
         else:
             offset = '0pt'
-            
+
         if self.arguments:
             caption = rst2latex(self.arguments[0])
             caption = r'\captionof{figure}{%s}' % caption
@@ -607,8 +609,8 @@ class plt_directive(rst.Directive):
         else:
             label = ''
 
-        if os.path.exists(check_path): 
-            latex_path = get_latex_path(check_path)                
+        if os.path.exists(check_path):
+            latex_path = get_latex_path(check_path)
             figtext = r'\includegraphics[scale=%s]{%s}'
             figtext = figtext % (scale*0.5, latex_path)
             if not label:
@@ -621,25 +623,25 @@ class plt_directive(rst.Directive):
         text = FIG_TEMPLATE[position] % {
             'offset'    : offset,
             'caption'   : caption,
-            'label'     : label, 
-            'figtext'   : figtext, 
+            'label'     : label,
+            'figtext'   : figtext,
             }
-        
+
         node = nodes.raw(text=text, format='latex', **self.options)
         node_list += [node]
 
 # # HTML writer specifics start...
 
-        if os.path.exists(check_path): 
+        if os.path.exists(check_path):
             img_width, img_height = Image.open(check_path).size
             fig_width = int(img_width*scale*0.75)
-                
+
             if 'label' in self.options.keys():
                 label = nodes.make_id(self.options['label'])
             else:
                 label = nodes.make_id(image_name)
-                 
-            figtext = '\n'   
+
+            figtext = '\n'
             if 'side' in position:
                 # figtext += '<div id="plt:{0}" class="my-docutils plt {1}" style="width:{2}px;">\n'
                 figtext += '<div id="plt:{0}" class="my-docutils plt {1}">\n'
@@ -650,21 +652,21 @@ class plt_directive(rst.Directive):
 
             figtext += '<a href="{0}"><img width="{1}px" src="{0}"></a>\n'.format(image_url, fig_width)
             # figtext += '<a href="{0}"><img src="{0}"></a>\n'.format(image_url, fig_width)
-            
+
             if self.arguments:
                 figtext += rst2html(self.arguments[0])
-            
+
             figtext += '</div>\n'
-            
+
         else:
             print 'Could not locate "%s"' % check_path
-            figtext = '\n<div style="padding:0.5em;border:1px solid red"><code>' + '<br>'.join(self.content) + '</code></div>\n'            
+            figtext = '\n<div style="padding:0.5em;border:1px solid red"><code>' + '<br>'.join(self.content) + '</code></div>\n'
 
         text = figtext
-        
+
         node = nodes.raw(text=text, format='html', **self.options)
         node_list += [node]
-                
+
         return node_list
 
 rst.directives.register_directive('plt', plt_directive)
@@ -681,7 +683,7 @@ class tbl_directive(rst.Directive):
         'cols'      : rst.directives.unchanged,
         }
     has_content = True
-        
+
     def run(self):
 
         self.assert_has_content()
@@ -711,25 +713,25 @@ class tbl_directive(rst.Directive):
 
         parser = rst.tableparser.SimpleTableParser() # GridTableParser()
         tbl = parser.parse(self.content)
-        
+
         ncols = len(tbl[0])
-        
+
         if 'cols' in self.options.keys():
             tblspec = self.options['cols']
         else:
             tblspec = ncols * 'c'
-        
+
         tbldata = '\\hline\n'
         if tbl[1]:
             head = ncols * ['']
-            
+
             # Truly, the following is overkill---it won't be used.
             # It's too difficult to deal with long table text in LaTeX.
-            for rowdata in tbl[1]: 
+            for rowdata in tbl[1]:
                 for i in range(ncols):
                     cell = rst2latex(''.join(rowdata[i][3]))
                     head[i] = ' '.join([head[i], cell]).strip()
-                    
+
             for i in range(ncols):
                 head[i] = '\\textbf{%s}' % head[i]
             tbldata += ' & '.join(head) + ' \\\\ \n'
@@ -742,7 +744,7 @@ class tbl_directive(rst.Directive):
                     body[i] = ' '.join([body[i], cell])
                 tbldata += ' & '.join(body) + ' \\\\ \n'
         tbldata += '\\hline\n'
-        
+
         tbltext = TBL_TEMPLATE % {
             'tblspec'   : tblspec,
             'tbldata'   : tbldata.strip(),
@@ -751,23 +753,23 @@ class tbl_directive(rst.Directive):
         text = FIG_TEMPLATE[position] % {
             'offset'    : offset,
             'caption'   : caption,
-            'label'     : label, 
-            'figtext'   : tbltext, 
+            'label'     : label,
+            'figtext'   : tbltext,
             }
-        
+
         node = nodes.raw(text=text, format='latex', **self.options)
         node_list += [node]
 
 # HTML writer specifics start...
 
-        tbltext = '\n'   
-        
+        tbltext = '\n'
+
         if 'label' in self.options.keys():
             label = nodes.make_id(self.options['label'])
             tbltext += '<div id="tbl:{0}" class="my-docutils tbl {1}">\n'.format(label, position)
         else:
             tbltext += '<div class="my-docutils tbl {0}">\n'.format(position)
-        
+
         tbltext += '<table>\n'
 
         if 'cols' in self.options.keys():
@@ -787,14 +789,14 @@ class tbl_directive(rst.Directive):
         tbltext += '<tr>\n'
         if tbl[1]:
             head = ncols * ['']
-            
+
             # Truly, the following is overkill---it won't be used.
             # It's too difficult to deal with long table text in LaTeX.
-            for rowdata in tbl[1]: 
+            for rowdata in tbl[1]:
                 for i in range(ncols):
                     cell = rst2html(''.join(rowdata[i][3]))[3:-4]
                     head[i] = ' '.join([head[i], cell]).strip()
-                    
+
             for i in range(ncols):
                 head[i] = u'<th>%s</th>\n' % head[i]
             tbltext += ''.join(head)
@@ -807,15 +809,15 @@ class tbl_directive(rst.Directive):
                     body[i] = u'<td style="text-align:{1}">{0}</td>\n'.format(cell, col_align[i])
                 tbltext += ''.join(body)
                 tbltext += '</tr>\n'
-                
+
         if self.arguments: # caption
             tbltext += '<caption>%s</caption>' % rst2html(self.arguments[0])
-                
+
         tbltext += '</table>\n'
         tbltext += '</div>\n'
-                
+
         text = tbltext
-        
+
         node = nodes.raw(text=text, format='html', **self.options)
         node_list += [node]
 
@@ -842,15 +844,15 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
         :ref:`image-filename.png`
 
     This will hyperlink to::
-    
+
         .. fig:: Some image here
             :image: image-filename.png
             :scale: 0.75
-            
+
     or
-    
+
    ::
-    
+
         :fig:`trapezoid`
 
     This will hyperlink to::
@@ -858,9 +860,9 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
         .. fig:: Sample Trapezoid
             :position: side
             :label: trapezoid
-            
+
             \begin{tikzpicture}
-            \draw [fill=black!10] (-1,0.7) -- (1,0.7) 
+            \draw [fill=black!10] (-1,0.7) -- (1,0.7)
             -- (0.7,-0.7) -- (-0.7,-0.7) -- cycle;
             \end{tikzpicture}
 
@@ -873,16 +875,16 @@ def ref_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     ref = nodes.make_id(text)
     if role in ['fig', 'tbl']:
         ref = role + ':' + ref
-        
+
     t = dict()
-    
+
     t['latex'] = r'\hyperref[%s]{\ref*{%s}}' % (ref, ref)
     t['html']  = r'<a href="#%s">[link]</a>' % (ref,)
 
     node_list = [
         nodes.raw(text=t['latex'], format='latex'),
         nodes.raw(text=t['html'], format='html')
-    ]    
+    ]
 
     return node_list, []
 
@@ -913,13 +915,13 @@ def jargon_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     Notes
     -----
 
-    * Force a conversion to lower case in the index with a tilde ``~``.  Useful 
+    * Force a conversion to lower case in the index with a tilde ``~``.  Useful
       when the term starts a sentence.
     * Works only for ``latex`` and ``html`` writers ...
     """
 
     t = dict()
-    
+
     if text[0] == '~':
         text = text[1:]
         t['latex'] = r'\textbf{%s}\index{%s}' % (text,text.lower())
@@ -931,7 +933,7 @@ def jargon_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     node_list = [
         nodes.raw(text=t['latex'], format='latex'),
         nodes.raw(text=t['html'], format='html')
-    ]    
+    ]
 
     return node_list, []
 
@@ -973,12 +975,12 @@ def sci_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
             text = r'\(%s \times 10^{%s}\)' % (a, b)
     except:
         pass
-    
+
     node_list = [
         nodes.raw(text=text, format='latex'),
         nodes.raw(text=text, format='html'), # this pushes the work to MathJax
     ]
-    
+
     return node_list, []
 
 rst.roles.register_local_role('sci', sci_role)
@@ -1007,7 +1009,7 @@ def atm_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     """
 
     try:
-        
+
         (a, z, sy) = text.split(':')
         dn = len(a) - len(z)
         if dn > 0:
@@ -1018,12 +1020,12 @@ def atm_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
             text = r'\({}^{%s}_{%s}\text{%s}\)' % (a, z, sy)
     except:
         pass
-    
+
     node_list = [
         nodes.raw(text=text, format='latex'),
         nodes.raw(text=text, format='html'), # this pushes the work to MathJax
     ]
-    
+
     return node_list, []
 
 rst.roles.register_local_role('atm', atm_role)

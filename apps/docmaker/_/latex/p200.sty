@@ -1,0 +1,344 @@
+\ProvidesPackage{p200}
+
+
+\title{}
+\author{}
+\date{}
+
+
+%% PACKAGES %%
+
+
+
+% do i really need all of these?
+
+%% \usepackage{ifthen}
+\usepackage{makeidx}
+%% \usepackage{verbatim}
+%% \usepackage{array}
+\usepackage{url}
+%% \usepackage{multirow}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+
+\usepackage{mparhack}
+\usepackage[strict]{changepage} % ???
+\usepackage{caption}
+
+
+
+
+
+%% GENERAL FORMATTING %%
+
+
+
+
+
+% General things
+
+
+\setcounter{secnumdepth}{-1} % will not number anything
+\setcounter{tocdepth}{1} % will put sections into pdf bookmarks
+
+\setlength\parindent{0in}
+\setlength\parskip{0.1in}
+\setlength\columnsep{0.5in}
+\setlength\itemsep{0in}
+
+
+% Preventing figures from appearing on a page by themselves. From http://dcwww.camd.dtu.dk/~schiotz/comp/LatexTips/LatexTips.html#figplacement
+
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+
+\hyphenpenalty=1000
+
+
+% needed for feynman style...
+
+
+\captionsetup{font={sf,footnotesize},singlelinecheck=false}
+%\DeclareCaptionFormat{lcap}{#1#2#3\hfill}
+%\DeclareCaptionFormat{rcap}{\hfill#1#2#3}
+\DeclareCaptionFormat{lcap}{#1#2#3}
+\DeclareCaptionFormat{rcap}{#1#2#3}
+
+\setlength\marginparwidth{2.125in}
+\setlength\marginparsep{0.25in}
+\newlength\fullwidth \setlength\fullwidth{7.25in}
+\newlength\adjwidth \setlength\adjwidth{-2.375in}
+
+\newlength\picwidth \setlength\picwidth{4.00in}
+\newlength\capwidth \setlength\capwidth{3.00in}
+
+\renewcommand{\footnote}[2][0pt]{%
+\addtocounter{footnote}{1}%
+\footnotemark[\thefootnote]%
+\marginpar{\vspace{#1}\footnotemark[\thefootnote]\footnotesize\sf#2}%
+%\marginpar{\vspace{#1}\footnotesize\sf#2}%
+}
+
+\renewcommand{\figurename}{\sf Figure}
+\renewcommand{\tablename}{\sf Table}
+
+
+\newcommand{\notespage}[3]{
+\newpage
+\section{#1}
+\begin{center}
+\includegraphics[width=7.25in]{#2}
+\end{center}
+#3
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%% MATH FORMATTING %%
+%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%\usepackage{siunitx} % should i use this to replace `unit'?
+
+% Special mathematical shortcuts
+\newcommand{\unit}[1]{\text{ #1}}
+\newcommand{\vect}[1]{\vec{#1}}
+\newcommand{\vhat}[1]{\hat{#1}}
+\newcommand{\pd}[2]{\frac{\partial{#1}}{\partial{#2}}}
+\newcommand{\pdd}[2]{\frac{\partial^2{#1}}{\partial{#2}^2}}
+\newcommand{\half}{\tfrac{1}{2}}
+\newcommand{\dg}{^\circ}
+\newcommand{\ohm}{\Omega}
+\newcommand{\sci}[2]{#1 \times 10^{#2}}
+%%\newcommand{\avg}[1]{\langle #1 \rangle}
+\newcommand{\avg}[1]{#1_\text{avg}}
+
+\newcommand{\vmag}[1]{\text{mag} \; \vect{#1}}
+\newcommand{\vang}[1]{\text{ang} \; \vect{#1}}
+
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\imag}{Im}
+\DeclareMathOperator{\grad}{\nabla}
+\DeclareMathOperator{\vdiv}{\nabla \cdot}
+\DeclareMathOperator{\curl}{\nabla \times}
+%\DeclareMathOperator{\grad}{grad}
+%\DeclareMathOperator{\vdiv}{div}
+%\DeclareMathOperator{\curl}{curl}
+
+
+%% The following just because I prefer the math font...
+
+
+\DeclareUnicodeCharacter{00B0}{$\dg$}
+\DeclareUnicodeCharacter{00B1}{$\pm$}
+\DeclareUnicodeCharacter{00B2}{$^2$}
+\DeclareUnicodeCharacter{00B3}{$^3$}
+\DeclareUnicodeCharacter{00B5}{$\mu$}
+\DeclareUnicodeCharacter{00B7}{$\times$}
+\DeclareUnicodeCharacter{03A9}{$\ohm$}
+\DeclareUnicodeCharacter{2126}{$\ohm$} % did you know there was an `ohm' unicode character?
+\DeclareUnicodeCharacter{00F7}{$\div$}
+\DeclareUnicodeCharacter{2212}{$-$}
+\DeclareUnicodeCharacter{03C0}{$\pi$}
+\DeclareUnicodeCharacter{2264}{$\le$}
+\DeclareUnicodeCharacter{2265}{$\ge$}
+\DeclareUnicodeCharacter{221E}{$\infty$}
+\DeclareUnicodeCharacter{2213}{$\mp$}
+
+
+
+
+
+%%%%%%%%%%%%%%%%
+%% TIKZ STUFF %%
+%%%%%%%%%%%%%%%%
+
+
+
+
+\usepackage{tikz}
+\let \Tiny = \tiny % To avoid font size `error'.
+
+\usetikzlibrary{arrows} % For pretty arrows.
+\usetikzlibrary{shapes} % Required to use the keyword `ellipse', for example.
+\usetikzlibrary{positioning} % Used to position nodes.
+\usetikzlibrary{calc} % Used to calculate linear combinations of coordinates.
+\usetikzlibrary{snakes} % Used for snake decorations.
+\usetikzlibrary{backgrounds} % Used to get the background outline.
+\usetikzlibrary{through} % Used for geometric calculations.
+\usetikzlibrary{decorations.pathmorphing} % For coils, etc...
+\usetikzlibrary{decorations.markings} % For arrow-heads within the line.
+\usetikzlibrary{decorations.pathreplacing} % For braces.
+\usetikzlibrary{decorations.text} % For text-along-path.
+
+\tikzstyle {every picture}+=[remember picture] % For picture-to-picture paths.
+\tikzstyle {every picture} = [>=latex]
+\tikzstyle {every pin} = [fill=white]
+
+% mechanics
+
+\tikzstyle {forcearrow} = [draw,fill=black,fill opacity=0.25,single arrow,shape border uses incircle,scale=0.5,minimum height=1cm]
+
+% electronics
+
+\tikzstyle {nde} = [fill=white,minimum width=8mm, minimum height=8mm]
+\tikzstyle {bat} = []
+\tikzstyle {res} = [decorate,decoration={zigzag,amplitude=2mm,segment length=2mm}]
+\tikzstyle {cpr} = []
+\tikzstyle {ind} = [decorate,decoration={coil,amplitude=2mm,segment length=2mm}]
+\tikzstyle {acv} = []
+\tikzstyle {led} = []
+\tikzstyle {npn} = []
+
+% feynman diagrams
+
+\tikzstyle {actual} = [fill,circle,inner sep=0.5mm]
+\tikzstyle {virtual} = [actual,fill=white,draw]
+\tikzstyle {electron} = []
+\tikzstyle {photon} = [decorate,decoration={snake,segment length=2mm,amplitude=0.5mm}]
+\tikzstyle {gluon} = [decorate,decoration={coil,aspect=1,segment length=1mm,amplitude=0.5mm}]
+\tikzstyle {weak} = [decorate,decoration={zigzag,segment length=1mm,amplitude=0.5mm}]
+\tikzstyle {->-} = [postaction={decorate},decoration={markings,mark=at position .50 with {\arrow[xshift=3pt]{>}}}]
+\tikzstyle {-<-} = [postaction={decorate},decoration={markings,mark=at position .50 with {\arrow[xshift=-3pt]{<}}}]
+
+
+%% inout node for drawing vectors pointing in/out of the page %%
+
+
+\makeatletter
+
+\newif\ifpgf@pointing@in
+\newif\ifpgf@pointing@out
+
+\tikzoption{pointing out}[]{\pgf@pointing@outtrue}
+\tikzoption{pointing in}[]{\pgf@pointing@intrue}
+\tikzoption{not pointing}[]{}
+
+\tikzoption{point}[]{\csname pgf@pointing@#1true\endcsname}
+
+\pgfdeclareshape{inout}{%
+  \savedanchor\centerpoint{\pgfpointorigin}
+  \saveddimen\r{% = max(8pt,wd,ht) / 2
+    \setlength{\pgf@xa}{\pgfshapeminwidth}
+    \setlength{\pgf@xb}{\pgfshapeminheight}
+    \setlength{\pgf@xc}{8pt}
+    \ifdim\pgf@xa>\pgf@xb
+      \pgf@x=\pgf@xa
+    \else
+      \ifdim\pgf@xb>\pgf@xc
+        \pgf@x=\pgf@xb
+      \else
+        \pgf@x=\pgf@xc
+      \fi
+    \fi
+    \pgf@x=0.5\pgf@x
+  }
+  \nodeparts{}
+  \inheritsavedanchors[from=circle] 
+  \inheritanchorborder[from=circle]
+  \inheritanchor[from=circle]{center}
+  \backgroundpath{
+    \pgfpathcircle{\centerpoint}{\r}
+    \pgfsetfillcolor{white}
+    \pgfusepath{fill}
+    \pgfpathcircle{\centerpoint}{\r}
+    \pgfusepath{draw}
+    \ifpgf@pointing@in
+      \pgfpathmoveto{\pgfpointpolar{045}{\r}}
+      \pgfpathlineto{\pgfpointpolar{225}{\r}}
+      \pgfusepath{draw}
+      \pgfpathmoveto{\pgfpointpolar{135}{\r}}
+      \pgfpathlineto{\pgfpointpolar{315}{\r}}
+      \pgfusepath{draw}
+    \fi
+    \ifpgf@pointing@out
+      \pgfpathcircle{\centerpoint}{1pt}
+      \pgfsetfillcolor{black}
+      \pgfusepath{fill}
+    \fi  }
+}
+
+\makeatother
+
+%% end inout node %%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%% From docutils %%
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%% admonition (specially marked topic)
+\providecommand{\DUadmonition}[2][class-arg]{%%
+  %% try \DUadmonition#1{#2}:
+  \ifcsname DUadmonition#1\endcsname%%
+    \csname DUadmonition#1\endcsname{#2}%%
+  \else
+    \begin{center}
+      \fbox{\parbox{0.9\textwidth}{%%
+        \centering%%
+        \begin{minipage}{0.87\textwidth}
+        \vspace{0.5ex} 
+        #2
+        \vspace{0.5ex}
+        \end{minipage}%%
+        }}
+    \end{center}
+  \fi
+}
+
+%% title for topics, admonitions and sidebar
+\providecommand*{\DUtitle}[2][class-arg]{%%
+  %% call \DUtitle#1{#2} if it exists:
+  \ifcsname DUtitle#1\endcsname%%
+    \csname DUtitle#1\endcsname{#2}%%
+  \else
+    \smallskip\noindent\textbf{#2}\smallskip%%
+  \fi
+}
+
+%% numeric or symbol footnotes with hyperlinks
+\providecommand*{\DUfootnotemark}[3]{%%
+  \raisebox{1em}{\hypertarget{#1}{}}%%
+  \hyperlink{#2}{\textsuperscript{#3}}%%
+}
+\providecommand{\DUfootnotetext}[4]{%%
+  \begingroup%%
+  \renewcommand{\thefootnote}{%%
+    \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%%
+    \protect\hyperlink{#2}{#3}}%%
+  \footnotetext{#4}%%
+  \endgroup%%
+}
+
+%% inline markup (custom roles)
+%% \DUrole{#1}{#2} tries \DUrole#1{#2}
+\providecommand*{\DUrole}[2]{%%
+  \ifcsname DUrole#1\endcsname%%
+    \csname DUrole#1\endcsname{#2}%%
+  \else%% backwards compatibility: try \docutilsrole#1{#2}
+    \ifcsname docutilsrole#1\endcsname%%
+      \csname docutilsrole#1\endcsname{#2}%%
+    \else%%
+      #2%%
+    \fi%%
+  \fi%%
+}
+
