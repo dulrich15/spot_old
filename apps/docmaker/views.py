@@ -25,39 +25,42 @@ def list_docmakers(request, classroom_pk):
     return HttpResponse(t.render(c))
 
 
+def run_docmaker(request, classroom_pk, docmaker_pk):
+    pass
+
 
 # @app.route('/build/syllabus')
 # def build_syllabus():
     # if not current_user.access == 2:
         # return redirect(url_for('index'))
-        
+
     # context = { 'course': course }
     # template = 'sy.tex'
     # latex = render_template(template, **context)
 
     # filename = '{}sy.pdf'.format(course.id)
-    
+
     # pdfpath = make_pdf(latex)
     # docpath = os.path.join(course.lib, 'docs', filename)
     # shutil.move(pdfpath, docpath) # this will overwrite
 
     # print 'Just created {}'.format(docpath)
-        
+
     # return redirect(url_for('serve_document', filename='syllabus'))
-   
+
 
 # @app.route('/build')
 # def build_all():
     # if not current_user.access == 2:
         # return redirect(url_for('index'))
-        
+
     # build_syllabus()
     # documents = Document.documents
     # for filename in documents.keys():
         # docmaker(filename)
     # return redirect(url_for('index'))
 
-    
+
 # @app.route('/build/<filename>')
 # def build_document(filename):
     # if not current_user.access == 2:
@@ -65,8 +68,7 @@ def list_docmakers(request, classroom_pk):
 
     # if docmaker(filename):
         # return redirect(url_for('index'))
-    # else:    
+    # else:
 # #         flash('Built {} -- Would you like to <a href="{}">see it?</a>'.format(filename, url_for('serve_document', filename=filename)))
 # #         return redirect(url_for('index'))
         # return redirect(url_for('serve_document', filename=filename))
-   

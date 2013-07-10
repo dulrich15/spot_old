@@ -1,5 +1,25 @@
 {% extends "docmaker/root.html" %}
 
 {% block main_content %}
-<h2>Docmaker</h2>
+    {% if user.is_staff %}
+    <ul class="action_links">
+        <li><a href="{% url admin:app_list 'docmaker' %}" target="_blank">Edit</a></li>
+    </ul>
+    {% endif %}
+
+    <h2>Exercise Sets</h2>
+
+    {% if classroom.documents %}
+    <ul>
+        {% for document in classroom.documents %}
+        {% if document.access_index == 0 or document.access_index == 1 or user.is_staff %}
+        {% if document.access_index == 0 or user.is_active %}
+        <li><a href="{% url serve_document classroom.pk document.basename %}">{{ document }}</a></li>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
 {% endblock %}
