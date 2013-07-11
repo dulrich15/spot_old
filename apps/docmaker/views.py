@@ -36,8 +36,35 @@ def list_docmakers(request, classroom_pk):
     return HttpResponse(t.render(c))
 
 
-def run_docmaker(request, classroom_pk, docmaker_pk):
-    pass
+def build_document(request, classroom_pk):
+    doc = ''
+    maker = ''
+    id = ''
+    
+    if 'doc' in request.GET:
+        doc = request.GET['doc']
+    if 'maker' in request.GET:
+        maker = request.GET['maker']
+    if 'id' in request.GET:
+        id = request.GET['id']
+        
+    if not(doc and maker and id):
+        messages.info(request, 'No enough information to build document')
+        return redirect('list_docmakers', classroom_pk)
+
+    import models
+    docmaker = getattr(models, maker)
+    obj = docmaker.objects.get(id=id)
+    
+    context, template = obj.get_document_info(doc)
+    
+    c = RequestContext(request, context)
+    t = loader.get_template(template)
+    
+    return HttpResponse(t.render(c))
+    
+    # messages.info(request, "Document built")
+    # return redirect('list_docmakers', classroom_pk)
 
 
 # @app.route('/build/syllabus')

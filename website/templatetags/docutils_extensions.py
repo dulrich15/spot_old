@@ -1,5 +1,4 @@
-﻿# Filename : my_docutils.py
-# Author: David Ulrich
+﻿# Author: David Ulrich
 
 # look here for improvements...
 # http://www.arnebrodowski.de/blog/write-your-own-restructuredtext-writer.html
@@ -20,8 +19,15 @@ from docutils import nodes
 from docutils.parsers import rst
 from docutils.core import publish_parts, publish_string
 
-from settings import PROJECT_PATH, TEMP_PATH, IMAGE_PATH, IMAGE_URL
-from local.config import TEX_PATH, GS_CMD, PYTHON_CMD
+## -------------------------------------------------------------------------- ##
+
+TEMP_PATH = settings.TEMP_PATH
+IMAGE_PATH = settings.IMAGE_PATH
+IMAGE_URL = settings.IMAGE_URL
+
+TEX_PATH = settings.TEX_PATH
+GS_CMD = settings.GS_CMD
+PYTHON_CMD = settings.PYTHON_CMD
 
 ## -------------------------------------------------------------------------- ##
 

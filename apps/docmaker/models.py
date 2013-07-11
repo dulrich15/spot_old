@@ -47,9 +47,26 @@ class ExerciseSet(Model):
     @property
     def documents(self):
         return ['problems', 'solutions']
+        
+    def get_document_info(self, doc):
+        context = {
+            'classroom': self.activity.classroom,
+            'activity_block': self.activity.activityblock_set.all(),
+            'activity': self.activity,
+            'problems': self.problems,
+            'show': [],
+        }
+        template = 'latex/hw.tex'
+
+        if doc == 'problems':
+            context['show'] = ['answers']
+        if doc == 'solutions':
+            context['show'] = ['answers', 'solutions']
+            
+        return context, template
 
     def __unicode__(self):
-        return '{self.activity.label}|{self.title2}'.format(self=self)
+        return '{self.activity.label} | {self.title2}'.format(self=self)
 
 
 docmaker_list.append(ExerciseSet)
@@ -92,25 +109,25 @@ class LabProject(Model):
     notes = TextField(blank=True)
     equipment = ManyToManyField(LabEquipment, through='LabEquipmentRequest')
 
-    # def documents(self):
-        # documents = []
-        # documents.append(ActivityDocument(self, 'Worksheet', 'lw', 0))
-        # documents.append(ActivityDocument(self, 'Equipment Form', 'lf', 2))
-        # return documents
-
-    # def copy(self):
-        # lab = deepcopy(self)
-        # lab.pk = None
-        # lab.id = None
-        # lab.save()
-        # for e in self.labequipmentrequest_set.all():
-            # e.pk = None
-            # e.lab = lab
-            # e.save()
-
     @property
     def documents(self):
         return ['worksheet', 'equipment']
+
+    def get_document_info(self, doc):
+        context = {
+            'classroom': self.activity.classroom,
+            'activity_block': self.activity.activityblock_set.all(),
+            'activity': self.activity,
+            'problems': self.problems,
+            'show': [],
+        }
+
+        if doc == 'worksheet':
+            template = 'latex/lw.tex'
+        if doc == 'equipment':
+            template = 'latex/lf.tex'
+            
+        return context, template
 
     def __unicode__(self):
         return '{self.activity.label}|{self.title2}'.format(self=self)

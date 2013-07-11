@@ -118,6 +118,6 @@ for app in MY_APPS:
 # PYTHON_CMD = r'python2.7'
 
 try:
-    from local.config import *
+    from local.settings import *
 except ImportError:
     pass
