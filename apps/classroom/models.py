@@ -80,7 +80,7 @@ class Classroom(Model):
 
     @property
     def document_path(self):
-        return '/'.join([self.slug, str(self.first_day)])
+        return os.path.join(self.slug, str(self.first_day))
 
     @property
     def year(self):
@@ -132,7 +132,7 @@ class Student(Model):
 
 
 class Document(Model):
-    document_path = '/'.join([settings.PROJECT_PATH, 'apps', 'classroom', 'content'])
+    document_path = os.path.join(settings.PROJECT_PATH, 'content', 'documents')
 
     classroom = ForeignKey('Classroom')
     filepath = FilePathField(path=document_path, match='.*', recursive=True)
@@ -151,6 +151,10 @@ class Document(Model):
     def basename(self):
         return os.path.split(self.abspath)[1]
 
+    @property
+    def exists(self):
+        return os.path.isfile(os.path.join(Document.document_path, self.filepath))
+        
     def __unicode__(self):
         if self.label:
             return self.label

@@ -14,7 +14,11 @@
         {% for document in classroom.documents %}
         {% if document.access_index == 0 or document.access_index == 1 or user.is_staff %}
         {% if document.access_index == 0 or user.is_active %}
+        {% if document.exists %}
         <li><a href="{% url serve_document classroom.pk document.basename %}">{{ document }}</a></li>
+        {% else %}
+        <li>[ {{ document }} ]</li>
+        {% endif %}
         {% endif %}
         {% endif %}
         {% endfor %}
@@ -35,7 +39,11 @@
                 {% for document in activity.documents.all %}
                 {% if document.access_index == 0 or document.access_index == 1 or user.is_staff %}
                 {% if document.access_index == 0 or user.is_active %}
+                {% if document.exists %}
                 <li><a href="{% url serve_document classroom.pk document.basename %}">{{ document }}</a></li>
+                {% else %}
+                <li>[ {{ document }} ]</li>
+                {% endif %}
                 {% endif %}
                 {% endif %}
                 {% endfor %}

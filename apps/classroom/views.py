@@ -69,7 +69,7 @@ def list_documents(request, classroom_pk):
 
 def serve_document(request, classroom_pk, filename):
     classroom = Classroom.objects.get(pk=classroom_pk)
-    filepath = '{}/{}/{}'.format(Document.document_path, classroom.document_path, filename)
+    filepath = os.path.join(Document.document_path, filename)
     document = Document.objects.get(filepath=filepath)
 
     if request.user.is_staff:
