@@ -14,15 +14,16 @@ from apps.classroom.models import Classroom
 
 def list_docmakers(request, classroom_pk):
     classroom = Classroom.objects.get(pk=classroom_pk)
-    
+
     docmakers = []
     for docmaker in docmaker_list:
         docmakers.append({
             'class': docmaker,
+            'tag': docmaker.__name__,
             'label': docmaker._meta.verbose_name_plural,
             'objects': docmaker.objects.filter(activity__classroom=classroom),
         })
-    
+
     context = {
         'classroom': classroom,
         'docmakers': docmakers,

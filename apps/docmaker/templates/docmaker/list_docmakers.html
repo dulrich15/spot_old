@@ -15,7 +15,7 @@
         <li>{{ obj }}
             <ul>
                 {% for document in obj.documents %}
-                <li>{{ document }}</li>
+                <li><a href="{% url run_docmaker classroom.pk %}?doc={{ document }}&maker={{ docmaker.tag }}&id={{ obj.pk }}">{{ document }}</a></li>
                 {% endfor %}
             </ul>
         </li>
