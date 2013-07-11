@@ -104,6 +104,8 @@ class Classroom(Model):
     def __unicode__(self):
         return '{self.title}, {self.season} {self.year}'.format(self=self)
 
+    # should save a "null" activity as a hanger for docs, etc...
+        
     class Meta:
         ordering = ['-first_day']
 

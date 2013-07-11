@@ -7,19 +7,23 @@
     </ul>
     {% endif %}
 
-    <h2>Exercise Sets</h2>
-
-    {% if classroom.documents %}
+    {% if docmakers %}
+    {% for docmaker in docmakers %}
+    <h2>{{ docmaker.label|title }}</h2>
     <ul>
-        {% for document in classroom.documents %}
-        {% if document.access_index == 0 or document.access_index == 1 or user.is_staff %}
-        {% if document.access_index == 0 or user.is_active %}
-        <li><a href="{% url serve_document classroom.pk document.basename %}">{{ document }}</a></li>
-        {% endif %}
-        {% endif %}
+        {% for obj in docmaker.objects %}
+        <li>{{ obj }}
+            <ul>
+                {% for document in obj.documents %}
+                <li>{{ document }}</li>
+                {% endfor %}
+            </ul>
+        </li>
         {% endfor %}
     </ul>
+    {% endfor %}
+    {% else %}
+    <p>Sorry, no docmakers here.</p>
     {% endif %}
-
 
 {% endblock %}

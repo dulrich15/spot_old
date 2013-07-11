@@ -37,7 +37,7 @@ site.register(ExerciseSet, ExerciseSetAdmin)
     # extra = 0
     # filter_horizontal = ['examples', 'equations']
     
-# class StudyLectureAdmin(ActivityAdmin):
+# class StudyLectureAdmin(ModelAdmin):
     # def copy_lecture(self, request, queryset):
         # for lecture in queryset:
             # lecture.copy()
@@ -85,11 +85,11 @@ site.register(ExerciseSet, ExerciseSetAdmin)
 
 # ## -------------------------------------------------------------------------- ##
 
-# class LabEquipmentRequestInline(TabularInline):
-    # model = LabEquipmentRequest
-    # extra = 0
+class LabEquipmentRequestInline(TabularInline):
+    model = LabEquipmentRequest
+    extra = 0
 
-# class LabProjectAdmin(ActivityAdmin):
+class LabProjectAdmin(ModelAdmin):
     # def copy_lab(self, request, queryset):
         # for lab in queryset:
             # lab.copy()
@@ -97,16 +97,16 @@ site.register(ExerciseSet, ExerciseSetAdmin)
     # copy_lab.short_description = 'Copy selected lab project'
     # actions = [copy_lab]
     
-    # inlines = [LabEquipmentRequestInline]
+    inlines = [LabEquipmentRequestInline]
     
-# site.register(LabProject, LabProjectAdmin)
+site.register(LabProject, LabProjectAdmin)
 
-# class LabEquipmentAdmin(ModelAdmin):
-    # list_display = ['item', 'location']
+class LabEquipmentAdmin(ModelAdmin):
+    list_display = ['item', 'location']
 
-# site.register(LabEquipment, LabEquipmentAdmin)
+site.register(LabEquipment, LabEquipmentAdmin)
 
-# class LabEquipmentRequestAdmin(ModelAdmin):
-    # list_display = ['__unicode__', 'lab']
+class LabEquipmentRequestAdmin(ModelAdmin):
+    list_display = ['__unicode__', 'lab']
 
-# site.register(LabEquipmentRequest, LabEquipmentRequestAdmin)
+site.register(LabEquipmentRequest, LabEquipmentRequestAdmin)
