@@ -1,11 +1,12 @@
+{% load restructuredtext_tags %}
 \documentclass{article}
 
 \usepackage[margin=0.625in]{geometry}
 \usepackage{p200}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 
-\hypersetup{pdftitle = {{ '{' }}{{ course.title }} Lecture Notes{{ '}' }} }
-\hypersetup{pdfauthor = {{ '{' }}{{ course.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
+\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} Lecture Notes{{ '}' }} }
+\hypersetup{pdfauthor = {{ '{' }}{{ classroom.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
 
 \pagestyle{plain}
 
@@ -16,7 +17,7 @@
 \vskip 0.25cm
 \includegraphics[width=\textwidth]{{ '{' }}{{ lecture.banner_path|latex_path }}{{ '}' }}
 \vskip 0.25cm
-\small{{ '{' }}\sf {{ course.title }} {{ activity.label }}{{ '}' }} \\[2mm]
+\small{{ '{' }}\sf {{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm]
 \small{{ '{' }}\sf {{ event.date.strftime('%b %d, %Y') }}{{ '}' }}
 \end{center}
 

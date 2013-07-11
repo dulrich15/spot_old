@@ -1,11 +1,12 @@
+{% load restructuredtext_tags %}
 \documentclass{article}
 
 \usepackage[margin=0.625in, rmargin=3in]{geometry}
 \usepackage{p200}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 
-\hypersetup{pdftitle = {{ '{' }}{{ course.title }} Lab{{ '}' }} }
-\hypersetup{pdfauthor = {{ '{' }}{{ course.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
+\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} Lab{{ '}' }} }
+\hypersetup{pdfauthor = {{ '{' }}{{ classroom.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
 
 \pagestyle{plain}
 
@@ -13,14 +14,14 @@
 
 \begin{center}
 \LARGE{{ '{' }}{{ lab.title }}{{ '}' }} \\[5mm]
-\small{{ '{' }}\sf {{ course.title }} {{ activity.label }}{{ '}' }} \\[2mm]
-\small{{ '{' }}\sf {{ event.date.strftime('%b %d, %Y') }}{{ '}' }}
+\small{{ '{' }}\sf {{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm]
+\small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y" }}{{ '}' }}
 \end{center}
 
 \section{Equipment}
 
 \begin{itemize}
-{% for e in lab.equipment %}
+{% for e in lab.equipment.all %}
 \item {{ e.item }}
 {% endfor %}
 \end{itemize}

@@ -1,10 +1,11 @@
+{% load restructuredtext_tags %}
 \documentclass{article}
 
 \usepackage{p200}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 
-\hypersetup{pdftitle = {{ '{' }}{{ course.title }} Quiz{{ '}' }} }
-\hypersetup{pdfauthor = {{ '{' }}{{ course.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
+\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} Quiz{{ '}' }} }
+\hypersetup{pdfauthor = {{ '{' }}{{ classroom.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
 
 \pagestyle{headings}
 
@@ -17,7 +18,7 @@
 \end{tikzpicture}
 
 \begin{center}
-\LARGE{{ '{' }}{{ course.title }} {{ activity.label }}{{ '}' }} \\[2mm] 
+\LARGE{{ '{' }}{{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm] 
 \small{{ '{' }}\sf {{ event.date.strftime('%b %d, %Y') }}{{ '}' }}
 \end{center}
 

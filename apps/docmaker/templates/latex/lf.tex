@@ -1,11 +1,12 @@
+{% load restructuredtext_tags %}
 \documentclass{article}
 
 \usepackage[margin=1.5in]{geometry}
 \usepackage{p200}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 
-\hypersetup{pdftitle = {{ '{' }}{{ course.title }} Lab Equipment{{ '}' }} }
-\hypersetup{pdfauthor = {{ '{' }}{{ course.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
+\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} Lab Equipment{{ '}' }} }
+\hypersetup{pdfauthor = {{ '{' }}{{ classroom.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
 
 \pagestyle{plain}
 
@@ -21,8 +22,8 @@
 \vspace{0.2in}
 
 \begin{tabular}{p{1.25in}p{1.25in}p{1.25in}p{1.25in}}
-INSTRUCTOR: & {{ course.instructor.name }} & LAB SECTION: & {{ course.abbr }} \\
-DATE(S) NEEDED: & \textbf{{ '{' }}{{ event.date.strftime('%b %d, %Y') }}{{ '}' }} & TIME NEEDED: & \textbf{6:00 pm} \\
+INSTRUCTOR: & {{ classroom.instructor.name }} & LAB SECTION: & {{ classroom.abbr }} \\
+DATE(S) NEEDED: & \textbf{{ '{' }}{{ activity_block.date|date:"b d, Y" }}{{ '}' }} & TIME NEEDED: & \textbf{6:00 pm} \\
 LAB TITLE: & \multicolumn{3}{l}{{ '{' }}\textbf{{ '{' }}{{ lab.title }}{{ '}' }}{{ '}' }} \\
 &&& \\
 FILLED BY: & \underline{\makebox[1in]{}} 
@@ -37,7 +38,7 @@ FILLED BY: & \underline{\makebox[1in]{}}
 \makebox[2.5in]{\textbf{\centering Items}} & 
 \makebox[1.0in]{\textbf{Location}} \\
 \hline
-{% for e in lab.equipment %}
+{% for e in lab.equipment.all %}
 {{ e.quantity }} & 
 {{ e.item|rst2latex }} & 
 \begin{minipage}{1.0in} 
@@ -57,13 +58,8 @@ FILLED BY: & \underline{\makebox[1in]{}}
 
 Special Instructions: \par
 
-{% for line in lab.notes %}
-\underline{\makebox[\textwidth]{\textbf{
-{{ line }}
-}}} \par
-{% endfor %}
-{% for i in range(3 - lab.notes|count) %}
-\underline{\makebox[\textwidth]{\textbf{}}} \par
+{% for line in lab.notes_list %}
+\underline{\makebox[\textwidth]{\textbf{ {{ line }} }}} \par
 {% endfor %}
 \vspace{0.2in}
 

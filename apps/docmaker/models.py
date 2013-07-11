@@ -110,6 +110,13 @@ class LabProject(Model):
     equipment = ManyToManyField(LabEquipment, through='LabEquipmentRequest')
 
     @property
+    def notes_list(self):
+        notes_list = self.notes.splitlines()
+        if len(notes_list) < 3:
+            notes_list += (3 - len(notes_list))*['']
+        return notes_list
+        
+    @property
     def documents(self):
         return ['worksheet', 'equipment']
 
@@ -118,12 +125,11 @@ class LabProject(Model):
             'classroom': self.activity.classroom,
             'activity_block': self.activity.activityblock_set.all(),
             'activity': self.activity,
-            'problems': self.problems,
-            'show': [],
+            'lab': self,
         }
 
         if doc == 'worksheet':
-            template = 'latex/lw.tex'
+            template = 'latex/lb.tex'
         if doc == 'equipment':
             template = 'latex/lf.tex'
             
