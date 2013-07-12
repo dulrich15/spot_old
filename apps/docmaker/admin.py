@@ -2,6 +2,10 @@ from django.contrib.admin import *
 from models import *
 
 
+site.register(CourseSyllabus)
+
+## -------------------------------------------------------------------------- ##
+
 site.register(ExerciseSource)
 
 class ExerciseProblemAdmin(ModelAdmin):
@@ -103,3 +107,5 @@ class StudySlideAdmin(ModelAdmin):
     filter_horizontal = ['examples']
 
 site.register(StudySlide, StudySlideAdmin)
+
+

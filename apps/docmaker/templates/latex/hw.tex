@@ -5,7 +5,7 @@
 \usepackage{p200}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 
-\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} Homework{{ '}' }} }
+\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} {{ document_label }}{{ '}' }} }
 \hypersetup{pdfauthor = {{ '{' }}{{ classroom.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
 
 \pagestyle{plain}
@@ -19,15 +19,15 @@
 \small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y" }}{{ '}' }}
 \end{center}
 
-{% for p in problems.all %}
+{% for x in exercise_list %}
 \textbf{{ '{' }}{{ forloop.counter }}.{{ '}' }}
 {% if 'answers' in show %}% 
-\marginpar{{ '{' }}\footnotesize\sf {{ p.answer|rst2latex }}{{ '}' }}
+\marginpar{{ '{' }}\footnotesize\sf {{ x.answer|rst2latex }}{{ '}' }}
 {% endif %}%
-\quad {{ p.question|rst2latex }}
+\quad {{ x.question|rst2latex }}
 {% if 'solutions' in show %}%
 \par \textbf{Solution} 
-\par {{ p.solution|rst2latex }}
+\par {{ x.solution|rst2latex }}
 {% endif %}%
 {% endfor %}
 

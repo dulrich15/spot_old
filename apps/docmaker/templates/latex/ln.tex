@@ -5,7 +5,7 @@
 \usepackage{p200}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 
-\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} Lecture Notes{{ '}' }} }
+\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} {{ document_label }}{{ '}' }} }
 \hypersetup{pdfauthor = {{ '{' }}{{ classroom.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
 
 \pagestyle{plain}
@@ -14,16 +14,18 @@
 
 \begin{center}
 \LARGE{{ '{' }}{{ lecture.title }}{{ '}' }} \\[5mm]
+{% if lecture.banner %}
 \vskip 0.25cm
-\includegraphics[width=\textwidth]{{ '{' }}{{ lecture.banner_path|latex_path }}{{ '}' }}
+\includegraphics[width=\textwidth]{{ '{' }}{{ lecture.banner.path|latex_path }}{{ '}' }}
+{% endif %}
 \vskip 0.25cm
 \small{{ '{' }}\sf {{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm]
-\small{{ '{' }}\sf {{ event.date.strftime('%b %d, %Y') }}{{ '}' }}
+\small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y" }}{{ '}' }}
 \end{center}
 
 {{ lecture.intro|rst2latex }}
 
-{% for slide in lecture.slides %}
+{% for slide in lecture.studyslide_set.all %}
 \newpage
 \section{{ '{' }}{{ slide.title }}{{ '}' }}
 
@@ -31,9 +33,11 @@
 \node [xshift=-0.25in,yshift=-0.25in] at (current page.north east) [below left] {{ '}' }}\sf \small {{ activity.label }}{{ '}' }};
 \end{tikzpicture}
 
+{% if slide.image %}
 \begin{center}
-\includegraphics[width=\textwidth]{{ '{' }}{{ slide.image_path|latex_path }}{{ '}' }}
+\includegraphics[width=\textwidth]{{ '{' }}{{ slide.image.path|latex_path }}{{ '}' }}
 \end{center}
+{% endif %}
 
 {{ slide.notes|rst2latex }}
 {% endfor %}

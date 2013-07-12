@@ -17,11 +17,16 @@ def list_docmakers(request, classroom_pk):
 
     docmakers = []
     for docmaker in docmaker_list:
+        try:
+            objects = docmaker.objects.filter(activity__classroom=classroom)
+        except: # for the syllabus
+            objects = docmaker.objects.filter(classroom=classroom)
+            
         docmakers.append({
             'class': docmaker,
             'tag': docmaker.__name__,
             'label': docmaker._meta.verbose_name_plural,
-            'objects': docmaker.objects.filter(activity__classroom=classroom),
+            'objects': objects,
         })
 
     context = {
