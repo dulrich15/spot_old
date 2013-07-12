@@ -75,12 +75,8 @@ class Classroom(Model):
         return '{self.dept} {self.term}'.format(self=self)
 
     @property
-    def slug(self):
+    def course(self):
         return '{self.dept.abbr}{self.term}'.format(self=self)
-
-    @property
-    def document_path(self):
-        return os.path.join(self.slug, str(self.first_day))
 
     @property
     def year(self):
@@ -89,6 +85,10 @@ class Classroom(Model):
     @property
     def season(self): # notice: June should be *summer* term
         return ['Winter','Spring','Summer','Fall'][int((self.first_day.month + 1)/ 3)]
+
+    @property
+    def tag(self):
+        return '{self.year}{self.dept.abbr[0]}{self.term}'.format(self=self).lower()
 
     @property
     def documents(self):
@@ -105,7 +105,7 @@ class Classroom(Model):
         return '{self.title}, {self.season} {self.year}'.format(self=self)
 
     # should save a "null" activity as a hanger for docs, etc ?
-        
+
     class Meta:
         ordering = ['-first_day']
 
@@ -156,7 +156,7 @@ class Document(Model):
     @property
     def exists(self):
         return os.path.isfile(os.path.join(Document.document_path, self.filepath))
-        
+
     def __unicode__(self):
         if self.label:
             return self.label

@@ -9,7 +9,13 @@ My docutils extensions and helps.
 
 __docformat__ = 'reStructuredText'
 
-import os, sys, codecs, shutil, hashlib, posixpath
+import codecs
+import hashlib
+import os
+import posixpath
+import shutil
+import sys
+
 from subprocess import Popen, PIPE
 from PIL import Image
 

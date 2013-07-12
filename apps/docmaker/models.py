@@ -12,21 +12,26 @@ docmaker_list = []
 
 
 class CourseSyllabus(Model):
+    doctags = ['sy']
+
     classroom = ForeignKey(Classroom)
 
-    @property
-    def documents(self):
-        return ['syllabus']
-
-    def get_document_info(self, doc):
-        context = { 
+    def get_document_info(self, doctag):
+        context = {
             'document_label' : 'Course Syllabus',
             'classroom': self.classroom,
         }
         template = 'latex/sy.tex'
-            
         return context, template
-        
+
+    @property
+    def docs(self):
+        docs = {}
+        for doctag in self.__class__.doctags:
+            context, template = self.get_document_info(doctag)
+            docs[doctag] = { 'context': context, 'template': template }
+        return docs
+
     def __unicode__(self):
         return unicode(self.classroom)
 
@@ -59,8 +64,10 @@ class StudySlide(Model):
 
 
 class StudyLecture(Model):
+    doctags = ['ln', 'lx']
+
     # # def get_document_path(self, filename):
-        # # return posixpath.join('docs', self.course.tag(), filename)
+        # # return posixpath.join('documents', self.course.tag(), filename)
 
     # # def get_banner_path(self, filename):
         # # return posixpath.join('banners', self.lecture.course.tag(), filename)
@@ -71,17 +78,13 @@ class StudyLecture(Model):
     # # banner = ImageField(upload_to=get_banner_path, storage=OverwriteStorage(), blank=True)
     intro = TextField(blank=True)
 
-    @property
-    def documents(self):
-        return ['notes', 'examples']
-
     def get_examples(self):
         examples = []
         for slide in StudySlide.objects.filter(lecture=self):
             examples += slide.examples.all()
         return examples
 
-    def get_document_info(self, doc):
+    def get_document_info(self, doctag):
         context = {
             'classroom': self.activity.classroom,
             'activity_block': self.activity.activityblock_set.all(),
@@ -89,19 +92,28 @@ class StudyLecture(Model):
             'lecture': self,
         }
 
-        if doc == 'notes':
+        if doctag == 'ln':
             context['document_label'] = 'Lecture Notes'
             template = 'latex/ln.tex'
-        if doc == 'examples':
+
+        if doctag == 'lx':
             context['document_label'] = 'Lecture Examples'
             context['exercise_list'] = self.get_examples()
             context['show'] = ['answers', 'solutions']
             template = 'latex/hw.tex'
-            
+
         return context, template
-        
+
+    @property
+    def docs(self):
+        docs = {}
+        for doctag in self.__class__.doctags:
+            context, template = self.get_document_info(doctag)
+            docs[doctag] = { 'context': context, 'template': template }
+        return docs
+
     def __unicode__(self):
-        return '{self.activity.label}|{self.title2}'.format(self=self)
+        return '{self.activity.label} | {self.title2}'.format(self=self)
 
 
 docmaker_list.append(StudyLecture)
@@ -138,6 +150,8 @@ class LabEquipmentRequest(Model):
 
 
 class LabProject(Model):
+    doctags = ['lb', 'lf']
+
     activity = ForeignKey(Activity)
     title2 = CharField(max_length=200)
     worksheet = TextField()
@@ -150,12 +164,8 @@ class LabProject(Model):
         if len(notes_list) < 3:
             notes_list += (3 - len(notes_list))*['']
         return notes_list
-        
-    @property
-    def documents(self):
-        return ['worksheet', 'equipment']
 
-    def get_document_info(self, doc):
+    def get_document_info(self, doctag):
         context = {
             'classroom': self.activity.classroom,
             'activity_block': self.activity.activityblock_set.all(),
@@ -163,17 +173,26 @@ class LabProject(Model):
             'lab': self,
         }
 
-        if doc == 'worksheet':
+        if doctag == 'lb':
             context['document_label'] = 'Lab Worksheet'
             template = 'latex/lb.tex'
-        if doc == 'equipment':
+
+        if doctag == 'lf':
             context['document_label'] = 'Lab Equipment'
             template = 'latex/lf.tex'
-            
+
         return context, template
 
+    @property
+    def docs(self):
+        docs = {}
+        for doctag in self.__class__.doctags:
+            context, template = self.get_document_info(doctag)
+            docs[doctag] = { 'context': context, 'template': template }
+        return docs
+
     def __unicode__(self):
-        return '{self.activity.label}|{self.title2}'.format(self=self)
+        return '{self.activity.label} | {self.title2}'.format(self=self)
 
 docmaker_list.append(LabProject)
 
@@ -213,15 +232,13 @@ class ExerciseProblem(Model):
 
 
 class ExerciseSet(Model):
+    doctags = ['hp', 'hs']
+
     activity = ForeignKey(Activity)
     title2 = CharField(max_length=200, blank=True)
     problems = ManyToManyField('ExerciseProblem', blank=True)
 
-    @property
-    def documents(self):
-        return ['problems', 'solutions']
-        
-    def get_document_info(self, doc):
+    def get_document_info(self, doctag):
         context = {
             'classroom': self.activity.classroom,
             'activity_block': self.activity.activityblock_set.all(),
@@ -231,19 +248,27 @@ class ExerciseSet(Model):
         }
         template = 'latex/hw.tex'
 
-        if doc == 'problems':
+        if doctag == 'hp':
             context['document_label'] = 'Homework Problems'
             context['show'] = ['answers']
-        if doc == 'solutions':
+
+        if doctag == 'hs':
             context['document_label'] = 'Homework Solutions'
             context['show'] = ['answers', 'solutions']
-            
+
         return context, template
+
+    @property
+    def docs(self):
+        docs = {}
+        for doctag in self.__class__.doctags:
+            context, template = self.get_document_info(doctag)
+            docs[doctag] = { 'context': context, 'template': template }
+        return docs
 
     def __unicode__(self):
         return '{self.activity.label} | {self.title2}'.format(self=self)
 
 
 docmaker_list.append(ExerciseSet)
-
 

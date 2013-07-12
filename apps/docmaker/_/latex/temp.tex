@@ -1,22 +1,353 @@
 
 \documentclass{article}
-\pagestyle{empty}
-\usepackage[active,tightpage]{preview}
+
+\usepackage[margin=0.625in]{geometry}
 \usepackage{p200}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+
+\hypersetup{pdftitle = {Physics 203 Lecture Notes} }
+\hypersetup{pdfauthor = {}, pdfsubject = {Physics} }
+
+\pagestyle{plain}
+
 \begin{document}
-\begin{preview}
-\begin{tikzpicture}
-\begin{scope}[xshift=-0.25cm,yshift=-0.25cm]
-\draw [fill=black!20,rotate=-45] (-0.15,-0.5) rectangle +(0.3,1);
-\draw [fill=black!20] (0,-0.2) -- (-0.4,-0.6)
--- (0.4,-0.6) -- cycle;
-\end{scope}
-\foreach \x in {0,1,...,5}
-{
-\draw [fill=white] (\x,\x-\x^2/4) circle (0.1);
-}
-\draw [dotted] (-1,0) -- (5,0);
-\draw [|-|] (0,-0.4) -- (4,-0.4) node [pos=0.5,fill=white] {$R$};
+
+\begin{center}
+\LARGE{} \\[5mm]
+
+\vskip 0.25cm
+\small{\sf Physics 203 Lecture: Electric force and potential} \\[2mm]
+\small{\sf }
+\end{center}
+
+%
+\begin{itemize}
+
+\item This term we move solidly beyond Newtonian mechanics.
+
+\item Typically ``modern physics'' means relativity and quantum mechanics, but I think it makes sense to include electromagnetism also.
+
+\item Another theme for the term is the microscopic source of force.
+
+\item The term splits pretty even down the middle:
+%
+\begin{itemize}
+
+\item In the second half we drive into the microscopic and subatomic by picking up quantum mechanics and high energy physics.
+
+\item Now we start with the study of electromagnetism which will drive us to consider relativity as well.
+
+\end{itemize}
+
+\end{itemize}
+
+
+\newpage
+\section{Long Range Forces and Fields}
+
+\begin{tikzpicture}[remember picture,overlay]
+\node [xshift=-0.25in,yshift=-0.25in] at (current page.north east) [below left] {\sf \small Lecture: Electric force and potential};
 \end{tikzpicture}
-\end{preview}
+
+
+
+%
+\begin{itemize}
+
+\item Physicists have always had a love/hate relationship with long-range forces. There is something deep in the human psyche that resists the idea of any kind of influence that acts ``at-a-distance''.
+
+\item This resistance manifests itself in many ways: ``nature abhors a vacuum'' (which goes back to Aristotle), Descartes filled the solar system with ``fluid'' to describe the motion of the planets. We also have ``animal magnetism'' and telekinetics.
+
+\item In modern physics we still have the differential form of physical equations and local conservation laws.
+
+\item There are three basic long-range forces for us to consider: magnetism, gravity, and electricity.
+
+\item We now know that magnetism (the first to be studied as such) is a relativistic manifestation of electricity. This realization comes late in our story in the 1800s with Faraday and Maxwell. Inspired by this, Einstein reworked Newton's theory of gravity.
+
+\item Both electromagnetism and general relativity are based on the idea of the \textbf{force field}\index{force field} introduced by Faraday.
+
+\item The field allows us to have our cake and eat it too. The force field acts as the intermediate agent between the source of force (an electric charge or gravitational mass) and the object influenced.
+
+\item One unforeseen result of this field idea was that these investigations of electromagnetism were unshackled from classical concepts. In this way Maxwell's equations uncovered the weaknesses of Newtonian mechanics and lead to relativity.
+
+\end{itemize}
+
+\newpage
+\section{Coulomb&#39;s Law for Electric Charge}
+
+\begin{tikzpicture}[remember picture,overlay]
+\node [xshift=-0.25in,yshift=-0.25in] at (current page.north east) [below left] {\sf \small Lecture: Electric force and potential};
+\end{tikzpicture}
+
+
+
+%
+\begin{itemize}
+
+\item If Einstein was later inspired by Maxwell to discover the gravitational field equations, earlier in history Coulomb was inspired by Newton's law of gravity when measuring static electricity.
+
+\item Coulomb found that the force of electricty obeys an inverse-square law:
+%
+\begin{equation*}
+F = \frac{kQq}{r^2} = \frac{1}{4\pi\epsilon_0}\frac{Qq}{r^2}
+\end{equation*}
+\item You will see both of these forms of the proportionality constant as we move through the term. The SI unit for electric charge is the \textbf{coulomb}\index{coulomb}. Typical values are in the micro range (\(10^{-6}\)).
+
+\item If there are multiple sources, we simply add the forces like vectors.
+
+\item Notice that in each of these terms will be present the value of the charge under the influence. We can factor this out and the force splits into two pieces: one related to the charge and the second related to the sources.
+
+\item This second piece we call the \textbf{electric field}\index{electric field}. Thus,
+%
+\begin{equation*}
+F = qE
+\qquad \text{and} \qquad
+E = \sum \frac{1}{4\pi\epsilon_0}\frac{Q}{r^2}
+\end{equation*}
+\item Unlike gravity, electricty is both attractive and repulsive. As a consequence, we must have at least two kinds of electric charge: positive and negative.
+
+\item One nice aspect of Coulomb's law is that it still works: charges with the same sign attract and charges with different signs repel.
+
+\end{itemize}
+
+\newpage
+\section{Gauss&#39; Law and Electric Flux}
+
+\begin{tikzpicture}[remember picture,overlay]
+\node [xshift=-0.25in,yshift=-0.25in] at (current page.north east) [below left] {\sf \small Lecture: Electric force and potential};
+\end{tikzpicture}
+
+
+
+%
+\begin{itemize}
+
+\item The electric field starts to split every electromagnetic interaction into two problems: how the field is created, and how the field influences those things around it. In principle, we already know the answers: $E = kQq/r^2$ and $F = qE$. But as we progress, we will tweak these answers---right now they only work for the special case of charges at rest.
+
+\item When Faraday first introduced the idea of the electric and magnetic fields, he was thinking in terms of \textbf{field lines}\index{field lines}. These are mathematically very similar the streamlines we talked about when studying fluid flow. (They may be conceptually similar also: in quantum field theory, the EM field is modeled as a flood of quantum photons.)
+
+\item Each electric charges is either a source or sink of these electric field lines: positive charges are sources and negative charges are sinks. The field lines radiate from these charges and distribute themselves evenly throughout space. The density of the field lines represent the magnitude of the electric field at that point.
+
+\item We call the \textbf{electric flux}\index{electric flux} is the ``number'' of field lines running through any given surface. We have:
+%
+\begin{equation*}
+\Phi_\text{ele} = \sum \avg{E}A \cos \theta
+\end{equation*}
+where $\Phi$ is the electric flux and $\avg{E} \cos \theta$ is the average value of the electric field running perpendicular through the surface $A$.
+
+\item $Gauss' Law$ states that the value of the electric flux through any closed surface is directly proportional to the amount of charge enclosed by the surface:
+%
+\begin{equation*}
+\sum \Phi_\text{ele} = Q_\text{tot} / \epsilon_0
+\end{equation*}
+\item This actually follows from Coulomb's law and that fact that the surface area of a sphere is $4\pi r^2$.
+
+\end{itemize}
+
+\newpage
+\section{Divergence and Curl}
+
+\begin{tikzpicture}[remember picture,overlay]
+\node [xshift=-0.25in,yshift=-0.25in] at (current page.north east) [below left] {\sf \small Lecture: Electric force and potential};
+\end{tikzpicture}
+
+
+
+%
+\begin{itemize}
+
+\item Back in our study of streamlines in fluid flow, we introduced a number of concepts that are directly applicable to our study of electric and magnetic fields.
+%
+\begin{itemize}
+
+\item For example, the mass flow rate in the context of stream lines is equivalent to the electric flux here.
+
+\end{itemize}
+
+\item Two critical tools for the analysis of these fields in general are divergence and curl.
+%
+\begin{itemize}
+
+\item \textbf{Divergence}\index{divergence} describes how much the field spreads. Symbolized by $\vdiv{E}$.
+
+\item \textbf{Curl}\index{curl} describes how much the field circulates. Symbolized by $\curl{E}$.
+
+\end{itemize}
+
+\item The divergence is closely related to
+%
+\begin{itemize}
+
+\item The equation of continuity: if there is no charge, what goes in must come out.
+
+\item Also Gauss' law: the field spreads at positive charge and is collected at the negative charges.
+
+\end{itemize}
+
+\item When the curl is zero (we called this ``irrotational'' when dealing with fluids), a field function exists which is similar to the potential energy function for a conservative force.
+
+\item Coulomb's law written in this new format is as follows:
+%
+\begin{equation*}
+\vdiv{E} = \rho/\epsilon_0 \qquad \text{and} \qquad \curl{E} = 0
+\end{equation*}
+\item The curl is zero because Coulomb's law is a central force and does not introduce any angular momentum into the field flux. The divergence is proportional to the charge density, $\rho$, at that point.
+
+\item Maxwell's laws of electromagnetism refine and correct these equations for charges in motion.
+
+\end{itemize}
+
+\newpage
+\section{Electric Potential}
+
+\begin{tikzpicture}[remember picture,overlay]
+\node [xshift=-0.25in,yshift=-0.25in] at (current page.north east) [below left] {\sf \small Lecture: Electric force and potential};
+\end{tikzpicture}
+
+
+
+%
+\begin{itemize}
+
+\item Because the curl of the electric field is zero everywhere, the circulation around any closed circuit is also zero. From this it follows that an electric potential function can be used---in exactly the same way that a potential energy function exists for conservative forces.
+
+\item We call this electric potential \textbf{voltage}\index{voltage}. The electric voltage from a set of point sources is
+%
+\begin{equation*}
+V = \sum \frac{1}{4\pi\epsilon_0}\frac{Q}{r}
+\end{equation*}
+\item The overwhelming advantage with using voltage is that it is not a vector. In the same way in which energy problems are mathematically simpler than force problems, the same is true with electric potential. When you can, use it!
+
+\item In general, the electric potential is related to the electric field via
+%
+\begin{equation*}
+\Delta V = -\avg{E} \Delta x
+\end{equation*}
+\item Notice that, really, it is the potential \emph{difference} that is defined by the field, and this difference is the physically relevant quantity. In other words, the zero level for the voltage is arbitrary---which means we can choose to put it somewhere else if it helps.
+
+\item We also have a simple way to talk about electric potential energy. When a charge of $+q$ is in an electric potential $V$, its potential energy is simply
+%
+\begin{equation*}
+PE = qV
+\end{equation*}
+which follows from $F = qE$ and the definitions of the electric potential and potential energy.
+
+\end{itemize}
+
+\newpage
+\section{Neutral Atoms and Dipole Moments}
+
+\begin{tikzpicture}[remember picture,overlay]
+\node [xshift=-0.25in,yshift=-0.25in] at (current page.north east) [below left] {\sf \small Lecture: Electric force and potential};
+\end{tikzpicture}
+
+
+
+%
+\begin{itemize}
+
+\item Coulomb was originally inspired by Newton's law of gravity when he discovered the law of electric force. However, the magnitude of these forces are vastly different:
+%
+\begin{equation*}
+G = \sci{6.673}{-11} \qquad \text{and} \qquad \frac{1}{4 \pi \epsilon_0} = \sci{8.9876}{9}
+\end{equation*}
+\item The electric force is roughly \(10^{20}\) times stronger than gravity. We experience gravity every day we try and get out of bed. Why then is the electric force only manifest in dramatic bursts of energy like lightning or parlor tricks of static electricity?
+
+\item The short answer is that most things are electrically neutral. No electric charge, no electric force.
+
+\item But there is more to this story. All three building blocks of matter (two quarks and the electron) are electrically charged. But because there are \emph{two} types of charge, they combine together in an electrically balanced atom.
+
+\item In a way, the electric force is shackled with its own strength: these charged particles lock together and shield the rest of the universe from the electric charges running around inside. Gravity accumulates but electricity does not.
+
+\item The simplest neutral system of charged particles is called a dipole: one positive and one negative charge of equal magnitude. We define its \textbf{dipole moment}\index{dipole moment} as
+%
+\begin{equation*}
+p = qd
+\end{equation*}
+where $q$ is the magnitude of the charges and $d$ is the distance between them.
+
+\item Although dipoles are neutral, they can be attracted to one another if they get close enough: the force is proportional to the separation cubed and their relative orientation.
+
+\item Ultimately, it is this dipole-dipole interaction which explains \emph{every} macroscopic force other than gravity: the elastic force, friction, contact forces, cohesion, etc. You can't sit in your chair without it.
+
+\end{itemize}
+
+\newpage
+\section{Conductors, Insulators, and Capacitors}
+
+\begin{tikzpicture}[remember picture,overlay]
+\node [xshift=-0.25in,yshift=-0.25in] at (current page.north east) [below left] {\sf \small Lecture: Electric force and potential};
+\end{tikzpicture}
+
+
+
+%
+\begin{itemize}
+
+\item Different materials respond differently in the presence of the electric force. On the one side are \textbf{conductors}\index{conductors} which allow electric charge to flow with ease. On the other side are \textbf{insulators}\index{insulators} which strongly resist the flow of electric charge. We can use conductors to transport charge and insulators to hold it.
+
+\item Since charge flows easily in a conductor, any excess charge will be pushed to the surface and spread evenly througout. If we take another conductor and touch a charged one, the excess charge will spread to it also. In this way we can ``pick up'' the charge and move it.
+
+\item There is a trickier way to ``induce'' charge in a conductor. Suppose we place a positively charged object close to a neutral conductor. This will pull the negative charge close and push the postive charge away. If we allow the postive charge to drain away, the conductor is left with a net negative charge.
+
+\item One important configuration to consider is the \textbf{capacitor}\index{capacitor}, which is simply two parallel conductive plates separated by an insulator. A capacitor ``traps'' electric charge: one plate with positive charge and the other with negative charge. These two sets of charge will attract, but the insulator keeps them apart.
+
+\item The charge on each plate distributes itself: we end up with a consistent charge per unit area (symbol = $\sigma$). There is a strong electric field inside the capacitor due to the strong attractive force between the plates.
+
+\item If we assume the plates are infinitely large (practically this means we ignore any edge effects), we can use symmetry and Gauss' law to determine the magnitude of the electric field and resulting potential:
+%
+\begin{equation*}
+E = \frac{\sigma}{\epsilon_0}
+\qquad \text{and} \qquad
+\Delta V = \frac{Q d}{\epsilon_0 A}
+\end{equation*}
+for a capacitor with plate distance $d$ with a total charge $Q$.
+
+\item The ratio of the charge required to maintain a particular voltage on a capacitor is called its \textbf{capacitance}\index{capacitance} and is primarily related to its geometry:
+%
+\begin{equation*}
+C = \frac{Q}{V} = \frac{\epsilon_0 A}{d}
+\end{equation*}
+\end{itemize}
+
+\newpage
+\section{Electric Energy}
+
+\begin{tikzpicture}[remember picture,overlay]
+\node [xshift=-0.25in,yshift=-0.25in] at (current page.north east) [below left] {\sf \small Lecture: Electric force and potential};
+\end{tikzpicture}
+
+
+
+%
+\begin{itemize}
+
+\item The previous analysis for the capacitor ignores the presence of the insulator which actually increases the capacitance. This is because the plates attract the bound opposite charges in the insulator effectively decreasing the distance $d$. The factor of improvement for the insulating material is called its \textbf{dielectric constant}\index{dielectric constant} (symbol = $\kappa$).
+
+\item On the other hand, we have ignored the ``edge effects'' which will be significant for any real capacitor. The SI unit for capacitance is the \textbf{farad}\index{farad}. Typical values for capacitors are microfarads (\(10^{-6}\)) and picofarads (\(10^{-9}\)).
+
+\item The amount of potential energy created when charging a capacitor is
+%
+\begin{equation*}
+PE = \half CV^2
+\end{equation*}
+\item This follows from the formula for potential energy $qV$ and the definition of capacitance $Q = CV$. The factor of one-half is there because the potential energy builds up with each incremental charge. The voltage is not constant rather it increases throughout.
+
+\item One nice thing about the capacitor is that on the inside the electric field is constant. This gives us an easy situation to analyze the electric field.
+
+\item For example, consider a vacuum filled capacitor without any insulator. We can use our result from Gauss' law to rewrite the potential energy formula as:
+%
+\begin{equation*}
+PE = (\half \epsilon_0 E^2)(Ad)
+\end{equation*}
+\item But $Ad$ is simply the volume contained within the capacitor (I'm trying to avoid the letter $V$). We define the \textbf{energy density}\index{energy density} of the field as this potential energy divided by this volume. Thus,
+%
+\begin{equation*}
+u = \half \epsilon_0 E^2
+\end{equation*}
+\item Though we only derived this formula for this special case, this formula is true in general. This represents the energy carried by the electric field itself.
+
+\end{itemize}
+
+
 \end{document}
