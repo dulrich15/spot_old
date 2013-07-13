@@ -8,26 +8,6 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Instructor'
-        db.create_table('classroom_instructor', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('public_name', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
-            ('office_location', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
-            ('office_hours', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
-            ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
-            ('website', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-        ))
-        db.send_create_signal('classroom', ['Instructor'])
-
-        # Adding model 'Department'
-        db.create_table('classroom_department', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
-            ('abbr', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
-        ))
-        db.send_create_signal('classroom', ['Department'])
-
         # Adding model 'Classroom'
         db.create_table('classroom_classroom', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -41,6 +21,26 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('classroom', ['Classroom'])
 
+        # Adding model 'Department'
+        db.create_table('classroom_department', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('abbr', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+        ))
+        db.send_create_signal('classroom', ['Department'])
+
+        # Adding model 'Instructor'
+        db.create_table('classroom_instructor', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('public_name', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('office_location', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('office_hours', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
+            ('website', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
+        ))
+        db.send_create_signal('classroom', ['Instructor'])
+
         # Adding model 'Student'
         db.create_table('classroom_student', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -53,17 +53,24 @@ class Migration(SchemaMigration):
         db.create_table('classroom_document', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('classroom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Classroom'])),
-            ('filepath', self.gf('django.db.models.fields.FilePathField')(path=u'/home/dave/Repos/github/spot/apps/classroom/content', max_length=100, recursive=True, match=u'.*')),
+            ('filepath', self.gf('django.db.models.fields.FilePathField')(path=u'c:\\Users\\Family\\Documents\\Dave\\Git repos\\github\\spot\\content\\documents', max_length=100, recursive=True, match=u'.*')),
             ('label', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
             ('access_index', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0)),
         ))
         db.send_create_signal('classroom', ['Document'])
 
+        # Adding model 'ActivityType'
+        db.create_table('classroom_activitytype', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
+        ))
+        db.send_create_signal('classroom', ['ActivityType'])
+
         # Adding model 'Activity'
         db.create_table('classroom_activity', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('classroom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Classroom'])),
-            ('type', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.ActivityType'])),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
         ))
         db.send_create_signal('classroom', ['Activity'])
@@ -99,20 +106,23 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        # Deleting model 'Instructor'
-        db.delete_table('classroom_instructor')
+        # Deleting model 'Classroom'
+        db.delete_table('classroom_classroom')
 
         # Deleting model 'Department'
         db.delete_table('classroom_department')
 
-        # Deleting model 'Classroom'
-        db.delete_table('classroom_classroom')
+        # Deleting model 'Instructor'
+        db.delete_table('classroom_instructor')
 
         # Deleting model 'Student'
         db.delete_table('classroom_student')
 
         # Deleting model 'Document'
         db.delete_table('classroom_document')
+
+        # Deleting model 'ActivityType'
+        db.delete_table('classroom_activitytype')
 
         # Deleting model 'Activity'
         db.delete_table('classroom_activity')
@@ -163,7 +173,7 @@ class Migration(SchemaMigration):
             'documents': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['classroom.Document']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityType']"})
         },
         'classroom.activityblock': {
             'Meta': {'ordering': "[u'sort_order', u'week', u'weekday_index', u'heading']", 'object_name': 'ActivityBlock'},
@@ -174,6 +184,11 @@ class Migration(SchemaMigration):
             'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
             'week': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
             'weekday_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'})
+        },
+        'classroom.activitytype': {
+            'Meta': {'object_name': 'ActivityType'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'classroom.classroom': {
             'Meta': {'ordering': "[u'-first_day']", 'object_name': 'Classroom'},
@@ -196,7 +211,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Document'},
             'access_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
-            'filepath': ('django.db.models.fields.FilePathField', [], {'path': "u'/home/dave/Repos/github/spot/apps/classroom/content'", 'max_length': '100', 'recursive': 'True', 'match': "u'.*'"}),
+            'filepath': ('django.db.models.fields.FilePathField', [], {'path': "u'c:\\\\Users\\\\Family\\\\Documents\\\\Dave\\\\Git repos\\\\github\\\\spot\\\\content\\\\documents'", 'max_length': '100', 'recursive': 'True', 'match': "u'.*'"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },

@@ -3,6 +3,7 @@ from models import *
 
 
 site.register(Department)
+site.register(ActivityType)
     
 
 class ClassroomAdmin(ModelAdmin):

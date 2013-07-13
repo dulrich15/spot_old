@@ -1,11 +1,45 @@
 from __future__ import division
 from __future__ import unicode_literals
 
+import os
+
 from django.db.models import *
-from apps.classroom.models import Classroom, Activity
+from apps.classroom.models import Classroom, Activity, ActivityType
 
 
-docmaker_list = []
+class DocmakerCollection(object):
+    types = []
+        
+    def register(self, docmaker):
+        self.types.append(docmaker)
+
+        @property
+        def objects(self):
+            try:
+                return docmaker.objects.filter(classroom=classroom)
+            except:
+                return docmaker.objects.filter(activity__classroom=classroom)
+            
+        docmaker.objects = objects
+        docmaker.label = docmaker._meta.verbose_name_plural
+        
+    @property
+    def choices(self):
+        choices = ()
+        for type in self.types:
+            choices += ((self.types.index(type), type.label),)
+        return choices
+            
+    @property
+    def docs(self):
+        docs = {}
+        for doctag in self.__class__.doctags:
+            context = self.get_context(doctag)
+            template = Template.objects.get(activity_type=self.activity.type).latex
+            docs[doctag] = { 'context': context, 'template': template }
+        return docs
+
+docmakers = DocmakerCollection()
 
 
 ## -------------------------------------------------------------------------- ##
@@ -16,19 +50,18 @@ class CourseSyllabus(Model):
 
     classroom = ForeignKey(Classroom)
 
-    def get_document_info(self, doctag):
+    def get_context(self, doctag):
         context = {
             'document_label' : 'Course Syllabus',
             'classroom': self.classroom,
         }
-        template = 'latex/sy.tex'
-        return context, template
 
     @property
     def docs(self):
         docs = {}
         for doctag in self.__class__.doctags:
-            context, template = self.get_document_info(doctag)
+            context = self.get_context(doctag)
+            template = 'latex/sy.tex' ############################################################
             docs[doctag] = { 'context': context, 'template': template }
         return docs
 
@@ -38,7 +71,7 @@ class CourseSyllabus(Model):
     class Meta:
         verbose_name_plural = 'course syllabi'
 
-docmaker_list.append(CourseSyllabus)
+docmakers.register(CourseSyllabus)
 
 
 ## -------------------------------------------------------------------------- ##
@@ -84,7 +117,7 @@ class StudyLecture(Model):
             examples += slide.examples.all()
         return examples
 
-    def get_document_info(self, doctag):
+    def get_context(self, doctag):
         context = {
             'classroom': self.activity.classroom,
             'activity_block': self.activity.activityblock_set.all(),
@@ -94,29 +127,19 @@ class StudyLecture(Model):
 
         if doctag == 'ln':
             context['document_label'] = 'Lecture Notes'
-            template = 'latex/ln.tex'
 
         if doctag == 'lx':
             context['document_label'] = 'Lecture Examples'
             context['exercise_list'] = self.get_examples()
             context['show'] = ['answers', 'solutions']
-            template = 'latex/hw.tex'
 
-        return context, template
-
-    @property
-    def docs(self):
-        docs = {}
-        for doctag in self.__class__.doctags:
-            context, template = self.get_document_info(doctag)
-            docs[doctag] = { 'context': context, 'template': template }
-        return docs
+        return context
 
     def __unicode__(self):
         return '{self.activity.label} | {self.title2}'.format(self=self)
 
 
-docmaker_list.append(StudyLecture)
+docmakers.register(StudyLecture)
 
 
 ## -------------------------------------------------------------------------- ##
@@ -165,7 +188,7 @@ class LabProject(Model):
             notes_list += (3 - len(notes_list))*['']
         return notes_list
 
-    def get_document_info(self, doctag):
+    def get_context(self, doctag):
         context = {
             'classroom': self.activity.classroom,
             'activity_block': self.activity.activityblock_set.all(),
@@ -175,26 +198,24 @@ class LabProject(Model):
 
         if doctag == 'lb':
             context['document_label'] = 'Lab Worksheet'
-            template = 'latex/lb.tex'
 
         if doctag == 'lf':
             context['document_label'] = 'Lab Equipment'
-            template = 'latex/lf.tex'
 
-        return context, template
-
+        return context
     @property
     def docs(self):
         docs = {}
         for doctag in self.__class__.doctags:
-            context, template = self.get_document_info(doctag)
+            context = self.get_context(doctag)
+            template = Template.objects.get(activity_type=self.activity.type).latex
             docs[doctag] = { 'context': context, 'template': template }
         return docs
 
     def __unicode__(self):
         return '{self.activity.label} | {self.title2}'.format(self=self)
 
-docmaker_list.append(LabProject)
+docmakers.register(LabProject)
 
 
 ## -------------------------------------------------------------------------- ##
@@ -238,7 +259,7 @@ class ExerciseSet(Model):
     title2 = CharField(max_length=200, blank=True)
     problems = ManyToManyField('ExerciseProblem', blank=True)
 
-    def get_document_info(self, doctag):
+    def get_context(self, doctag):
         context = {
             'classroom': self.activity.classroom,
             'activity_block': self.activity.activityblock_set.all(),
@@ -246,7 +267,6 @@ class ExerciseSet(Model):
             'exercise_list': self.problems.all(),
             'show': [],
         }
-        template = 'latex/hw.tex'
 
         if doctag == 'hp':
             context['document_label'] = 'Homework Problems'
@@ -256,13 +276,14 @@ class ExerciseSet(Model):
             context['document_label'] = 'Homework Solutions'
             context['show'] = ['answers', 'solutions']
 
-        return context, template
-
+        return context
+        
     @property
     def docs(self):
         docs = {}
         for doctag in self.__class__.doctags:
-            context, template = self.get_document_info(doctag)
+            context = self.get_context(doctag)
+            template = Template.objects.get(activity_type=self.activity.type).latex
             docs[doctag] = { 'context': context, 'template': template }
         return docs
 
@@ -270,5 +291,18 @@ class ExerciseSet(Model):
         return '{self.activity.label} | {self.title2}'.format(self=self)
 
 
-docmaker_list.append(ExerciseSet)
+docmakers.register(ExerciseSet)
 
+
+## -------------------------------------------------------------------------- ##
+
+
+class DocumentType(Model):
+    template_path = os.path.join(settings.PROJECT_PATH, 'apps', 'docmaker', 'templates', 'latex')
+
+    label = CharField(max_length=200, blank=True)
+    activity_type = ForeignKey(ActivityType, null=True, blank=True)
+    context_source = PositiveSmallIntegerField(choices=docmakers.choices)
+    template_latex = FilePathField(path=template_path, match='.tex')
+#     latex = TextBox(null=True, blank=True)
+#     html = TextBox(null=True, blank=True)

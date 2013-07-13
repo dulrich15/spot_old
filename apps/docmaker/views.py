@@ -22,19 +22,6 @@ from models import *
 def list_docmakers(request, classroom_pk):
     classroom = Classroom.objects.get(pk=classroom_pk)
 
-    docmakers = []
-    for docmaker in docmaker_list:
-        try:
-            objects = docmaker.objects.filter(activity__classroom=classroom)
-        except: # for the syllabus
-            objects = docmaker.objects.filter(classroom=classroom)
-
-        docmakers.append({
-            'class': docmaker,
-            'label': docmaker._meta.verbose_name_plural,
-            'objects': objects,
-        })
-
     context = {
         'classroom': classroom,
         'docmakers': docmakers,
@@ -53,7 +40,7 @@ def build_document(request, classroom_pk, doctag, obj_pk):
 
     try:
         obj = None
-        for docmaker in docmaker_list:
+        for docmaker in Docmaker.list():
             if doctag in docmaker.doctags:
                 obj = docmaker.objects.get(pk=obj_pk)
         assert obj is not None

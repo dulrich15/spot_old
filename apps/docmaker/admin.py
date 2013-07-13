@@ -108,4 +108,6 @@ class StudySlideAdmin(ModelAdmin):
 
 site.register(StudySlide, StudySlideAdmin)
 
+## -------------------------------------------------------------------------- ##
 
+site.register(Template)
