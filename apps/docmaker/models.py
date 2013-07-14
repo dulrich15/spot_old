@@ -22,6 +22,12 @@ class Docmaker(Model):
     def tag(self):
         return self.filename.split('.')[0]
 
+#     def save(self): # on save need to add a record to classroom.models.Document
+#         if self.pk is None:
+#             self.created = datetime.today()
+#         self.modified = datetime.today()
+#         super(Docmaker, self).save()
+
     def __unicode__(self):
         return self.label
 
@@ -68,23 +74,23 @@ class StudyLesson(Model):
         # # return posixpath.join('banners', self.lecture.course.tag(), filename)
 
     activity = OneToOneField(Activity, null=True, blank=True)
-    title2 = CharField(max_length=200)
+    title = CharField(max_length=200)
     # # powerpoint = FileField(upload_to=get_document_path, storage=OverwriteStorage(), blank=True)
     # # banner = ImageField(upload_to=get_banner_path, storage=OverwriteStorage(), blank=True)
     intro = TextField(blank=True)
 
     def get_examples(self):
         examples = []
-        for slide in StudySlide.objects.filter(lecture=self):
+        for slide in StudySlide.objects.filter(lesson=self):
             examples += slide.examples.all()
         return examples
 
     @property
-    def extra_context(self, doctag):
+    def extra_context(self):
         return { 'lecture': self, 'exercise_list': self.get_examples() }
 
     def __unicode__(self):
-        return '{self.activity.label} | {self.title2}'.format(self=self)
+        return '{self.activity.label} | {self.title}'.format(self=self)
 
 
 context_builders.register(StudyLesson)
@@ -122,7 +128,7 @@ class LabEquipmentRequest(Model):
 
 class LabProject(Model):
     activity = OneToOneField(Activity, null=True, blank=True)
-    title2 = CharField(max_length=200)
+    title = CharField(max_length=200)
     worksheet = TextField()
     notes = TextField(blank=True)
     equipment = ManyToManyField(LabEquipment, through='LabEquipmentRequest')
@@ -135,11 +141,11 @@ class LabProject(Model):
         return notes_list
 
     @property
-    def extra_context(self, doctag):
+    def extra_context(self):
         return { 'lab': self }
 
     def __unicode__(self):
-        return '{self.activity.label} | {self.title2}'.format(self=self)
+        return '{self.activity.label} | {self.title}'.format(self=self)
 
 
 context_builders.register(LabProject)
@@ -181,15 +187,15 @@ class ExerciseProblem(Model):
 
 class ExerciseSet(Model):
     activity = OneToOneField(Activity, null=True, blank=True)
-    title2 = CharField(max_length=200, blank=True)
+    title = CharField(max_length=200, blank=True)
     problems = ManyToManyField('ExerciseProblem', blank=True)
 
     @property
-    def extra_context(self, doctag):
+    def extra_context(self):
         return { 'exercise_list': self.problems.all() }
 
     def __unicode__(self):
-        return '{self.activity.label} | {self.title2}'.format(self=self)
+        return '{self.activity.label} | {self.title}'.format(self=self)
 
 
 context_builders.register(ExerciseSet)

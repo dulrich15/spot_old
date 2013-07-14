@@ -110,7 +110,7 @@
                 2
             ],
             "activity_type": 1,
-            "title": "Electric force and potential"
+            "activity_block": 1
         }
     },
     {
@@ -122,7 +122,7 @@
                 1
             ],
             "activity_type": 3,
-            "title": ""
+            "activity_block": 2
         }
     },
     {
@@ -132,7 +132,7 @@
             "classroom": 1,
             "documents": [],
             "activity_type": 2,
-            "title": "Electric field mapping"
+            "activity_block": 2
         }
     },
     {
@@ -141,9 +141,6 @@
         "fields": {
             "classroom": 1,
             "week": 1,
-            "activities": [
-                1
-            ],
             "sort_order": null,
             "weekday_index": 0,
             "heading": ""
@@ -155,10 +152,6 @@
         "fields": {
             "classroom": 1,
             "week": 1,
-            "activities": [
-                2,
-                3
-            ],
             "sort_order": null,
             "weekday_index": 2,
             "heading": ""

@@ -43,7 +43,7 @@ class Classroom(Model):
         return '{self.dept} {self.term}'.format(self=self)
 
     @property
-    def course(self):
+    def abbr(self):
         return '{self.dept.abbr}{self.term}'.format(self=self)
 
     @property
@@ -148,7 +148,7 @@ class Document(Model):
         return os.path.abspath(self.filepath)
 
     @property
-    def basename(self):
+    def filename(self):
         return os.path.split(self.abspath)[1]
 
     @property
@@ -156,38 +156,10 @@ class Document(Model):
         return os.path.isfile(os.path.join(Document.document_path, self.filepath))
 
     def __unicode__(self):
-        if self.label:
-            return self.label
-        else:
-            return self.basename
+        return self.filename
 
 
-class ActivityType(Model):
-    name = CharField(max_length=200)
-
-    def __unicode__(self):
-        return self.name
-
-
-class Activity(Model):
-    classroom = ForeignKey(Classroom)
-    activity_type = ForeignKey(ActivityType)
-#     activity_block = ForeignKey(ActivityBlock)
-    title = CharField(max_length=200, null=True, blank=True)
-    documents = ManyToManyField(Document, null=True, blank=True)
-
-    @property
-    def label(self):
-        if self.title:
-            return '{self.activity_type}: {self.title}'.format(self=self)
-        else:
-            return '{self.activity_type}: ID = {self.id}'.format(self=self)
-
-    def __unicode__(self):
-        return '[{self.classroom}] {self.label}'.format(self=self)
-
-    class Meta:
-        verbose_name_plural = 'activities'
+# split below to separate schedule app?
 
 
 class ActivityBlock(Model):
@@ -196,7 +168,7 @@ class ActivityBlock(Model):
     weekday_index = PositiveSmallIntegerField(choices=weekday_choices, verbose_name='weekday', null=True, blank=True)
     heading = CharField(max_length=200, null=True, blank=True)
     sort_order = PositiveSmallIntegerField(null=True, blank=True)
-    activities = ManyToManyField(Activity, null=True, blank=True)
+#     activities = ManyToManyField(Activity, null=True, blank=True)
 
     @property
     def weekday(self):
@@ -224,4 +196,33 @@ class ActivityBlock(Model):
 
     class Meta:
         ordering = ['sort_order', 'week', 'weekday_index', 'heading']
+
+
+class ActivityType(Model):
+    name = CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Activity(Model):
+    classroom = ForeignKey(Classroom)
+    activity_type = ForeignKey(ActivityType)
+    activity_block = ForeignKey(ActivityBlock)
+    documents = ManyToManyField(Document, null=True, blank=True)
+
+    @property
+    def nbr(self):
+        return self.pk
+
+    @property
+    def label(self):
+        return '{self.activity_type} {self.nbr}'.format(self=self)
+
+    def __unicode__(self):
+        return self.label
+
+    class Meta:
+        verbose_name_plural = 'activities'
+
 

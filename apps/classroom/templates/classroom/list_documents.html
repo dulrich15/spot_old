@@ -31,8 +31,8 @@
         <dt>
             {{ block }}{% if block.date %} ({{ block.date }}){% endif %}
         </dt>
-        {% if block.activities %}
-        {% for activity in block.activities.all %}
+        {% if block.activity_set.all %}
+        {% for activity in block.activity_set.all %}
         <dd>{{ activity.label }}
             {% if activity.documents %}
             <ul>

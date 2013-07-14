@@ -48,8 +48,7 @@ def build_document(request, classroom_pk, activity_pk, docmaker_pk):
     if activity_pk:
         activity = Activity.objects.get(pk=activity_pk)
         context['activity'] = activity
-        context['activity_block'] = activity.activityblock_set.all()[0] ## really??? more than one activity_block per activity?
-#         context['activity_block'] = activity.activityblock
+        context['activity_block'] = activity.activity_block
 
         if docmaker.activity_type != activity.activity_type: # this shouldn't ever happen...
             redirect('show_classroom', classroom_pk)
@@ -58,7 +57,7 @@ def build_document(request, classroom_pk, activity_pk, docmaker_pk):
             try:
                 builder = model.objects.get(activity=activity)
                 context.update(builder.extra_context)
-                builder_tag = '{:0>2}'.builder.pk
+                builder_tag = '{:0>2}'.activity.nbr
             except:
                 builder_tag = ''
 

@@ -3,8 +3,6 @@ from models import *
 
 
 site.register(Department)
-site.register(ActivityType)
-    
 
 class ClassroomAdmin(ModelAdmin):
     def copy_classroom(self, request, queryset):
@@ -14,14 +12,29 @@ class ClassroomAdmin(ModelAdmin):
     copy_classroom.short_description = 'Copy selected classroom'
 
     actions = [copy_classroom]
-site.register(Classroom, ClassroomAdmin)
 
+site.register(Classroom, ClassroomAdmin)
 
 class ClassroomUserAdmin(ModelAdmin):
     list_filter = ['classroom']
+
 site.register(Student, ClassroomUserAdmin)
 site.register(Instructor, ClassroomUserAdmin)
 
+class DocumentAdmin(ModelAdmin):
+    list_filter = ['classroom']
+    list_display = ['__unicode__', 'classroom', 'access']
+
+site.register(Document, DocumentAdmin)
+
+
+## split below to separate app??
+
+
+class ActivityInline(StackedInline):
+    model = Activity
+    extra = 0
+    filter_horizontal = ['documents']
 
 class ActivityBlockAdmin(ModelAdmin):
     def nbr_activities(self, obj):
@@ -29,9 +42,11 @@ class ActivityBlockAdmin(ModelAdmin):
 
     list_filter = ['classroom']
     list_display = ['__unicode__', 'classroom', 'nbr_activities']
-    filter_vertical = ['activities']
+    inlines = [ActivityInline]
+
 site.register(ActivityBlock, ActivityBlockAdmin)
 
+site.register(ActivityType)
 
 class ActivityAdmin(ModelAdmin):
     def nbr_documents(self, obj):
@@ -39,15 +54,10 @@ class ActivityAdmin(ModelAdmin):
 
     list_filter = ['classroom']
     list_display = ['__unicode__', 'classroom', 'nbr_documents']
-    filter_vertical = ['documents']
+    filter_horizontal = ['documents']
+
 site.register(Activity, ActivityAdmin)
 
-
-class DocumentAdmin(ModelAdmin):
-    list_filter = ['classroom']
-    list_display = ['__unicode__', 'classroom', 'access']
-
-site.register(Document, DocumentAdmin)
 
 
 

@@ -81,12 +81,12 @@ def serve_document(request, classroom_pk, filename):
 
     if user_access_index >= document.access_index:
         f = open(document.abspath, 'rb')
-        response = HttpResponse(f.read(), mimetype=guess_type(document.basename)[0])
+        response = HttpResponse(f.read(), mimetype=guess_type(document.filename)[0])
         return response
     else:
         return redirect('show_documents', classroom_pk)
 
-        
+
 @verify_user_is_staff(redirect_url_name='show_classroom')
 def list_students(request, classroom_pk):
     classroom = Classroom.objects.get(pk=classroom_pk)

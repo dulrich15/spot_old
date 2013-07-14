@@ -19,7 +19,7 @@
 
 \begin{center}
 \LARGE{{ '{' }}{{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm]
-\small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y"|title) }}{{ '}' }}
+\small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y"|title }}{{ '}' }}
 \end{center}
 
 \thispagestyle{empty}
@@ -27,9 +27,9 @@
 \section*{Word Problems}
 Show all your work and circle your final answer. (Ten points each.) \par
 
-{% for p in problems %}
-\textbf{{ '{' }}{{ loop.index }}.{{ '}' }} \quad {{ p.question|rst2latex }}
-\par {{ '{' }}\footnotesize\sf Answer: {{ p.answer|rst2latex }}{{ '}' }}
+{% for x in exercise_list %}
+\textbf{{ '{' }}{{ forloop.counter }}.{{ '}' }} \quad {{ x.question|rst2latex }}
+\par {{ '{' }}\footnotesize\sf Answer: {{ x.answer|rst2latex }}{{ '}' }}
 \newpage
 {% endfor %}
 
