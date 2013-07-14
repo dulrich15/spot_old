@@ -155,6 +155,12 @@ class Document(Model):
     def exists(self):
         return os.path.isfile(os.path.join(Document.document_path, self.filepath))
 
+    def delete(self):
+        print 'attmpting to remove ' + self.abspath
+        if self.exists:
+            os.remove(self.abspath)
+        super(Document, self).delete()
+
     def __unicode__(self):
         return self.filename
 
@@ -212,8 +218,18 @@ class Activity(Model):
     documents = ManyToManyField(Document, null=True, blank=True)
 
     @property
+    def date(self):
+        return self.activity_block.date
+
+    @property
     def nbr(self):
-        return self.pk
+        x = self.__class__.objects.filter(classroom=self.classroom, activity_type=self.activity_type)
+        x = sorted(x, key=lambda a: a.date)
+        return x.index(self) + 1
+
+    @property
+    def tag(self):
+        return '{:0>2}'.format(self.nbr)
 
     @property
     def label(self):

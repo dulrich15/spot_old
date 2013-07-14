@@ -6,7 +6,7 @@ class DocmakerAdmin(ModelAdmin):
     def template_filename(self, obj):
         return os.path.split(obj.template)[1]
 
-    list_display = ['label', 'template_filename', 'activity_type']
+    list_display = ['label', 'tag', 'template_filename', 'activity_type']
 
 site.register(Docmaker, DocmakerAdmin)
 

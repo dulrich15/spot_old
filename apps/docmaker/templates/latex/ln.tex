@@ -20,7 +20,7 @@
 {% endif %}
 \vskip 0.25cm
 \small{{ '{' }}\sf {{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm]
-\small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y"|title }}{{ '}' }}
+\small{{ '{' }}\sf {{ activity.date|date:"b d, Y"|title }}{{ '}' }}
 \end{center}
 
 {{ lecture.intro|rst2latex }}

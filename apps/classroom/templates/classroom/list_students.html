@@ -3,6 +3,7 @@
 {% block main_content %}
     {% if user.is_staff %}
     <ul class="action_links">
+        <li><a href="">Upload</a></li>
         <li><a href="{% url admin:classroom_student_changelist %}" target="_blank">Edit</a></li>
     </ul>
     {% endif %}

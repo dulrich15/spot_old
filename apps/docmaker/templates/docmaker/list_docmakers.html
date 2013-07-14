@@ -3,19 +3,41 @@
 {% block main_content %}
     {% if user.is_staff %}
     <ul class="action_links">
+        <li><a href="{% url build_all classroom.pk %}">Build all</a></li>
         <li><a href="{% url admin:app_list 'docmaker' %}" target="_blank">Edit</a></li>
     </ul>
     {% endif %}
 
     {% if docmakers %}
+    <h2>Docmakers</h2>
     {% for docmaker in docmakers %}
-    <h2>{{ docmaker.label }}</h2>
     <ul>
-        {% for activity in docmaker.activity_type.activity_set.all %}
-        <li><a href="{% url build_document classroom.pk activity.pk docmaker.pk %}">{{ activity.label }}</a></li>
-        {% endfor %}
+        {% if not docmaker.activity_type %}
+        <li><a href="{% url build_document classroom.pk docmaker.pk 0 %}">{{ docmaker.label }}</a></li>
+        {% endif %}
     </ul>
     {% endfor %}
+
+    <dl>
+        {% for block in classroom.activityblock_set.all %}
+        <dt>
+            {{ block }}{% if block.date %} ({{ block.date }}){% endif %}
+        </dt>
+        {% if block.activity_set.all %}
+        {% for activity in block.activity_set.all %}
+        <dd>{{ activity.label }}
+            {% if activity.activity_type.docmaker_set.all %}
+            <ul>
+            {% for docmaker in activity.activity_type.docmaker_set.all %}
+            <li><a href="{% url build_document classroom.pk docmaker.pk activity.pk %}">{{ docmaker.label }}</a></li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </dd>
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+    </dl>
     {% else %}
     <p>Sorry, no docmakers here.</p>
     {% endif %}

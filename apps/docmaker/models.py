@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import os
 
 from django.db.models import *
-from apps.classroom.models import ActivityType, Activity
+from apps.classroom.models import ActivityType, Activity, access_choices
 
 
 class Docmaker(Model):
@@ -12,21 +12,17 @@ class Docmaker(Model):
 
     activity_type = ForeignKey(ActivityType, null=True, blank=True)
     label = CharField(max_length=200)
+    tag = CharField(max_length=2)
     template = FilePathField(path=template_path, match='.tex')
+    access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
+
+    @property
+    def access(self):
+        return access_choices[self.access_index][1]
 
     @property
     def filename(self):
         return os.path.split(self.template)[1]
-
-    @property
-    def tag(self):
-        return self.filename.split('.')[0]
-
-#     def save(self): # on save need to add a record to classroom.models.Document
-#         if self.pk is None:
-#             self.created = datetime.today()
-#         self.modified = datetime.today()
-#         super(Docmaker, self).save()
 
     def __unicode__(self):
         return self.label
@@ -87,7 +83,7 @@ class StudyLesson(Model):
 
     @property
     def extra_context(self):
-        return { 'lecture': self, 'exercise_list': self.get_examples() }
+        return {'lecture': self, 'exercise_list': self.get_examples()}
 
     def __unicode__(self):
         return '{self.activity.label} | {self.title}'.format(self=self)
@@ -142,7 +138,7 @@ class LabProject(Model):
 
     @property
     def extra_context(self):
-        return { 'lab': self }
+        return {'lab': self}
 
     def __unicode__(self):
         return '{self.activity.label} | {self.title}'.format(self=self)
@@ -192,7 +188,7 @@ class ExerciseSet(Model):
 
     @property
     def extra_context(self):
-        return { 'exercise_list': self.problems.all() }
+        return {'exercise_list': self.problems.all()}
 
     def __unicode__(self):
         return '{self.activity.label} | {self.title}'.format(self=self)
