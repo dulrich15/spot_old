@@ -4,74 +4,38 @@ from __future__ import unicode_literals
 import os
 
 from django.db.models import *
-from apps.classroom.models import Classroom, Activity, ActivityType
+from apps.classroom.models import ActivityType, Activity
 
 
-class DocmakerCollection(object):
-    types = []
-        
-    def register(self, docmaker):
-        self.types.append(docmaker)
+class Docmaker(Model):
+    template_path = os.path.join(settings.PROJECT_PATH, 'apps', 'docmaker', 'templates', 'latex')
 
-        @property
-        def objects(self):
-            try:
-                return docmaker.objects.filter(classroom=classroom)
-            except:
-                return docmaker.objects.filter(activity__classroom=classroom)
-            
-        docmaker.objects = objects
-        docmaker.label = docmaker._meta.verbose_name_plural
-        
+    activity_type = ForeignKey(ActivityType, null=True, blank=True)
+    label = CharField(max_length=200)
+    template = FilePathField(path=template_path, match='.tex')
+
     @property
-    def choices(self):
-        choices = ()
-        for type in self.types:
-            choices += ((self.types.index(type), type.label),)
-        return choices
-            
-    @property
-    def docs(self):
-        docs = {}
-        for doctag in self.__class__.doctags:
-            context = self.get_context(doctag)
-            template = Template.objects.get(activity_type=self.activity.type).latex
-            docs[doctag] = { 'context': context, 'template': template }
-        return docs
+    def filename(self):
+        return os.path.split(self.template)[1]
 
-docmakers = DocmakerCollection()
+    @property
+    def tag(self):
+        return self.filename.split('.')[0]
+
+    def __unicode__(self):
+        return self.label
 
 
 ## -------------------------------------------------------------------------- ##
 
 
-class CourseSyllabus(Model):
-    doctags = ['sy']
+class ContextBuilderCollection(object):
+    models = []
 
-    classroom = ForeignKey(Classroom)
+    def register(self, builder):
+        self.models.append(builder)
 
-    def get_context(self, doctag):
-        context = {
-            'document_label' : 'Course Syllabus',
-            'classroom': self.classroom,
-        }
-
-    @property
-    def docs(self):
-        docs = {}
-        for doctag in self.__class__.doctags:
-            context = self.get_context(doctag)
-            template = 'latex/sy.tex' ############################################################
-            docs[doctag] = { 'context': context, 'template': template }
-        return docs
-
-    def __unicode__(self):
-        return unicode(self.classroom)
-
-    class Meta:
-        verbose_name_plural = 'course syllabi'
-
-docmakers.register(CourseSyllabus)
+context_builders = ContextBuilderCollection()
 
 
 ## -------------------------------------------------------------------------- ##
@@ -81,7 +45,7 @@ class StudySlide(Model):
     # # def get_slide_path(self, filename):
         # # return posixpath.join('slides', self.lecture.course.tag(), filename)
 
-    lecture = ForeignKey('StudyLecture')
+    lesson = ForeignKey('StudyLesson')
     sort_order = PositiveSmallIntegerField(default=0)
 
     title = CharField(max_length=200)
@@ -93,19 +57,17 @@ class StudySlide(Model):
         return self.title
 
     class Meta:
-        ordering = ['lecture', 'sort_order']
+        ordering = ['lesson', 'sort_order']
 
 
-class StudyLecture(Model):
-    doctags = ['ln', 'lx']
-
+class StudyLesson(Model):
     # # def get_document_path(self, filename):
         # # return posixpath.join('documents', self.course.tag(), filename)
 
     # # def get_banner_path(self, filename):
         # # return posixpath.join('banners', self.lecture.course.tag(), filename)
 
-    activity = ForeignKey(Activity)
+    activity = OneToOneField(Activity, null=True, blank=True)
     title2 = CharField(max_length=200)
     # # powerpoint = FileField(upload_to=get_document_path, storage=OverwriteStorage(), blank=True)
     # # banner = ImageField(upload_to=get_banner_path, storage=OverwriteStorage(), blank=True)
@@ -117,29 +79,15 @@ class StudyLecture(Model):
             examples += slide.examples.all()
         return examples
 
-    def get_context(self, doctag):
-        context = {
-            'classroom': self.activity.classroom,
-            'activity_block': self.activity.activityblock_set.all(),
-            'activity': self.activity,
-            'lecture': self,
-        }
-
-        if doctag == 'ln':
-            context['document_label'] = 'Lecture Notes'
-
-        if doctag == 'lx':
-            context['document_label'] = 'Lecture Examples'
-            context['exercise_list'] = self.get_examples()
-            context['show'] = ['answers', 'solutions']
-
-        return context
+    @property
+    def extra_context(self, doctag):
+        return { 'lecture': self, 'exercise_list': self.get_examples() }
 
     def __unicode__(self):
         return '{self.activity.label} | {self.title2}'.format(self=self)
 
 
-docmakers.register(StudyLecture)
+context_builders.register(StudyLesson)
 
 
 ## -------------------------------------------------------------------------- ##
@@ -173,9 +121,7 @@ class LabEquipmentRequest(Model):
 
 
 class LabProject(Model):
-    doctags = ['lb', 'lf']
-
-    activity = ForeignKey(Activity)
+    activity = OneToOneField(Activity, null=True, blank=True)
     title2 = CharField(max_length=200)
     worksheet = TextField()
     notes = TextField(blank=True)
@@ -188,34 +134,15 @@ class LabProject(Model):
             notes_list += (3 - len(notes_list))*['']
         return notes_list
 
-    def get_context(self, doctag):
-        context = {
-            'classroom': self.activity.classroom,
-            'activity_block': self.activity.activityblock_set.all(),
-            'activity': self.activity,
-            'lab': self,
-        }
-
-        if doctag == 'lb':
-            context['document_label'] = 'Lab Worksheet'
-
-        if doctag == 'lf':
-            context['document_label'] = 'Lab Equipment'
-
-        return context
     @property
-    def docs(self):
-        docs = {}
-        for doctag in self.__class__.doctags:
-            context = self.get_context(doctag)
-            template = Template.objects.get(activity_type=self.activity.type).latex
-            docs[doctag] = { 'context': context, 'template': template }
-        return docs
+    def extra_context(self, doctag):
+        return { 'lab': self }
 
     def __unicode__(self):
         return '{self.activity.label} | {self.title2}'.format(self=self)
 
-docmakers.register(LabProject)
+
+context_builders.register(LabProject)
 
 
 ## -------------------------------------------------------------------------- ##
@@ -253,56 +180,16 @@ class ExerciseProblem(Model):
 
 
 class ExerciseSet(Model):
-    doctags = ['hp', 'hs']
-
-    activity = ForeignKey(Activity)
+    activity = OneToOneField(Activity, null=True, blank=True)
     title2 = CharField(max_length=200, blank=True)
     problems = ManyToManyField('ExerciseProblem', blank=True)
 
-    def get_context(self, doctag):
-        context = {
-            'classroom': self.activity.classroom,
-            'activity_block': self.activity.activityblock_set.all(),
-            'activity': self.activity,
-            'exercise_list': self.problems.all(),
-            'show': [],
-        }
-
-        if doctag == 'hp':
-            context['document_label'] = 'Homework Problems'
-            context['show'] = ['answers']
-
-        if doctag == 'hs':
-            context['document_label'] = 'Homework Solutions'
-            context['show'] = ['answers', 'solutions']
-
-        return context
-        
     @property
-    def docs(self):
-        docs = {}
-        for doctag in self.__class__.doctags:
-            context = self.get_context(doctag)
-            template = Template.objects.get(activity_type=self.activity.type).latex
-            docs[doctag] = { 'context': context, 'template': template }
-        return docs
+    def extra_context(self, doctag):
+        return { 'exercise_list': self.problems.all() }
 
     def __unicode__(self):
         return '{self.activity.label} | {self.title2}'.format(self=self)
 
 
-docmakers.register(ExerciseSet)
-
-
-## -------------------------------------------------------------------------- ##
-
-
-class DocumentType(Model):
-    template_path = os.path.join(settings.PROJECT_PATH, 'apps', 'docmaker', 'templates', 'latex')
-
-    label = CharField(max_length=200, blank=True)
-    activity_type = ForeignKey(ActivityType, null=True, blank=True)
-    context_source = PositiveSmallIntegerField(choices=docmakers.choices)
-    template_latex = FilePathField(path=template_path, match='.tex')
-#     latex = TextBox(null=True, blank=True)
-#     html = TextBox(null=True, blank=True)
+context_builders.register(ExerciseSet)

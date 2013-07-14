@@ -2,7 +2,13 @@ from django.contrib.admin import *
 from models import *
 
 
-site.register(CourseSyllabus)
+class DocmakerAdmin(ModelAdmin):
+    def template_filename(self, obj):
+        return os.path.split(obj.template)[1]
+
+    list_display = ['label', 'template_filename', 'activity_type']
+
+site.register(Docmaker, DocmakerAdmin)
 
 ## -------------------------------------------------------------------------- ##
 
@@ -69,7 +75,7 @@ class StudySlideInline(StackedInline):
     extra = 0
     filter_horizontal = ['examples']
 
-class StudyLectureAdmin(ModelAdmin):
+class StudyLessonAdmin(ModelAdmin):
     # def copy_lecture(self, request, queryset):
         # for lecture in queryset:
             # lecture.copy()
@@ -86,7 +92,7 @@ class StudyLectureAdmin(ModelAdmin):
     list_display = ['__unicode__', 'nbr_slides']
     inlines = [StudySlideInline]
 
-site.register(StudyLecture, StudyLectureAdmin)
+site.register(StudyLesson, StudyLessonAdmin)
 
 class StudySlideAdmin(ModelAdmin):
     # def image_exists(self, obj):
@@ -102,12 +108,9 @@ class StudySlideAdmin(ModelAdmin):
     # def nbr_equations(self, obj):
         # return len(obj.examples.all())
 
-    list_filter = ['lecture__activity__classroom']
+    list_filter = ['lesson__activity__classroom']
     list_display = ['title', 'nbr_examples']
     filter_horizontal = ['examples']
 
 site.register(StudySlide, StudySlideAdmin)
 
-## -------------------------------------------------------------------------- ##
-
-site.register(Template)

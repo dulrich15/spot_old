@@ -15,20 +15,14 @@
 \newpage
 
 \begin{center}
-\LARGE{{ '{' }}{{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm] 
-\small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y" }}{{ '}' }}
+\LARGE{{ '{' }}{{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm]
+\small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y"|title }}{{ '}' }}
 \end{center}
 
 {% for x in exercise_list %}
 \textbf{{ '{' }}{{ forloop.counter }}.{{ '}' }}
-{% if 'answers' in show %}% 
 \marginpar{{ '{' }}\footnotesize\sf {{ x.answer|rst2latex }}{{ '}' }}
-{% endif %}%
 \quad {{ x.question|rst2latex }}
-{% if 'solutions' in show %}%
-\par \textbf{Solution} 
-\par {{ x.solution|rst2latex }}
-{% endif %}%
 {% endfor %}
 
 \end{document}

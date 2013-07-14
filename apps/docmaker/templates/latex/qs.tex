@@ -1,0 +1,37 @@
+{% load restructuredtext_tags %}
+\documentclass{article}
+
+\usepackage{p200}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+
+\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} {{ document_label }}{{ '}' }} }
+\hypersetup{pdfauthor = {{ '{' }}{{ classroom.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
+
+\pagestyle{headings}
+
+\begin{document}
+
+\setcounter{page}{1}
+
+\begin{tikzpicture}[remember picture,overlay]
+\node [xshift=-1in,yshift=-1in] at (current page.north east) [below left] {Name: \underline{\makebox[2in]{}}};
+\end{tikzpicture}
+
+\begin{center}
+\LARGE{{ '{' }}{{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm]
+\small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y"|title) }}{{ '}' }}
+\end{center}
+
+\thispagestyle{empty}
+
+\section*{Word Problems}
+Show all your work and circle your final answer. (Ten points each.) \par
+
+{% for p in problems %}
+\textbf{{ '{' }}{{ loop.index }}.{{ '}' }} \quad {{ p.question|rst2latex }}
+\par {{ '{' }}\footnotesize\sf Answer: {{ p.answer|rst2latex }}{{ '}' }}
+\par {{ p.solution|rst2latex }}
+\newpage
+{% endfor %}
+
+\end{document}

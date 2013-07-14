@@ -18,8 +18,8 @@
 \end{tikzpicture}
 
 \begin{center}
-\LARGE{{ '{' }}{{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm] 
-\small{{ '{' }}\sf {{ event.date.strftime('%b %d, %Y') }}{{ '}' }}
+\LARGE{{ '{' }}{{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm]
+\small{{ '{' }}\sf {{ activity_block.date|date:"b d, Y"|title) }}{{ '}' }}
 \end{center}
 
 \thispagestyle{empty}
@@ -29,12 +29,7 @@ Show all your work and circle your final answer. (Ten points each.) \par
 
 {% for p in problems %}
 \textbf{{ '{' }}{{ loop.index }}.{{ '}' }} \quad {{ p.question|rst2latex }}
-{% if show.answers %}%
 \par {{ '{' }}\footnotesize\sf Answer: {{ p.answer|rst2latex }}{{ '}' }}
-{% endif %}%
-{% if show.solutions %}%
-\par {{ p.solution|rst2latex }}
-{% endif %}%
 \newpage
 {% endfor %}
 

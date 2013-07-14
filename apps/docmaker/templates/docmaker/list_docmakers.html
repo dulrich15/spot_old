@@ -9,16 +9,10 @@
 
     {% if docmakers %}
     {% for docmaker in docmakers %}
-    <h2>{{ docmaker.label|title }}</h2>
+    <h2>{{ docmaker.label }}</h2>
     <ul>
-        {% for obj in docmaker.objects %}
-        <li>{{ obj }}
-            <ul>
-                {% for doctag, info in obj.docs.items %}
-                <li><a href="{% url build_document classroom.pk doctag obj.pk %}">{{ info.context.document_label|title }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
+        {% for activity in docmaker.activity_type.activity_set.all %}
+        <li><a href="{% url build_document classroom.pk activity.pk docmaker.pk %}">{{ activity.label }}</a></li>
         {% endfor %}
     </ul>
     {% endfor %}

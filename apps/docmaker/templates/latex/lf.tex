@@ -23,10 +23,10 @@
 
 \begin{tabular}{p{1.25in}p{1.25in}p{1.25in}p{1.25in}}
 INSTRUCTOR: & {{ classroom.instructor.name }} & LAB SECTION: & {{ classroom.abbr }} \\
-DATE(S) NEEDED: & \textbf{{ '{' }}{{ activity_block.date|date:"b d, Y" }}{{ '}' }} & TIME NEEDED: & \textbf{6:00 pm} \\
+DATE(S) NEEDED: & \textbf{{ '{' }}{{ activity_block.date|date:"b d, Y"|title }}{{ '}' }} & TIME NEEDED: & \textbf{6:00 pm} \\
 LAB TITLE: & \multicolumn{3}{l}{{ '{' }}\textbf{{ '{' }}{{ lab.title }}{{ '}' }}{{ '}' }} \\
 &&& \\
-FILLED BY: & \underline{\makebox[1in]{}} 
+FILLED BY: & \underline{\makebox[1in]{}}
 & DATE FILLED: & \underline{\makebox[1in]{}} \\
 \end{tabular}
 
@@ -34,15 +34,15 @@ FILLED BY: & \underline{\makebox[1in]{}}
 
 \begin{tabular}{|c|p{2.5in}|l|}
 \hline
-\makebox[1.0in]{\textbf{Quantity}} & 
-\makebox[2.5in]{\textbf{\centering Items}} & 
+\makebox[1.0in]{\textbf{Quantity}} &
+\makebox[2.5in]{\textbf{\centering Items}} &
 \makebox[1.0in]{\textbf{Location}} \\
 \hline
 {% for e in lab.equipment.all %}
-{{ e.quantity }} & 
-{{ e.item|rst2latex }} & 
-\begin{minipage}{1.0in} 
-\raggedright 
+{{ e.quantity }} &
+{{ e.item|rst2latex }} &
+\begin{minipage}{1.0in}
+\raggedright
 \vspace{1ex}
 {{ e.location|rst2latex }} \par
 \vspace{1ex}

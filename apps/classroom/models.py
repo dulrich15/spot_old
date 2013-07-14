@@ -164,23 +164,24 @@ class Document(Model):
 
 class ActivityType(Model):
     name = CharField(max_length=200)
-    
+
     def __unicode__(self):
         return self.name
-            
-            
+
+
 class Activity(Model):
     classroom = ForeignKey(Classroom)
-    type = ForeignKey(ActivityType)
+    activity_type = ForeignKey(ActivityType)
+#     activity_block = ForeignKey(ActivityBlock)
     title = CharField(max_length=200, null=True, blank=True)
     documents = ManyToManyField(Document, null=True, blank=True)
 
     @property
     def label(self):
         if self.title:
-            return '{self.type}: {self.title}'.format(self=self)
+            return '{self.activity_type}: {self.title}'.format(self=self)
         else:
-            return '{self.type}: ID = {self.id}'.format(self=self)
+            return '{self.activity_type}: ID = {self.id}'.format(self=self)
 
     def __unicode__(self):
         return '[{self.classroom}] {self.label}'.format(self=self)
