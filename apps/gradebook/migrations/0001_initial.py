@@ -11,8 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'AssignmentCategory'
         db.create_table('gradebook_assignmentcategory', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('sort_order', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0)),
+            ('label', self.gf('django.db.models.fields.CharField')(max_length=200)),
         ))
         db.send_create_signal('gradebook', ['AssignmentCategory'])
 
@@ -29,6 +28,27 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('gradebook', ['Assignment'])
 
+        # Adding model 'AssignmentGrade'
+        db.create_table('gradebook_assignmentgrade', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('assignment', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['gradebook.Assignment'])),
+            ('student', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Student'])),
+            ('earned_points', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0)),
+            ('extra_points', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0)),
+            ('is_excused', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('note', self.gf('django.db.models.fields.TextField')(blank=True)),
+        ))
+        db.send_create_signal('gradebook', ['AssignmentGrade'])
+
+        # Adding model 'AssignmentGradeWeight'
+        db.create_table('gradebook_assignmentgradeweight', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('classroom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Classroom'])),
+            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['gradebook.AssignmentCategory'])),
+            ('weight_raw', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=1)),
+        ))
+        db.send_create_signal('gradebook', ['AssignmentGradeWeight'])
+
 
     def backwards(self, orm):
         # Deleting model 'AssignmentCategory'
@@ -36,6 +56,12 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Assignment'
         db.delete_table('gradebook_assignment')
+
+        # Deleting model 'AssignmentGrade'
+        db.delete_table('gradebook_assignmentgrade')
+
+        # Deleting model 'AssignmentGradeWeight'
+        db.delete_table('gradebook_assignmentgradeweight')
 
 
     models = {
@@ -95,6 +121,12 @@ class Migration(SchemaMigration):
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'})
         },
+        'classroom.student': {
+            'Meta': {'ordering': "[u'user__last_name', u'user__first_name']", 'object_name': 'Student'},
+            'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+        },
         'contenttypes.contenttype': {
             'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
             'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -114,10 +146,26 @@ class Migration(SchemaMigration):
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
         },
         'gradebook.assignmentcategory': {
-            'Meta': {'ordering': "[u'sort_order']", 'object_name': 'AssignmentCategory'},
+            'Meta': {'object_name': 'AssignmentCategory'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'})
+            'label': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+        },
+        'gradebook.assignmentgrade': {
+            'Meta': {'object_name': 'AssignmentGrade'},
+            'assignment': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['gradebook.Assignment']"}),
+            'earned_points': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
+            'extra_points': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_excused': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'note': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Student']"})
+        },
+        'gradebook.assignmentgradeweight': {
+            'Meta': {'ordering': "[u'classroom', u'-weight_raw', u'category']", 'object_name': 'AssignmentGradeWeight'},
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['gradebook.AssignmentCategory']"}),
+            'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'weight_raw': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '1'})
         }
     }
 

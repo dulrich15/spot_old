@@ -27,45 +27,13 @@ access_choices = (
     (3, 'Admin'),
 )
 
-class Instructor(Model):
-    user = ForeignKey(User)
-    public_name = CharField(max_length=200, blank=True)
-    office_location = CharField(max_length=200, blank=True)
-    office_hours = CharField(max_length=200, blank=True)
-    email = EmailField(blank=True)
-    website = URLField(blank=True)
-
-    def get_public_name(self):
-        if self.public_name:
-            return self.public_name
-        else:
-            return self.user.get_full_name()
-
-    def __unicode__(self):
-        return self.get_public_name()
-
-    class Meta:
-        ordering = ['user__last_name', 'user__first_name']
-
-
-class Department(Model):
-    name = CharField(max_length=200, blank=True)
-    abbr = CharField(max_length=200, blank=True)
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-
 class Classroom(Model):
-    dept = ForeignKey(Department)
+    dept = ForeignKey('Department')
     term = CharField(max_length=200)
     first_day = DateField()
 
     subtitle = CharField(max_length=200, blank=True)
-    instructor = ForeignKey(Instructor, null=True, blank=True)
+    instructor = ForeignKey('Instructor', null=True, blank=True)
 
     overview = TextField(blank=True)
     scratchpad = TextField(blank=True)
@@ -104,10 +72,40 @@ class Classroom(Model):
     def __unicode__(self):
         return '{self.title}, {self.season} {self.year}'.format(self=self)
 
-    # should save a "null" activity as a hanger for docs, etc ?
-
     class Meta:
         ordering = ['-first_day']
+
+
+class Department(Model):
+    name = CharField(max_length=200, blank=True)
+    abbr = CharField(max_length=200, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
+class Instructor(Model):
+    user = ForeignKey(User)
+    public_name = CharField(max_length=200, blank=True)
+    office_location = CharField(max_length=200, blank=True)
+    office_hours = CharField(max_length=200, blank=True)
+    email = EmailField(blank=True)
+    website = URLField(blank=True)
+
+    def get_public_name(self):
+        if self.public_name:
+            return self.public_name
+        else:
+            return self.user.get_full_name()
+
+    def __unicode__(self):
+        return self.get_public_name()
+
+    class Meta:
+        ordering = ['user__last_name', 'user__first_name']
 
 
 class Student(Model):
@@ -164,9 +162,16 @@ class Document(Model):
             return self.basename
 
 
+class ActivityType(Model):
+    name = CharField(max_length=200)
+    
+    def __unicode__(self):
+        return self.name
+            
+            
 class Activity(Model):
     classroom = ForeignKey(Classroom)
-    type = CharField(max_length=200)
+    type = ForeignKey(ActivityType)
     title = CharField(max_length=200, null=True, blank=True)
     documents = ManyToManyField(Document, null=True, blank=True)
 
