@@ -5,6 +5,7 @@
 *.db
 
 */temp.*
+*/fixtures/initial_data.*
 
 local/*
 !__init__.py
