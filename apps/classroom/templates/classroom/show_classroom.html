@@ -15,4 +15,9 @@
 
     <h2>Course Overview</h2>
     {{ classroom.overview|rst2html }}
+    
+    <div id="scratchpad" onClick="Toggle('scratchpad')">
+    <h2>Scratchpad</h2>
+    {{ classroom.scratchpad|rst2html }}
+    </div>
 {% endblock %}
