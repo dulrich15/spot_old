@@ -57,8 +57,19 @@ class ContextBuilderCollection(object):
                 return '{self.__class__.__name__} #{self.pk}'.format(self=self)
                 
         builder.__unicode__ = __unicode__
-        
+                
 context_builders = ContextBuilderCollection()
+
+from apps.classroom.models import Activity
+def title(self):
+    for model in context_builders.models:
+        try:
+            obj = model.objects.get(activity=self)
+            return obj.title
+        except:
+            pass
+    return ''
+Activity.title = title
 
 
 ## -------------------------------------------------------------------------- ##

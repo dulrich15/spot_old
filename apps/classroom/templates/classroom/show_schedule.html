@@ -12,14 +12,19 @@
     <dl>
         {% for block in classroom.activityblock_set.all %}
         <dt>
-            {{ block }}{% if block.date %} ({{ block.date }}){% endif %}
+            {% if block.date %}{{ block.date }}{% else %}{{ block }}{% endif %}
         </dt>
         {% if block.activity_set.all %}
         {% for activity in block.activity_set.all %}
-        <dd>{{ activity.label }}</dd>
+        <dd>
+            {{ activity.label }}{% if activity.title %}: {{ activity.title }}{% endif %}
+        </dd>
         {% endfor %}
-        {% endif %}
-        </li>
+        {% else %}
+        <dd>
+            {{ block.heading }}
+        </dd>
+        {% endif %}        
         {% endfor %}
     </dl>
     {% else %}

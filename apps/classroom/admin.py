@@ -46,7 +46,10 @@ class ActivityBlockAdmin(ModelAdmin):
 
 site.register(ActivityBlock, ActivityBlockAdmin)
 
-site.register(ActivityType)
+class ActivityTypeAdmin(ModelAdmin):
+    list_display = ['__unicode__', 'sort_order']
+
+site.register(ActivityType, ActivityTypeAdmin)
 
 class ActivityAdmin(ModelAdmin):
     def nbr_documents(self, obj):

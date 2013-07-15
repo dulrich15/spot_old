@@ -185,6 +185,32 @@ class ActivityBlock(Model):
         else:
             return None
 
+    def get_first_activity(self):
+        activities = Activity.objects.filter(activity_block=self)
+        if activities:
+            return activities[0]
+        else:
+            return None
+
+    @property
+    def label(self):
+        activity = self.get_first_activity()
+        if activity:
+            return activity.label
+        else:
+            return ''
+        
+    @property
+    def title(self):
+        activity = self.get_first_activity()
+        if activity:
+            return activity.title
+        else:
+            if self.heading:
+                return self.heading
+            else:
+                return ''
+            
     def __unicode__(self):
         if self.date:
             return '{self.weekday} Week {self.week}'.format(self=self)
@@ -201,11 +227,15 @@ class ActivityBlock(Model):
 
 class ActivityType(Model):
     name = CharField(max_length=200)
+    sort_order = PositiveSmallIntegerField(null=True, blank=True)
 
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ['sort_order']
 
+        
 class Activity(Model):
     classroom = ForeignKey(Classroom)
     activity_type = ForeignKey(ActivityType)
@@ -230,10 +260,15 @@ class Activity(Model):
     def label(self):
         return '{self.activity_type} {self.nbr}'.format(self=self)
 
+    @property
+    def title(self):
+        return ''
+        
     def __unicode__(self):
         return self.label
-
+        
     class Meta:
         verbose_name_plural = 'activities'
+        ordering = ['classroom', 'activity_block', 'activity_type']
 
 
