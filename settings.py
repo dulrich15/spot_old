@@ -11,10 +11,14 @@ MY_APPS = (
 #     'mindmap',
 #     'picmaker',
 #     'quotes',
-#     'wiki',
 )
 
+DOCUMENT_PATH = os.path.join(PROJECT_PATH, 'content', 'documents')
+BANNER_PATH = os.path.join(PROJECT_PATH, 'content', 'banners')
+SLIDE_PATH = os.path.join(PROJECT_PATH, 'content', 'slides')
+
 TEMP_PATH = os.path.join(PROJECT_PATH, 'apps', 'docmaker', '_')
+TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'apps', 'docmaker', 'templates', 'latex')
 IMAGE_PATH = os.path.join(PROJECT_PATH, 'content', 'images')
 IMAGE_URL = '/static/docmaker/images/'
 

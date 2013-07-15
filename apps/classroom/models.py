@@ -10,12 +10,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import *
 
-from website.utils import get_choices_from_list
+from website.utils import access_choices
+from website.utils import weekday_choices
 from website.utils import get_choices_from_path
-
-
-weekday_list = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-weekday_choices = get_choices_from_list(weekday_list)
 
 
 class Classroom(Model):
@@ -123,13 +120,8 @@ class Student(Model):
 
 
 class Document(Model):
-    access_list = ['Public', 'Student', 'Instructor']
-    access_choices = get_choices_from_list(access_list)
-
-    document_path = os.path.join(settings.PROJECT_PATH, 'content', 'documents')
-
     classroom = ForeignKey('Classroom')
-    filename = CharField(max_length=200, choices=get_choices_from_path(document_path))
+    filename = CharField(max_length=200, choices=get_choices_from_path(settings.DOCUMENT_PATH))
     label = CharField(max_length=200, null=True, blank=True)
     access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
 
@@ -139,11 +131,11 @@ class Document(Model):
 
     @property
     def filepath(self):
-        return os.path.join(Document.document_path, self.filename)
+        return os.path.join(settings.DOCUMENT_PATH, self.filename)
 
     @property
     def exists(self):
-        return os.path.isfile(os.path.join(Document.document_path, self.filepath))
+        return os.path.isfile(os.path.join(settings.DOCUMENT_PATH, self.filepath))
 
     def delete(self):
         print 'attmpting to remove ' + self.filepath

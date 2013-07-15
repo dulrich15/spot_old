@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import os
 import shutil
 
+from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -74,7 +75,7 @@ def build_document(request, classroom_pk, docmaker_pk, activity_pk):
     else:
         filename = '{}{}.pdf'.format(classroom.tag, docmaker.tag)
 
-    filepath = os.path.join(Document.document_path, filename)
+    filepath = os.path.join(settings.DOCUMENT_PATH, filename)
     shutil.move(pdfpath, filepath) # this will overwrite
 
     try:

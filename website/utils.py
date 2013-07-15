@@ -14,4 +14,9 @@ def get_choices_from_path(mypath, filter='*'):
             choices += [(f, f)]
     return choices
 
+weekday_list = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+weekday_choices = get_choices_from_list(weekday_list)
+
+access_list = ['Public', 'Student', 'Instructor']
+access_choices = get_choices_from_list(access_list)
 

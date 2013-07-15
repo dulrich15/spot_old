@@ -3,24 +3,23 @@ from __future__ import unicode_literals
 
 import os
 
+from django.conf import settings
+
 from django.db.models import *
 
 from apps.classroom.models import ActivityType
 from apps.classroom.models import Activity
-from apps.classroom.models import Document
 
-from website.utils import get_choices_from_list
+from website.utils import access_choices
 from website.utils import get_choices_from_path
 
 
 class Docmaker(Model):
-    template_path = os.path.join(settings.PROJECT_PATH, 'apps', 'docmaker', 'templates', 'latex')
-
     activity_type = ForeignKey(ActivityType, null=True, blank=True)
     label = CharField(max_length=200)
     tag = CharField(max_length=2)
-    template_filename = CharField(max_length=200, choices=get_choices_from_path(template_path), verbose_name='template')
-    access_index = PositiveSmallIntegerField(choices=Document.access_choices, verbose_name='access', default=0)
+    template_filename = CharField(max_length=200, choices=get_choices_from_path(settings.TEMPLATE_PATH), verbose_name='template')
+    access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
 
     @property
     def access(self):
@@ -28,7 +27,7 @@ class Docmaker(Model):
 
     @property
     def template(self):
-        return os.path.join(Docmaker.template_path, self.template_filename)
+        return os.path.join(settings.TEMPLATE_PATH, self.template_filename)
 
     @property
     def filename(self):
@@ -85,15 +84,12 @@ class StudySlide(Model):
 
 
 class StudyLesson(Model):
-    # # def get_document_path(self, filename):
-        # # return posixpath.join('documents', self.course.tag(), filename)
-
     # # def get_banner_path(self, filename):
         # # return posixpath.join('banners', self.lecture.course.tag(), filename)
 
     activity = OneToOneField(Activity, null=True, blank=True)
     title = CharField(max_length=200)
-    powerpoint = CharField(max_length=200, choices=get_choices_from_path(Document.document_path, filter='*.ppt'), null=True, blank=True)
+    powerpoint = CharField(max_length=200, choices=get_choices_from_path(settings.DOCUMENT_PATH, filter='*.ppt'), null=True, blank=True)
     # # banner = ImageField(upload_to=get_banner_path, storage=OverwriteStorage(), blank=True)
     intro = TextField(blank=True)
 

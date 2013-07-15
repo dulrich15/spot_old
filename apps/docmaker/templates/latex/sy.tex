@@ -29,11 +29,11 @@
 \renewcommand{\tabcolsep}{0.2cm}
 \begin{tabular}{ll} 
 \hline
-Instructor   & {{ classroom.instructor.public_name }} \\ 
-Website      & \url{{ '{' }}{{ classroom.instructor.website }}{{ '}' }} \\ 
-E-mail       & \texttt{{ '{' }}{{ classroom.instructor.email }}{{ '}' }} \\ 
-Office       & {{ classroom.instructor.office.location }} \\ 
-Office Hours & {{ classroom.instructor.office.hours }} \\ 
+Instructor & {{ classroom.instructor.public_name }} \\ 
+{% if classroom.instructor.website %}Website & \url{{ '{' }}{{ classroom.instructor.website }}{{ '}' }} \\ {% endif %}
+{% if classroom.instructor.email %}E-mail & \texttt{{ '{' }}{{ classroom.instructor.email }}{{ '}' }} \\ {% endif %}
+{% if classroom.instructor.office_location %}Office & {{ classroom.instructor.office_location }} \\ {% endif %}
+{% if classroom.instructor.office_hours %}Office Hours & {{ classroom.instructor.office_hours }} \\ {% endif %}
 \hline
 \end{tabular}
 \end{center}
