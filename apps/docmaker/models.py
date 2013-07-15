@@ -2,6 +2,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import re
 
 from django.conf import settings
 
@@ -219,9 +220,9 @@ class ExerciseSetModfication(Model):
     problem = ForeignKey('ExerciseProblem')
     regex_pattern = CharField(max_length=200)
     regex_replace = CharField(max_length=200)
+    sort_order = PositiveSmallIntegerField(default=0)
     new_answer = TextField(blank=True)
     new_solution = TextField(blank=True)
-    sort_order = PositiveSmallIntegerField(default=0)
     
     def __unicode__(self):
         return '{self.exercise_set}: {self.problem.key}'.format(self=self)
@@ -237,27 +238,37 @@ class ExerciseSet(Model):
 
     @property
     def problems(self):
+        print "hi"
         problems = []
         for problem in self.problems_unmodified.all():
+            print problem
             key = problem.key
             question = problem.question
             answer = problem.answer
             solution = problem.solution
 
-            mods = ExerciseSetModification.objects.filter(exercise_set=self, problem=problem)
+            mods = ExerciseSetModfication.objects.filter(exercise_set=self, problem=problem)
             for mod in mods:
                 pattern = mod.regex_pattern
                 repl = mod.regex_replace
+                key = '{} modified'.format(problem.key)
                 question = re.sub(pattern, repl, question)
                 answer = mod.new_answer
                 solution = mod.new_solution
 
+            if not answer:
+                answer = 'TBD'
+                
+            if not solution:
+                solution = 'No solution available.'
+                
             problems.append({
                 'key': key,
                 'question': question,
                 'answer': answer,
                 'solution': solution,
             })
+        print problems
         return problems
 
     

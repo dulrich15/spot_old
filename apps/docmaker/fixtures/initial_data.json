@@ -535,8 +535,7 @@
             "regex_pattern": "(0.50 meters)", 
             "regex_replace": "0.40 meters", 
             "problem": 10, 
-            "new_answer": "",
-            "sort_order", 0
+            "new_answer": ""
         }
     }, 
     {
