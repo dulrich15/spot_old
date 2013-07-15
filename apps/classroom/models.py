@@ -10,22 +10,16 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import *
 
-weekday_choices = (
-    (0, 'Mon'),
-    (1, 'Tue'),
-    (2, 'Wed'),
-    (3, 'Thu'),
-    (4, 'Fri'),
-    (5, 'Sat'),
-    (6, 'Sun'),
-)
+from website.utils import get_choices_from_list
+from website.utils import get_choices_from_path
 
-access_choices = (
-    (0, 'Public'),
-    (1, 'Student'),
-    (2, 'Instructor'),
-    (3, 'Admin'),
-)
+
+weekday_list = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+weekday_choices = get_choices_from_list(weekday_list)
+
+access_list = ['Public', 'Student', 'Instructor']
+access_choices = get_choices_from_list(access_list)
+
 
 class Classroom(Model):
     dept = ForeignKey('Department')
@@ -135,7 +129,7 @@ class Document(Model):
     document_path = os.path.join(settings.PROJECT_PATH, 'content', 'documents')
 
     classroom = ForeignKey('Classroom')
-    filepath = FilePathField(path=document_path, match='.*', recursive=True)
+    filename = CharField(max_length=200, choices=get_choices_from_path(document_path))
     label = CharField(max_length=200, null=True, blank=True)
     access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
 
@@ -144,25 +138,24 @@ class Document(Model):
         return access_choices[self.access_index][1]
 
     @property
-    def abspath(self):
-        return os.path.abspath(self.filepath)
-
-    @property
-    def filename(self):
-        return os.path.split(self.abspath)[1]
+    def filepath(self):
+        return os.path.join(Document.document_path, self.filename)
 
     @property
     def exists(self):
         return os.path.isfile(os.path.join(Document.document_path, self.filepath))
 
     def delete(self):
-        print 'attmpting to remove ' + self.abspath
+        print 'attmpting to remove ' + self.filepath
         if self.exists:
-            os.remove(self.abspath)
+            os.remove(self.filepath)
         super(Document, self).delete()
 
     def __unicode__(self):
-        return self.filename
+        if self.label:
+            return self.label
+        else:
+            return self.filename
 
 
 # split below to separate schedule app?

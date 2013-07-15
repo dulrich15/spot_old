@@ -13,7 +13,9 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('activity_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.ActivityType'], null=True, blank=True)),
             ('label', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('template', self.gf('django.db.models.fields.FilePathField')(path=u'/home/dave/Repos/github/spot/apps/docmaker/templates/latex', max_length=100, match=u'.tex')),
+            ('tag', self.gf('django.db.models.fields.CharField')(max_length=2)),
+            ('template_filename', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('access_index', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0)),
         ))
         db.send_create_signal('docmaker', ['Docmaker'])
 
@@ -40,7 +42,7 @@ class Migration(SchemaMigration):
         db.create_table('docmaker_studylesson', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('activity', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['classroom.Activity'], unique=True, null=True, blank=True)),
-            ('title2', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
             ('intro', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal('docmaker', ['StudyLesson'])
@@ -66,7 +68,7 @@ class Migration(SchemaMigration):
         db.create_table('docmaker_labproject', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('activity', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['classroom.Activity'], unique=True, null=True, blank=True)),
-            ('title2', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
             ('worksheet', self.gf('django.db.models.fields.TextField')()),
             ('notes', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
@@ -96,7 +98,7 @@ class Migration(SchemaMigration):
         db.create_table('docmaker_exerciseset', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('activity', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['classroom.Activity'], unique=True, null=True, blank=True)),
-            ('title2', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
         ))
         db.send_create_signal('docmaker', ['ExerciseSet'])
 
@@ -177,11 +179,20 @@ class Migration(SchemaMigration):
         },
         'classroom.activity': {
             'Meta': {'object_name': 'Activity'},
+            'activity_block': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityBlock']"}),
+            'activity_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityType']"}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
             'documents': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['classroom.Document']", 'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        'classroom.activityblock': {
+            'Meta': {'ordering': "[u'sort_order', u'week', u'weekday_index', u'heading']", 'object_name': 'ActivityBlock'},
+            'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
+            'heading': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityType']"})
+            'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'week': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'weekday_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         'classroom.activitytype': {
             'Meta': {'object_name': 'ActivityType'},
@@ -209,7 +220,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Document'},
             'access_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
-            'filepath': ('django.db.models.fields.FilePathField', [], {'path': "u'/home/dave/Repos/github/spot/content/documents'", 'max_length': '100', 'recursive': 'True', 'match': "u'.*'"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },
@@ -232,10 +242,12 @@ class Migration(SchemaMigration):
         },
         'docmaker.docmaker': {
             'Meta': {'object_name': 'Docmaker'},
+            'access_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
             'activity_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityType']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'template': ('django.db.models.fields.FilePathField', [], {'path': "u'/home/dave/Repos/github/spot/apps/docmaker/templates/latex'", 'max_length': '100', 'match': "u'.tex'"})
+            'tag': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
+            'template_filename': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'docmaker.exerciseproblem': {
             'Meta': {'ordering': "[u'key']", 'object_name': 'ExerciseProblem'},
@@ -252,7 +264,7 @@ class Migration(SchemaMigration):
             'activity': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Activity']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'problems': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['docmaker.ExerciseProblem']", 'symmetrical': 'False', 'blank': 'True'}),
-            'title2': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
         },
         'docmaker.exercisesource': {
             'Meta': {'object_name': 'ExerciseSource'},
@@ -279,7 +291,7 @@ class Migration(SchemaMigration):
             'equipment': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['docmaker.LabEquipment']", 'through': "orm['docmaker.LabEquipmentRequest']", 'symmetrical': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'title2': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'worksheet': ('django.db.models.fields.TextField', [], {})
         },
         'docmaker.studylesson': {
@@ -287,7 +299,7 @@ class Migration(SchemaMigration):
             'activity': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Activity']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'intro': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'title2': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'docmaker.studyslide': {
             'Meta': {'ordering': "[u'lesson', u'sort_order']", 'object_name': 'StudySlide'},

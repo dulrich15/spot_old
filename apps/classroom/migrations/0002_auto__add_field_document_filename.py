@@ -8,15 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Docmaker.tag'
-        db.add_column('docmaker_docmaker', 'tag',
-                      self.gf('django.db.models.fields.CharField')(default=2, max_length=2),
+        # Adding field 'Document.filename'
+        db.add_column('classroom_document', 'filename',
+                      self.gf('django.db.models.fields.CharField')(default=2, max_length=200),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'Docmaker.tag'
-        db.delete_column('docmaker_docmaker', 'tag')
+        # Deleting field 'Document.filename'
+        db.delete_column('classroom_document', 'filename')
 
 
     models = {
@@ -92,7 +92,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Document'},
             'access_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
-            'filepath': ('django.db.models.fields.FilePathField', [], {'path': "u'/home/dave/Repos/github/spot/content/documents'", 'max_length': '100', 'recursive': 'True', 'match': "u'.*'"}),
+            'filename': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },
@@ -106,83 +106,19 @@ class Migration(SchemaMigration):
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'})
         },
+        'classroom.student': {
+            'Meta': {'ordering': "[u'user__last_name', u'user__first_name']", 'object_name': 'Student'},
+            'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+        },
         'contenttypes.contenttype': {
             'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
             'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'docmaker.docmaker': {
-            'Meta': {'object_name': 'Docmaker'},
-            'access_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
-            'activity_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityType']", 'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'label': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'tag': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
-            'template': ('django.db.models.fields.FilePathField', [], {'path': "u'/home/dave/Repos/github/spot/apps/docmaker/templates/latex'", 'max_length': '100', 'match': "u'.tex'"})
-        },
-        'docmaker.exerciseproblem': {
-            'Meta': {'ordering': "[u'key']", 'object_name': 'ExerciseProblem'},
-            'answer': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'key': ('django.db.models.fields.SlugField', [], {'max_length': '50'}),
-            'notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'question': ('django.db.models.fields.TextField', [], {}),
-            'solution': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'source': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['docmaker.ExerciseSource']"})
-        },
-        'docmaker.exerciseset': {
-            'Meta': {'object_name': 'ExerciseSet'},
-            'activity': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Activity']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'problems': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['docmaker.ExerciseProblem']", 'symmetrical': 'False', 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
-        },
-        'docmaker.exercisesource': {
-            'Meta': {'object_name': 'ExerciseSource'},
-            'author': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
-        },
-        'docmaker.labequipment': {
-            'Meta': {'ordering': "[u'item']", 'object_name': 'LabEquipment'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'item': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'location': ('django.db.models.fields.CharField', [], {'max_length': '200'})
-        },
-        'docmaker.labequipmentrequest': {
-            'Meta': {'ordering': "[u'equipment__location']", 'object_name': 'LabEquipmentRequest'},
-            'equipment': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['docmaker.LabEquipment']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'lab': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['docmaker.LabProject']"}),
-            'quantity': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'})
-        },
-        'docmaker.labproject': {
-            'Meta': {'object_name': 'LabProject'},
-            'activity': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Activity']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
-            'equipment': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['docmaker.LabEquipment']", 'through': "orm['docmaker.LabEquipmentRequest']", 'symmetrical': 'False'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'worksheet': ('django.db.models.fields.TextField', [], {})
-        },
-        'docmaker.studylesson': {
-            'Meta': {'object_name': 'StudyLesson'},
-            'activity': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Activity']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'intro': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
-        },
-        'docmaker.studyslide': {
-            'Meta': {'ordering': "[u'lesson', u'sort_order']", 'object_name': 'StudySlide'},
-            'examples': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['docmaker.ExerciseProblem']", 'symmetrical': 'False', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'lesson': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['docmaker.StudyLesson']"}),
-            'notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         }
     }
 
-    complete_apps = ['docmaker']
+    complete_apps = ['classroom']

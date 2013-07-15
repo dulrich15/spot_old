@@ -6,7 +6,7 @@
             "access_index": 0, 
             "label": "Course Syllabus", 
             "tag": "sy", 
-            "template": "/home/dave/Repos/github/spot/apps/docmaker/templates/latex/sy.tex", 
+            "template_filename": "sy.tex", 
             "activity_type": null
         }
     }, 
@@ -17,7 +17,7 @@
             "access_index": 0, 
             "label": "Lecture Notes", 
             "tag": "ln", 
-            "template": "/home/dave/Repos/github/spot/apps/docmaker/templates/latex/ln.tex", 
+            "template_filename": "ln.tex", 
             "activity_type": 1
         }
     }, 
@@ -28,7 +28,7 @@
             "access_index": 1, 
             "label": "Lecture Examples", 
             "tag": "lx", 
-            "template": "/home/dave/Repos/github/spot/apps/docmaker/templates/latex/hp.tex", 
+            "template_filename": "hp.tex", 
             "activity_type": 1
         }
     }, 
@@ -39,7 +39,7 @@
             "access_index": 0, 
             "label": "Lab Worksheet", 
             "tag": "lb", 
-            "template": "/home/dave/Repos/github/spot/apps/docmaker/templates/latex/lb.tex", 
+            "template_filename": "lb.tex", 
             "activity_type": 2
         }
     }, 
@@ -50,7 +50,7 @@
             "access_index": 2, 
             "label": "Lab Equipment", 
             "tag": "lf", 
-            "template": "/home/dave/Repos/github/spot/apps/docmaker/templates/latex/lf.tex", 
+            "template_filename": "lf.tex", 
             "activity_type": 2
         }
     }, 
@@ -61,7 +61,7 @@
             "access_index": 2, 
             "label": "Quiz Problems", 
             "tag": "qp", 
-            "template": "/home/dave/Repos/github/spot/apps/docmaker/templates/latex/qp.tex", 
+            "template_filename": "qp.tex", 
             "activity_type": 3
         }
     }, 
@@ -72,7 +72,7 @@
             "access_index": 2, 
             "label": "Quiz Solutions", 
             "tag": "qs", 
-            "template": "/home/dave/Repos/github/spot/apps/docmaker/templates/latex/qs.tex", 
+            "template_filename": "qs.tex", 
             "activity_type": 3
         }
     }, 

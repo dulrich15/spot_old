@@ -78,16 +78,25 @@ def build_document(request, classroom_pk, docmaker_pk, activity_pk):
     shutil.move(pdfpath, filepath) # this will overwrite
 
     try:
-        doc = Document.objects.get(classroom=classroom, filepath=filepath)
+        doc = Document.objects.get(classroom=classroom, filename=filename)
+        doc.label = docmaker.label
     except:
-        doc = Document(classroom=classroom, filepath=filepath)
-    doc.label = docmaker.label
-    doc.access_index = docmaker.access_index
+        try:
+            doc = Document.objects.get(classroom=classroom, label=docmaker.label)
+            doc.filename = filename
+        except:
+            doc = Document()
+            doc.classroom = classroom
+            doc.filename = filename
+            doc.label = docmaker.label
+            doc.access_index = docmaker.access_index
     doc.save()
 
     if activity:
         activity.documents.add(doc)
 
+    print "{} saved at {}".format(doc.label, doc.filepath)
+        
     return redirect('serve_document', classroom_pk, filename)
 
 

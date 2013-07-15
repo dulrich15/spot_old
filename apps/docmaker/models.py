@@ -6,6 +6,9 @@ import os
 from django.db.models import *
 from apps.classroom.models import ActivityType, Activity, access_choices
 
+from website.utils import get_choices_from_list
+from website.utils import get_choices_from_path
+
 
 class Docmaker(Model):
     template_path = os.path.join(settings.PROJECT_PATH, 'apps', 'docmaker', 'templates', 'latex')
@@ -13,12 +16,16 @@ class Docmaker(Model):
     activity_type = ForeignKey(ActivityType, null=True, blank=True)
     label = CharField(max_length=200)
     tag = CharField(max_length=2)
-    template = FilePathField(path=template_path, match='.tex')
+    template_filename = CharField(max_length=200, choices=get_choices_from_path(template_path), verbose_name='template')
     access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
 
     @property
     def access(self):
         return access_choices[self.access_index][1]
+
+    @property
+    def template(self):
+        return os.path.join(Docmaker.template_path, self.template_filename)
 
     @property
     def filename(self):

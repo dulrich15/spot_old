@@ -69,8 +69,7 @@ def list_documents(request, classroom_pk):
 
 def serve_document(request, classroom_pk, filename):
     classroom = Classroom.objects.get(pk=classroom_pk)
-    filepath = os.path.join(Document.document_path, filename)
-    document = Document.objects.get(filepath=filepath)
+    document = Document.objects.get(filename=filename)
 
     if request.user.is_staff:
         user_access_index = 2
@@ -80,7 +79,7 @@ def serve_document(request, classroom_pk, filename):
         user_access_index = 0
 
     if user_access_index >= document.access_index:
-        f = open(document.abspath, 'rb')
+        f = open(document.filepath, 'rb')
         response = HttpResponse(f.read(), mimetype=guess_type(document.filename)[0])
         return response
     else:

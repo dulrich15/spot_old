@@ -3,7 +3,7 @@
 {% block main_content %}
     {% if user.is_staff %}
     <ul class="action_links">
-        <li><a href="{% url build_all classroom.pk %}">Build all</a></li>
+        <li><a href="{% url build_all classroom.pk %}">All</a></li>
         <li><a href="{% url admin:app_list 'docmaker' %}" target="_blank">Edit</a></li>
     </ul>
     {% endif %}

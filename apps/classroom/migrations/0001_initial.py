@@ -53,36 +53,10 @@ class Migration(SchemaMigration):
         db.create_table('classroom_document', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('classroom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Classroom'])),
-            ('filepath', self.gf('django.db.models.fields.FilePathField')(path=u'c:\\Users\\Family\\Documents\\Dave\\Git repos\\github\\spot\\content\\documents', max_length=100, recursive=True, match=u'.*')),
             ('label', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
             ('access_index', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0)),
         ))
         db.send_create_signal('classroom', ['Document'])
-
-        # Adding model 'ActivityType'
-        db.create_table('classroom_activitytype', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
-        ))
-        db.send_create_signal('classroom', ['ActivityType'])
-
-        # Adding model 'Activity'
-        db.create_table('classroom_activity', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('classroom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Classroom'])),
-            ('type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.ActivityType'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
-        ))
-        db.send_create_signal('classroom', ['Activity'])
-
-        # Adding M2M table for field documents on 'Activity'
-        m2m_table_name = db.shorten_name('classroom_activity_documents')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('activity', models.ForeignKey(orm['classroom.activity'], null=False)),
-            ('document', models.ForeignKey(orm['classroom.document'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['activity_id', 'document_id'])
 
         # Adding model 'ActivityBlock'
         db.create_table('classroom_activityblock', (
@@ -95,14 +69,30 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('classroom', ['ActivityBlock'])
 
-        # Adding M2M table for field activities on 'ActivityBlock'
-        m2m_table_name = db.shorten_name('classroom_activityblock_activities')
+        # Adding model 'ActivityType'
+        db.create_table('classroom_activitytype', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
+        ))
+        db.send_create_signal('classroom', ['ActivityType'])
+
+        # Adding model 'Activity'
+        db.create_table('classroom_activity', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('classroom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Classroom'])),
+            ('activity_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.ActivityType'])),
+            ('activity_block', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.ActivityBlock'])),
+        ))
+        db.send_create_signal('classroom', ['Activity'])
+
+        # Adding M2M table for field documents on 'Activity'
+        m2m_table_name = db.shorten_name('classroom_activity_documents')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('activityblock', models.ForeignKey(orm['classroom.activityblock'], null=False)),
-            ('activity', models.ForeignKey(orm['classroom.activity'], null=False))
+            ('activity', models.ForeignKey(orm['classroom.activity'], null=False)),
+            ('document', models.ForeignKey(orm['classroom.document'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['activityblock_id', 'activity_id'])
+        db.create_unique(m2m_table_name, ['activity_id', 'document_id'])
 
 
     def backwards(self, orm):
@@ -121,6 +111,9 @@ class Migration(SchemaMigration):
         # Deleting model 'Document'
         db.delete_table('classroom_document')
 
+        # Deleting model 'ActivityBlock'
+        db.delete_table('classroom_activityblock')
+
         # Deleting model 'ActivityType'
         db.delete_table('classroom_activitytype')
 
@@ -129,12 +122,6 @@ class Migration(SchemaMigration):
 
         # Removing M2M table for field documents on 'Activity'
         db.delete_table(db.shorten_name('classroom_activity_documents'))
-
-        # Deleting model 'ActivityBlock'
-        db.delete_table('classroom_activityblock')
-
-        # Removing M2M table for field activities on 'ActivityBlock'
-        db.delete_table(db.shorten_name('classroom_activityblock_activities'))
 
 
     models = {
@@ -169,15 +156,14 @@ class Migration(SchemaMigration):
         },
         'classroom.activity': {
             'Meta': {'object_name': 'Activity'},
+            'activity_block': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityBlock']"}),
+            'activity_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityType']"}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
             'documents': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['classroom.Document']", 'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityType']"})
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'classroom.activityblock': {
             'Meta': {'ordering': "[u'sort_order', u'week', u'weekday_index', u'heading']", 'object_name': 'ActivityBlock'},
-            'activities': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['classroom.Activity']", 'null': 'True', 'blank': 'True'}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
             'heading': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -211,7 +197,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Document'},
             'access_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
-            'filepath': ('django.db.models.fields.FilePathField', [], {'path': "u'c:\\\\Users\\\\Family\\\\Documents\\\\Dave\\\\Git repos\\\\github\\\\spot\\\\content\\\\documents'", 'max_length': '100', 'recursive': 'True', 'match': "u'.*'"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },
