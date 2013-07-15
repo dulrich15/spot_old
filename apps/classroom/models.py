@@ -17,9 +17,6 @@ from website.utils import get_choices_from_path
 weekday_list = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 weekday_choices = get_choices_from_list(weekday_list)
 
-access_list = ['Public', 'Student', 'Instructor']
-access_choices = get_choices_from_list(access_list)
-
 
 class Classroom(Model):
     dept = ForeignKey('Department')
@@ -126,6 +123,9 @@ class Student(Model):
 
 
 class Document(Model):
+    access_list = ['Public', 'Student', 'Instructor']
+    access_choices = get_choices_from_list(access_list)
+
     document_path = os.path.join(settings.PROJECT_PATH, 'content', 'documents')
 
     classroom = ForeignKey('Classroom')

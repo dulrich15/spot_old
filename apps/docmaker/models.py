@@ -4,7 +4,10 @@ from __future__ import unicode_literals
 import os
 
 from django.db.models import *
-from apps.classroom.models import ActivityType, Activity, access_choices
+
+from apps.classroom.models import ActivityType
+from apps.classroom.models import Activity
+from apps.classroom.models import Document
 
 from website.utils import get_choices_from_list
 from website.utils import get_choices_from_path
@@ -17,7 +20,7 @@ class Docmaker(Model):
     label = CharField(max_length=200)
     tag = CharField(max_length=2)
     template_filename = CharField(max_length=200, choices=get_choices_from_path(template_path), verbose_name='template')
-    access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
+    access_index = PositiveSmallIntegerField(choices=Document.access_choices, verbose_name='access', default=0)
 
     @property
     def access(self):
@@ -43,7 +46,19 @@ class ContextBuilderCollection(object):
 
     def register(self, builder):
         self.models.append(builder)
-
+        
+        def __unicode__(self):
+            if self.activity and self.title:
+                return '{self.activity.label}: {self.title}'.format(self=self)
+            elif self.activity:
+                return self.activity.label
+            elif self.title:
+                return self.title
+            else:
+                return '{self.__class__.__name__} #{self.pk}'.format(self=self)
+                
+        builder.__unicode__ = __unicode__
+        
 context_builders = ContextBuilderCollection()
 
 
@@ -78,7 +93,7 @@ class StudyLesson(Model):
 
     activity = OneToOneField(Activity, null=True, blank=True)
     title = CharField(max_length=200)
-    # # powerpoint = FileField(upload_to=get_document_path, storage=OverwriteStorage(), blank=True)
+    powerpoint = CharField(max_length=200, choices=get_choices_from_path(Document.document_path, filter='*.ppt'), null=True, blank=True)
     # # banner = ImageField(upload_to=get_banner_path, storage=OverwriteStorage(), blank=True)
     intro = TextField(blank=True)
 
@@ -91,10 +106,6 @@ class StudyLesson(Model):
     @property
     def extra_context(self):
         return {'lecture': self, 'exercise_list': self.get_examples()}
-
-    def __unicode__(self):
-        return '{self.activity.label} | {self.title}'.format(self=self)
-
 
 context_builders.register(StudyLesson)
 
@@ -147,10 +158,6 @@ class LabProject(Model):
     def extra_context(self):
         return {'lab': self}
 
-    def __unicode__(self):
-        return '{self.activity.label} | {self.title}'.format(self=self)
-
-
 context_builders.register(LabProject)
 
 
@@ -196,9 +203,5 @@ class ExerciseSet(Model):
     @property
     def extra_context(self):
         return {'exercise_list': self.problems.all()}
-
-    def __unicode__(self):
-        return '{self.activity.label} | {self.title}'.format(self=self)
-
 
 context_builders.register(ExerciseSet)

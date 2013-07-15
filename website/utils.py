@@ -1,3 +1,4 @@
+import fnmatch
 import os
 
 def get_choices_from_list(mylist):
@@ -6,10 +7,10 @@ def get_choices_from_list(mylist):
         choices += [(len(choices), x)]
     return choices
 
-def get_choices_from_path(mypath):
+def get_choices_from_path(mypath, filter='*'):
     choices = []
     for f in os.listdir(mypath):
-        if os.path.isfile(os.path.join(mypath, f)):
+        if fnmatch.fnmatch(f, filter):
             choices += [(f, f)]
     return choices
 

@@ -182,6 +182,7 @@
         "fields": {
             "title": "Electric Field and Potential", 
             "intro": "* This term we move solidly beyond Newtonian mechanics.\r\n\r\n* Typically \"modern physics\" means relativity and quantum mechanics, but I think it makes sense to include electromagnetism also.\r\n\r\n* Another theme for the term is the microscopic source of force.\r\n\r\n* The term splits pretty even down the middle:\r\n\r\n  * In the second half we drive into the microscopic and subatomic by picking up quantum mechanics and high energy physics.\r\n\r\n  * Now we start with the study of electromagnetism which will drive us to consider relativity as well.", 
+            "powerpoint": "2013p203ls01.ppt", 
             "activity": 1
         }
     }, 
@@ -498,7 +499,7 @@
         "pk": 1, 
         "model": "docmaker.exerciseset", 
         "fields": {
-            "title": "HW 1", 
+            "title": "Homework", 
             "problems": [
                 1, 
                 3, 
