@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.admin import *
 from models import *
 
@@ -27,18 +29,30 @@ class ExerciseProblemAdmin(ModelAdmin):
     list_filter = ['source']
 site.register(ExerciseProblem, ExerciseProblemAdmin)
 
-# class ExerciseSetProblemInline(TabularInline):
-    # model = ExerciseSetProblem
-    # extra = 0
+class ExerciseSetModficationInline(StackedInline):
+    model = ExerciseSetModfication
+    extra = 0
 
 class ExerciseSetAdmin(ModelAdmin):
     def nbr_problems(self, obj):
-        return len(obj.problems.all())
+        return len(obj.problems)
 
     list_display = ['__unicode__', 'nbr_problems']
-    filter_horizontal = ['problems']
-    # inlines = [ExerciseSetProblemInline]
+    filter_horizontal = ['problems_unmodified']
+    inlines = [ExerciseSetModficationInline]
 site.register(ExerciseSet, ExerciseSetAdmin)
+
+class ExerciseSetModficationAdmin(ModelAdmin):
+    def regex_found(self, obj):
+        pattern = obj.regex_pattern
+        repl = obj.regex_replace
+        new_question = re.sub(pattern, repl, obj.problem.question)
+        return ( new_question != obj.problem.question )
+    regex_found.boolean = True
+        
+    list_display = ['__unicode__', 'regex_found']
+
+site.register(ExerciseSetModfication, ExerciseSetModficationAdmin)
 
 ## -------------------------------------------------------------------------- ##
 

@@ -214,13 +214,55 @@ class ExerciseProblem(Model):
         ordering = ['key']
 
 
+class ExerciseSetModfication(Model):
+    exercise_set = ForeignKey('ExerciseSet')
+    problem = ForeignKey('ExerciseProblem')
+    regex_pattern = CharField(max_length=200)
+    regex_replace = CharField(max_length=200)
+    new_answer = TextField(blank=True)
+    new_solution = TextField(blank=True)
+    sort_order = PositiveSmallIntegerField(default=0)
+    
+    def __unicode__(self):
+        return '{self.exercise_set}: {self.problem.key}'.format(self=self)
+        
+    class Meta:
+        ordering = ['exercise_set', 'problem']
+
+        
 class ExerciseSet(Model):
     activity = OneToOneField(Activity, null=True, blank=True)
     title = CharField(max_length=200, blank=True)
-    problems = ManyToManyField('ExerciseProblem', blank=True)
+    problems_unmodified = ManyToManyField('ExerciseProblem', verbose_name='problems', blank=True)
 
     @property
+    def problems(self):
+        problems = []
+        for problem in self.problems_unmodified.all():
+            key = problem.key
+            question = problem.question
+            answer = problem.answer
+            solution = problem.solution
+
+            mods = ExerciseSetModification.objects.filter(exercise_set=self, problem=problem)
+            for mod in mods:
+                pattern = mod.regex_pattern
+                repl = mod.regex_replace
+                question = re.sub(pattern, repl, question)
+                answer = mod.new_answer
+                solution = mod.new_solution
+
+            problems.append({
+                'key': key,
+                'question': question,
+                'answer': answer,
+                'solution': solution,
+            })
+        return problems
+
+    
+    @property
     def extra_context(self):
-        return {'exercise_list': self.problems.all()}
+        return {'exercise_list': self.problems}
 
 context_builders.register(ExerciseSet)
