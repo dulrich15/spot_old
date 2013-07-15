@@ -8,6 +8,7 @@
             "subtitle": "The microscopic source of force", 
             "overview": "This class rocks!", 
             "dept": 1, 
+            "banner_filename": "203.jpg", 
             "instructor": 1, 
             "first_day": "2013-06-24"
         }
@@ -67,7 +68,7 @@
             "classroom": 1, 
             "access_index": 1, 
             "label": "Lecture Examples", 
-            "filename": "2013p203hp01.pdf"
+            "filename": "2013p203lx01.pdf"
         }
     }, 
     {
@@ -124,6 +125,13 @@
         }
     }, 
     {
+        "pk": 4, 
+        "model": "classroom.activitytype", 
+        "fields": {
+            "name": "Homework"
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "classroom.activity", 
         "fields": {
@@ -156,6 +164,16 @@
                 4
             ], 
             "activity_type": 2
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "classroom.activity", 
+        "fields": {
+            "classroom": 1, 
+            "activity_block": 1, 
+            "documents": [], 
+            "activity_type": 4
         }
     }
 ]

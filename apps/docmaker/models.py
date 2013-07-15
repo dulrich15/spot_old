@@ -65,17 +65,23 @@ context_builders = ContextBuilderCollection()
 
 
 class StudySlide(Model):
-    # # def get_slide_path(self, filename):
-        # # return posixpath.join('slides', self.lecture.course.tag(), filename)
-
     lesson = ForeignKey('StudyLesson')
     sort_order = PositiveSmallIntegerField(default=0)
 
     title = CharField(max_length=200)
-    # # image = ImageField(upload_to=get_slide_path, storage=OverwriteStorage(), blank=True)
+    image_filename = CharField(max_length=200, choices=get_choices_from_path(settings.SLIDE_PATH), null=True, blank=True)
     notes = TextField(blank=True)
     examples = ManyToManyField('ExerciseProblem', blank=True)
 
+    @property
+    def image(self):
+        image = {}
+        image['name'] = self.image_filename
+        image['path'] = os.path.join(settings.SLIDE_PATH, image['name'])
+        image['exists'] = os.path.isfile(image['path']),
+        # image['url'] = '/'.join(settings.SLIDE_URL, image['name']),
+        return image
+    
     def __unicode__(self):
         return self.title
 
@@ -84,15 +90,21 @@ class StudySlide(Model):
 
 
 class StudyLesson(Model):
-    # # def get_banner_path(self, filename):
-        # # return posixpath.join('banners', self.lecture.course.tag(), filename)
-
     activity = OneToOneField(Activity, null=True, blank=True)
     title = CharField(max_length=200)
     powerpoint = CharField(max_length=200, choices=get_choices_from_path(settings.DOCUMENT_PATH, filter='*.ppt'), null=True, blank=True)
-    # # banner = ImageField(upload_to=get_banner_path, storage=OverwriteStorage(), blank=True)
+    banner_filename = CharField(max_length=200, choices=get_choices_from_path(settings.BANNER_PATH), null=True, blank=True)
     intro = TextField(blank=True)
 
+    @property
+    def banner(self):
+        banner = {}
+        banner['name'] = self.banner_filename
+        banner['path'] = os.path.join(settings.BANNER_PATH, banner['name'])
+        banner['exists'] = os.path.isfile(banner['path']),
+        # banner['url'] = '/'.join(settings.SLIDE_URL, banner['name']),
+        return banner
+        
     def get_examples(self):
         examples = []
         for slide in StudySlide.objects.filter(lesson=self):

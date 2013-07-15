@@ -17,6 +17,5 @@ def rst2latex(source,initial_header_level=1):
     return mark_safe(docutils_extensions.rst2latex(source,overrides))
 
 @register.filter(is_safe=True)
-def latex_path(image):
-    filename = '%s/%s' % ( settings.MEDIA_ROOT, image.name )
-    return mark_safe(docutils_extensions.get_latex_path(filename))
+def latex_path(filepath):
+    return mark_safe(docutils_extensions.get_latex_path(filepath))

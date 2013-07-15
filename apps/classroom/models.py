@@ -21,10 +21,20 @@ class Classroom(Model):
     first_day = DateField()
 
     subtitle = CharField(max_length=200, blank=True)
+    banner_filename = CharField(max_length=200, choices=get_choices_from_path(settings.BANNER_PATH), null=True, blank=True)
     instructor = ForeignKey('Instructor', null=True, blank=True)
 
     overview = TextField(blank=True)
     scratchpad = TextField(blank=True)
+
+    @property
+    def banner(self):
+        banner = {}
+        banner['name'] = self.banner_filename
+        banner['path'] = os.path.join(settings.BANNER_PATH, banner['name'])
+        banner['exists'] = os.path.isfile(banner['path']),
+        # banner['url'] = '/'.join(settings.SLIDE_URL, banner['name']),
+        return banner
 
     @property
     def title(self):

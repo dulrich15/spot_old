@@ -95,12 +95,12 @@ class StudyLessonAdmin(ModelAdmin):
 site.register(StudyLesson, StudyLessonAdmin)
 
 class StudySlideAdmin(ModelAdmin):
-    # def image_exists(self, obj):
-        # try:
-            # return os.path.isfile(obj.image.file.name)
-        # except:
-            # return False
-    # image_exists.boolean = True
+    def image_exists(self, obj):
+        try:
+            return os.path.isfile(obj.image.path)
+        except:
+            return False
+    image_exists.boolean = True
 
     def nbr_examples(self, obj):
         return len(obj.examples.all())
@@ -109,7 +109,7 @@ class StudySlideAdmin(ModelAdmin):
         # return len(obj.examples.all())
 
     list_filter = ['lesson__activity__classroom']
-    list_display = ['title', 'nbr_examples']
+    list_display = ['title', 'nbr_examples', 'image_exists']
     filter_horizontal = ['examples']
 
 site.register(StudySlide, StudySlideAdmin)

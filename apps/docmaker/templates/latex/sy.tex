@@ -18,7 +18,7 @@
 {{ '{' }}\large {{ classroom.subtitle }}{{ '}' }}
 {% if classroom.banner %}
 \vskip 0.25cm
-\includegraphics[width=\textwidth]{{ '{' }}{{ classroom.banner_path|latex_path }}{{ '}' }}
+\includegraphics[width=\textwidth]{{ '{' }}{{ classroom.banner.path|latex_path }}{{ '}' }}
 {% endif %}
 \vskip 0.25cm
 {{ '{' }}\large {{ classroom.season }} {{ classroom.year }}{{ '}' }}
