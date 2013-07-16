@@ -72,9 +72,20 @@ class AssignmentGrade(Model):
         return '{self.assignment.label} for {self.student}'.format(self=self)
 
 
-class AssignmentGradeWeight(Model):
-    classroom = ForeignKey(Classroom)
-    category = ForeignKey(AssignmentCategory)
+class GradeScheme(Model):
+    classroom = OneToOneField(Classroom)
+    grade_notes = TextField(blank=True)
+
+    def __unicode__(self):
+        return '{self.classroom}'.format(self=self)
+
+    class Meta:
+        ordering = ['classroom']
+
+
+class GradeWeight(Model):
+    scheme = ForeignKey('GradeScheme')
+    category = OneToOneField(AssignmentCategory)
     weight_raw = PositiveSmallIntegerField(default=1)
 
     # if_missing_use = ForeignKey('AssignmentGradeWeight',null=True,blank=True,related_name='*')
@@ -84,7 +95,7 @@ class AssignmentGradeWeight(Model):
 
     @property
     def weight(self):
-        o = self.__class__.objects.filter(classroom=self.classroom)
+        o = self.__class__.objects.filter(scheme=self.scheme)
         tot = sum([gw.weight_raw for gw in o])
         return self.weight_raw / tot
 
@@ -92,5 +103,4 @@ class AssignmentGradeWeight(Model):
         return '{self.category.label} at {self.weight:.0%}'.format(self=self)
 
     class Meta:
-        ordering = ['classroom', '-weight_raw', 'category']
-
+        ordering = ['scheme', '-weight_raw', 'category']

@@ -25,6 +25,7 @@ class Migration(SchemaMigration):
             ('lesson', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['docmaker.StudyLesson'])),
             ('sort_order', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('image_filename', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
             ('notes', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal('docmaker', ['StudySlide'])
@@ -43,6 +44,8 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('activity', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['classroom.Activity'], unique=True, null=True, blank=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('powerpoint', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
+            ('banner_filename', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
             ('intro', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal('docmaker', ['StudyLesson'])
@@ -94,6 +97,19 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('docmaker', ['ExerciseProblem'])
 
+        # Adding model 'ExerciseSetModfication'
+        db.create_table('docmaker_exercisesetmodfication', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('exercise_set', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['docmaker.ExerciseSet'])),
+            ('problem', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['docmaker.ExerciseProblem'])),
+            ('regex_pattern', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('regex_replace', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('sort_order', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0)),
+            ('new_answer', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('new_solution', self.gf('django.db.models.fields.TextField')(blank=True)),
+        ))
+        db.send_create_signal('docmaker', ['ExerciseSetModfication'])
+
         # Adding model 'ExerciseSet'
         db.create_table('docmaker_exerciseset', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -102,8 +118,8 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('docmaker', ['ExerciseSet'])
 
-        # Adding M2M table for field problems on 'ExerciseSet'
-        m2m_table_name = db.shorten_name('docmaker_exerciseset_problems')
+        # Adding M2M table for field problems_unmodified on 'ExerciseSet'
+        m2m_table_name = db.shorten_name('docmaker_exerciseset_problems_unmodified')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('exerciseset', models.ForeignKey(orm['docmaker.exerciseset'], null=False)),
@@ -140,11 +156,14 @@ class Migration(SchemaMigration):
         # Deleting model 'ExerciseProblem'
         db.delete_table('docmaker_exerciseproblem')
 
+        # Deleting model 'ExerciseSetModfication'
+        db.delete_table('docmaker_exercisesetmodfication')
+
         # Deleting model 'ExerciseSet'
         db.delete_table('docmaker_exerciseset')
 
-        # Removing M2M table for field problems on 'ExerciseSet'
-        db.delete_table(db.shorten_name('docmaker_exerciseset_problems'))
+        # Removing M2M table for field problems_unmodified on 'ExerciseSet'
+        db.delete_table(db.shorten_name('docmaker_exerciseset_problems_unmodified'))
 
 
     models = {
@@ -178,7 +197,7 @@ class Migration(SchemaMigration):
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         'classroom.activity': {
-            'Meta': {'object_name': 'Activity'},
+            'Meta': {'ordering': "[u'classroom', u'activity_block', u'activity_type']", 'object_name': 'Activity'},
             'activity_block': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityBlock']"}),
             'activity_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityType']"}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
@@ -195,9 +214,10 @@ class Migration(SchemaMigration):
             'weekday_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         'classroom.activitytype': {
-            'Meta': {'object_name': 'ActivityType'},
+            'Meta': {'ordering': "[u'sort_order']", 'object_name': 'ActivityType'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         'classroom.classroom': {
             'Meta': {'ordering': "[u'-first_day']", 'object_name': 'Classroom'},
@@ -205,6 +225,7 @@ class Migration(SchemaMigration):
             'first_day': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'instructor': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Instructor']", 'null': 'True', 'blank': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'overview': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'scratchpad': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'subtitle': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
@@ -220,6 +241,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Document'},
             'access_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
+            'filename': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },
@@ -263,8 +285,19 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'ExerciseSet'},
             'activity': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Activity']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'problems': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['docmaker.ExerciseProblem']", 'symmetrical': 'False', 'blank': 'True'}),
+            'problems_unmodified': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['docmaker.ExerciseProblem']", 'symmetrical': 'False', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'})
+        },
+        'docmaker.exercisesetmodfication': {
+            'Meta': {'ordering': "[u'exercise_set', u'problem']", 'object_name': 'ExerciseSetModfication'},
+            'exercise_set': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['docmaker.ExerciseSet']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'new_answer': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'new_solution': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'problem': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['docmaker.ExerciseProblem']"}),
+            'regex_pattern': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'regex_replace': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'})
         },
         'docmaker.exercisesource': {
             'Meta': {'object_name': 'ExerciseSource'},
@@ -297,14 +330,17 @@ class Migration(SchemaMigration):
         'docmaker.studylesson': {
             'Meta': {'object_name': 'StudyLesson'},
             'activity': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Activity']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'banner_filename': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'intro': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'powerpoint': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'docmaker.studyslide': {
             'Meta': {'ordering': "[u'lesson', u'sort_order']", 'object_name': 'StudySlide'},
             'examples': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['docmaker.ExerciseProblem']", 'symmetrical': 'False', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image_filename': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'lesson': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['docmaker.StudyLesson']"}),
             'notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),

@@ -1,15 +1,17 @@
 from django.contrib.admin import *
 from models import *
-from apps.classroom.admin import ClassroomAdmin
 
 
 site.register(AssignmentCategory)
 site.register(Assignment)
 site.register(AssignmentGrade)
-site.register(AssignmentGradeWeight)
+site.register(GradeWeight)
 
-class AssignmentGradeWeightInline(TabularInline):
-    model = AssignmentGradeWeight
+class GradeWeightInline(TabularInline):
+    model = GradeWeight
     extra = 0
 
-ClassroomAdmin.inlines = [AssignmentGradeWeightInline]
+class GradeSchemeAdmin(ModelAdmin):
+    inlines = [GradeWeightInline]
+
+site.register(GradeScheme, GradeSchemeAdmin)

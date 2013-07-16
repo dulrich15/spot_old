@@ -1,0 +1,33 @@
+{% extends "website/layout.html" %}
+
+{% block meta_title %}{{ classroom }}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}classroom/main.css" />
+{% endblock %}
+
+{% block header %}
+    <h1>{{ classroom.title }}</h1>
+    <img href="{{ classroom.extension.banner.url }}">
+    {% if classroom.subtitle %}<p>{{ classroom.subtitle }}</p>{% endif %}
+{% endblock %}
+
+{% block main_content %}
+{% endblock %}
+
+{% block side_content %}
+    <p id="login">
+        {% if user.is_authenticated %}
+        {% if user.first_name %}Hi {{ user.first_name }}.&nbsp;&nbsp;{% endif %}<a href="{% url logout %}">Logout?</a>
+        {% else %}
+        <form method="post" action="{% url login %}">
+            <label for="password">Login:</label>
+            <input type="password" name="password" tabindex=1 />
+            {% csrf_token %}
+        </form>
+        {% endif %}
+    </p>
+
+    <h3>Go to&hellip;</h3>
+    {% include "website/nav.html" %}
+{% endblock %}

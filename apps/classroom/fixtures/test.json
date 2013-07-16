@@ -1,182 +1,181 @@
 [
     {
-        "pk": 1, 
-        "model": "classroom.classroom", 
+        "pk": 1,
+        "model": "classroom.classroom",
         "fields": {
-            "term": "203", 
-            "scratchpad": "Really need to add an outline to the overview...", 
-            "subtitle": "The microscopic source of force", 
-            "overview": "This class rocks!", 
-            "dept": 1, 
-            "banner_filename": "203.jpg", 
-            "instructor": 1, 
+            "term": "203",
+            "scratchpad": "Really need to add an outline to the overview...",
+            "subtitle": "The microscopic source of force",
+            "overview": "This class rocks!",
+            "dept": 1,
+            "instructor": 1,
             "first_day": "2013-06-24"
         }
-    }, 
+    },
     {
-        "pk": 1, 
-        "model": "classroom.department", 
+        "pk": 1,
+        "model": "classroom.department",
         "fields": {
-            "name": "Physics", 
+            "name": "Physics",
             "abbr": "PHY"
         }
-    }, 
+    },
     {
-        "pk": 1, 
-        "model": "classroom.instructor", 
+        "pk": 1,
+        "model": "classroom.instructor",
         "fields": {
-            "website": "", 
-            "office_location": "", 
-            "office_hours": "", 
-            "public_name": "David J. Ulrich", 
-            "user": 1, 
+            "website": "",
+            "office_location": "",
+            "office_hours": "",
+            "public_name": "David J. Ulrich",
+            "user": 1,
             "email": ""
         }
-    }, 
+    },
     {
-        "pk": 1, 
-        "model": "classroom.student", 
+        "pk": 1,
+        "model": "classroom.student",
         "fields": {
-            "classroom": 1, 
+            "classroom": 1,
             "user": 2
         }
-    }, 
+    },
     {
-        "pk": 1, 
-        "model": "classroom.document", 
+        "pk": 1,
+        "model": "classroom.document",
         "fields": {
-            "classroom": 1, 
-            "access_index": 0, 
-            "label": "Course Syllabus", 
+            "classroom": 1,
+            "access_index": 0,
+            "label": "Course Syllabus",
             "filename": "2013p203sy.pdf"
         }
-    }, 
+    },
     {
-        "pk": 2, 
-        "model": "classroom.document", 
+        "pk": 2,
+        "model": "classroom.document",
         "fields": {
-            "classroom": 1, 
-            "access_index": 0, 
-            "label": "Lecture Notes", 
+            "classroom": 1,
+            "access_index": 0,
+            "label": "Lecture Notes",
             "filename": "2013p203ln01.pdf"
         }
-    }, 
+    },
     {
-        "pk": 3, 
-        "model": "classroom.document", 
+        "pk": 3,
+        "model": "classroom.document",
         "fields": {
-            "classroom": 1, 
-            "access_index": 1, 
-            "label": "Lecture Examples", 
+            "classroom": 1,
+            "access_index": 1,
+            "label": "Lecture Examples",
             "filename": "2013p203lx01.pdf"
         }
-    }, 
+    },
     {
-        "pk": 4, 
-        "model": "classroom.document", 
+        "pk": 4,
+        "model": "classroom.document",
         "fields": {
-            "classroom": 1, 
-            "access_index": 0, 
-            "label": "Lab Worksheet", 
+            "classroom": 1,
+            "access_index": 0,
+            "label": "Lab Worksheet",
             "filename": "2013p203lb01.pdf"
         }
-    }, 
+    },
     {
-        "pk": 1, 
-        "model": "classroom.activityblock", 
+        "pk": 1,
+        "model": "classroom.activityblock",
         "fields": {
-            "classroom": 1, 
-            "week": 1, 
-            "sort_order": null, 
-            "heading": "", 
+            "classroom": 1,
+            "week": 1,
+            "sort_order": null,
+            "heading": "",
             "weekday_index": 0
         }
-    }, 
+    },
     {
-        "pk": 2, 
-        "model": "classroom.activityblock", 
+        "pk": 2,
+        "model": "classroom.activityblock",
         "fields": {
-            "classroom": 1, 
-            "week": 1, 
-            "sort_order": null, 
-            "heading": "", 
+            "classroom": 1,
+            "week": 1,
+            "sort_order": null,
+            "heading": "",
             "weekday_index": 2
         }
-    }, 
+    },
     {
-        "pk": 1, 
-        "model": "classroom.activitytype", 
+        "pk": 1,
+        "model": "classroom.activitytype",
         "fields": {
-            "sort_order": 1, 
+            "sort_order": 1,
             "name": "Lecture"
         }
-    }, 
+    },
     {
-        "pk": 2, 
-        "model": "classroom.activitytype", 
+        "pk": 2,
+        "model": "classroom.activitytype",
         "fields": {
-            "sort_order": 1, 
+            "sort_order": 1,
             "name": "Lab"
         }
-    }, 
+    },
     {
-        "pk": 3, 
-        "model": "classroom.activitytype", 
+        "pk": 3,
+        "model": "classroom.activitytype",
         "fields": {
-            "sort_order": 2, 
+            "sort_order": 2,
             "name": "Quiz"
         }
-    }, 
+    },
     {
-        "pk": 4, 
-        "model": "classroom.activitytype", 
+        "pk": 4,
+        "model": "classroom.activitytype",
         "fields": {
-            "sort_order": 3, 
+            "sort_order": 3,
             "name": "Homework"
         }
-    }, 
+    },
     {
-        "pk": 1, 
-        "model": "classroom.activity", 
+        "pk": 1,
+        "model": "classroom.activity",
         "fields": {
-            "classroom": 1, 
-            "activity_block": 1, 
+            "classroom": 1,
+            "activity_block": 1,
             "documents": [
-                2, 
+                2,
                 3
-            ], 
+            ],
             "activity_type": 1
         }
-    }, 
+    },
     {
-        "pk": 4, 
-        "model": "classroom.activity", 
+        "pk": 4,
+        "model": "classroom.activity",
         "fields": {
-            "classroom": 1, 
-            "activity_block": 1, 
-            "documents": [], 
+            "classroom": 1,
+            "activity_block": 1,
+            "documents": [],
             "activity_type": 4
         }
-    }, 
+    },
     {
-        "pk": 3, 
-        "model": "classroom.activity", 
+        "pk": 3,
+        "model": "classroom.activity",
         "fields": {
-            "classroom": 1, 
-            "activity_block": 2, 
+            "classroom": 1,
+            "activity_block": 2,
             "documents": [
                 4
-            ], 
+            ],
             "activity_type": 2
         }
-    }, 
+    },
     {
-        "pk": 2, 
-        "model": "classroom.activity", 
+        "pk": 2,
+        "model": "classroom.activity",
         "fields": {
-            "classroom": 1, 
-            "activity_block": 2, 
-            "documents": [], 
+            "classroom": 1,
+            "activity_block": 2,
+            "documents": [],
             "activity_type": 3
         }
     }

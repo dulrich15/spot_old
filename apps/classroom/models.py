@@ -20,21 +20,13 @@ class Classroom(Model):
     term = CharField(max_length=200)
     first_day = DateField()
 
+    is_active = BooleanField(default=True)
+
     subtitle = CharField(max_length=200, blank=True)
-    banner_filename = CharField(max_length=200, choices=get_choices_from_path(settings.BANNER_PATH), null=True, blank=True)
     instructor = ForeignKey('Instructor', null=True, blank=True)
 
     overview = TextField(blank=True)
     scratchpad = TextField(blank=True)
-
-    @property
-    def banner(self):
-        banner = {}
-        banner['name'] = self.banner_filename
-        banner['path'] = os.path.join(settings.BANNER_PATH, banner['name'])
-        banner['exists'] = os.path.isfile(banner['path']),
-        # banner['url'] = '/'.join(settings.SLIDE_URL, banner['name']),
-        return banner
 
     @property
     def title(self):
@@ -160,7 +152,7 @@ class Document(Model):
             return self.filename
 
 
-# split below to separate schedule app?
+## -------------------------------------------------------------------------- ##
 
 
 class ActivityBlock(Model):
@@ -199,7 +191,7 @@ class ActivityBlock(Model):
             return activity.label
         else:
             return ''
-        
+
     @property
     def title(self):
         activity = self.get_first_activity()
@@ -210,7 +202,7 @@ class ActivityBlock(Model):
                 return self.heading
             else:
                 return ''
-            
+
     def __unicode__(self):
         if self.date:
             return '{self.weekday} Week {self.week}'.format(self=self)
@@ -235,7 +227,7 @@ class ActivityType(Model):
     class Meta:
         ordering = ['sort_order']
 
-        
+
 class Activity(Model):
     classroom = ForeignKey(Classroom)
     activity_type = ForeignKey(ActivityType)
@@ -263,10 +255,10 @@ class Activity(Model):
     @property
     def title(self):
         return ''
-        
+
     def __unicode__(self):
         return self.label
-        
+
     class Meta:
         verbose_name_plural = 'activities'
         ordering = ['classroom', 'activity_block', 'activity_type']

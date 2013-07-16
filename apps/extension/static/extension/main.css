@@ -1,0 +1,174 @@
+body {
+    margin:0em auto;
+    padding:1em 1em;
+    max-width:1024px;
+    background:#ffe;
+    overflow-y:scroll;
+}
+body * {
+    font-family:georgia,sans-serif;
+}
+table {
+    margin:1em 0;
+    background:#bbb;
+}
+table th,td {
+    padding:5px 10px;
+    text-align:center;
+    border:0;
+}
+table th {
+    background:#ddd;
+}
+table td {
+    background:#fff;
+}
+table td.blank {
+    background:#aaa;
+}
+table td.tight {
+    width:1px;
+}
+dl dt {
+    font-weight:bold;
+    margin:0.5em 0;
+}
+dl dd {
+    margin-left:1em;
+}
+blockquote {
+    margin:0;
+}
+blockquote cite {
+    margin-left:2em;
+    display:block;
+    text-align:right;
+}
+input[type="text"] {
+    border:0;
+    background:white;
+}
+header {
+    border-bottom:2px solid #bbb;
+}
+header * {
+    text-align:center;
+}
+header img {
+    margin:0 auto;
+	width:100%;
+//    max-width:800px;
+	-ms-interpolation-mode: bicubic;
+}
+footer {
+    clear:both;
+    text-align:center;
+    border-top:2px solid #bbb;
+}
+a:hover {
+    background:yellow;
+}
+.nobr {
+    white-space:nowrap;
+}
+.l {
+    text-align:left;
+}
+.c {
+    text-align:center;
+}
+.r {
+    text-align:right;
+}
+
+.hw-prob {
+    margin:1em 0;
+}
+.hw-answ {
+    font-weight:bold;
+    margin:1em 0;
+}
+.hw-soln {
+    border:solid 1px red;
+    margin:1em 0;
+    padding:0 1em;
+    display:none;
+}
+
+.my-docutils.fig {
+    border:1px solid gray;
+    padding:5px;
+    background:white;
+}
+.my-docutils.fig > a:hover {
+    background:white;
+}
+.my-docutils.fig.default {
+    text-align:center;
+    margin:0 auto;
+}
+
+.my-docutils img {
+    max-width:100%;
+	height:auto;
+	-ms-interpolation-mode: bicubic;
+}
+.my-docutils.fig,
+.my-docutils.plt,
+.my-docutils.tbl {
+    text-align:center;
+}
+
+
+#wklydocs {
+    width:100%;
+}
+
+#action-links {
+    float:right;
+    font-size:75%;
+    text-transform:uppercase;
+}
+#action-links li {
+    list-style-type:none;
+    text-align:right;
+}
+.horizontal li {
+    display:inline;
+}
+.horizontal li:after {
+    content:" | ";
+}
+.horizontal li:last-child:after {
+  content: '';
+}
+
+table.grades {
+    float:left;
+    margin-right:0.5em;
+}
+th.gray {
+    background:#eee;
+}
+
+/* LAYOUT */
+
+.col {
+    width:96%;
+    margin:0 2%;
+    float:left;
+    overflow-y:hidden;
+}
+.col textarea {
+    width:96%;
+}
+@media screen and (min-width:480px) {
+    .col {
+        width:46%;
+    }
+}
+@media screen and (min-width:960px) {
+    .col {
+        width:29%;
+    }
+}

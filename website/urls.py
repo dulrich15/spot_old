@@ -19,9 +19,7 @@ urlpatterns = patterns('',
 
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
-
-    url(r'', include('apps.classroom.urls')),
-    url(r'', include('apps.gradebook.urls')),
-    url(r'', include('apps.docmaker.urls')),
 )
 
+for app in settings.MY_APPS:
+    urlpatterns += patterns('', url(r'', include('apps.{}.urls'.format(app))),)

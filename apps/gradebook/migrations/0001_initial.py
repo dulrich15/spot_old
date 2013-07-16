@@ -40,14 +40,22 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('gradebook', ['AssignmentGrade'])
 
-        # Adding model 'AssignmentGradeWeight'
-        db.create_table('gradebook_assignmentgradeweight', (
+        # Adding model 'GradeScheme'
+        db.create_table('gradebook_gradescheme', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('classroom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Classroom'])),
-            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['gradebook.AssignmentCategory'])),
+            ('classroom', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['classroom.Classroom'], unique=True)),
+            ('grade_notes', self.gf('django.db.models.fields.TextField')(blank=True)),
+        ))
+        db.send_create_signal('gradebook', ['GradeScheme'])
+
+        # Adding model 'GradeWeight'
+        db.create_table('gradebook_gradeweight', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('scheme', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['gradebook.GradeScheme'])),
+            ('category', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['gradebook.AssignmentCategory'], unique=True)),
             ('weight_raw', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=1)),
         ))
-        db.send_create_signal('gradebook', ['AssignmentGradeWeight'])
+        db.send_create_signal('gradebook', ['GradeWeight'])
 
 
     def backwards(self, orm):
@@ -60,8 +68,11 @@ class Migration(SchemaMigration):
         # Deleting model 'AssignmentGrade'
         db.delete_table('gradebook_assignmentgrade')
 
-        # Deleting model 'AssignmentGradeWeight'
-        db.delete_table('gradebook_assignmentgradeweight')
+        # Deleting model 'GradeScheme'
+        db.delete_table('gradebook_gradescheme')
+
+        # Deleting model 'GradeWeight'
+        db.delete_table('gradebook_gradeweight')
 
 
     models = {
@@ -100,6 +111,7 @@ class Migration(SchemaMigration):
             'first_day': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'instructor': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Instructor']", 'null': 'True', 'blank': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'overview': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'scratchpad': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'subtitle': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
@@ -160,11 +172,17 @@ class Migration(SchemaMigration):
             'note': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'student': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Student']"})
         },
-        'gradebook.assignmentgradeweight': {
-            'Meta': {'ordering': "[u'classroom', u'-weight_raw', u'category']", 'object_name': 'AssignmentGradeWeight'},
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['gradebook.AssignmentCategory']"}),
-            'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
+        'gradebook.gradescheme': {
+            'Meta': {'ordering': "[u'classroom']", 'object_name': 'GradeScheme'},
+            'classroom': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Classroom']", 'unique': 'True'}),
+            'grade_notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        'gradebook.gradeweight': {
+            'Meta': {'ordering': "[u'scheme', u'-weight_raw', u'category']", 'object_name': 'GradeWeight'},
+            'category': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['gradebook.AssignmentCategory']", 'unique': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'scheme': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['gradebook.GradeScheme']"}),
             'weight_raw': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '1'})
         }
     }

@@ -14,6 +14,7 @@ class Migration(SchemaMigration):
             ('dept', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Department'])),
             ('term', self.gf('django.db.models.fields.CharField')(max_length=200)),
             ('first_day', self.gf('django.db.models.fields.DateField')()),
+            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('subtitle', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
             ('instructor', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Instructor'], null=True, blank=True)),
             ('overview', self.gf('django.db.models.fields.TextField')(blank=True)),
@@ -53,6 +54,7 @@ class Migration(SchemaMigration):
         db.create_table('classroom_document', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('classroom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Classroom'])),
+            ('filename', self.gf('django.db.models.fields.CharField')(max_length=200)),
             ('label', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
             ('access_index', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0)),
         ))
@@ -73,6 +75,7 @@ class Migration(SchemaMigration):
         db.create_table('classroom_activitytype', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('sort_order', self.gf('django.db.models.fields.PositiveSmallIntegerField')(null=True, blank=True)),
         ))
         db.send_create_signal('classroom', ['ActivityType'])
 
@@ -155,7 +158,7 @@ class Migration(SchemaMigration):
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         'classroom.activity': {
-            'Meta': {'object_name': 'Activity'},
+            'Meta': {'ordering': "[u'classroom', u'activity_block', u'activity_type']", 'object_name': 'Activity'},
             'activity_block': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityBlock']"}),
             'activity_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.ActivityType']"}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
@@ -172,9 +175,10 @@ class Migration(SchemaMigration):
             'weekday_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         'classroom.activitytype': {
-            'Meta': {'object_name': 'ActivityType'},
+            'Meta': {'ordering': "[u'sort_order']", 'object_name': 'ActivityType'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         'classroom.classroom': {
             'Meta': {'ordering': "[u'-first_day']", 'object_name': 'Classroom'},
@@ -182,6 +186,7 @@ class Migration(SchemaMigration):
             'first_day': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'instructor': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Instructor']", 'null': 'True', 'blank': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'overview': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'scratchpad': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'subtitle': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
@@ -197,6 +202,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Document'},
             'access_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0'}),
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
+            'filename': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },

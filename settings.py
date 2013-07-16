@@ -5,17 +5,21 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 PROJECT_NAME = PROJECT_PATH.split(os.path.sep)[-1]
 
 MY_APPS = (
+    'extension',
     'classroom',
     'docmaker',
     'gradebook',
 #     'mindmap',
 #     'picmaker',
 #     'quotes',
+#     'schedule',
 )
 
 DOCUMENT_PATH = os.path.join(PROJECT_PATH, 'content', 'documents')
 BANNER_PATH = os.path.join(PROJECT_PATH, 'content', 'banners')
 SLIDE_PATH = os.path.join(PROJECT_PATH, 'content', 'slides')
+
+BANNER_URL = '/static/banner/'
 
 TEMP_PATH = os.path.join(PROJECT_PATH, 'apps', 'docmaker', '_')
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'apps', 'docmaker', 'templates', 'latex')
