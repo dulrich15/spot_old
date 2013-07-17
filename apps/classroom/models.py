@@ -123,7 +123,7 @@ class Student(Model):
 
 class Document(Model):
     classroom = ForeignKey('Classroom')
-    filename = CharField(max_length=200, choices=get_choices_from_path(settings.DOCUMENT_PATH))
+    filename = CharField(max_length=200, choices=get_choices_from_path(settings.DOCUMENT_ROOT))
     label = CharField(max_length=200, null=True, blank=True)
     access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
 
@@ -132,12 +132,16 @@ class Document(Model):
         return access_choices[self.access_index][1]
 
     @property
-    def filepath(self):
-        return os.path.join(settings.DOCUMENT_PATH, self.filename)
+    def path(self):
+        return os.path.join(settings.DOCUMENT_ROOT, self.filename)
+
+    @property
+    def url(self):
+        return settings.DOCUMENT_URL + self.filename
 
     @property
     def exists(self):
-        return os.path.isfile(os.path.join(settings.DOCUMENT_PATH, self.filepath))
+        return os.path.isfile(os.path.join(settings.DOCUMENT_ROOT, self.filepath))
 
     def delete(self):
         print 'attmpting to remove ' + self.filepath
@@ -157,7 +161,7 @@ class Document(Model):
 
 class Extension(Model):
     classroom = OneToOneField(Classroom)
-    banner_filename = CharField(max_length=200, choices=get_choices_from_path(settings.BANNER_PATH), null=True, blank=True)
+    banner_filename = CharField(max_length=200, choices=get_choices_from_path(settings.BANNER_ROOT), null=True, blank=True)
 
     crn_list = CharField(max_length=200, blank=True)
 
@@ -179,9 +183,9 @@ class Extension(Model):
     def banner(self):
         banner = {}
         banner['name'] = self.banner_filename
-        banner['path'] = os.path.join(settings.BANNER_PATH, banner['name'])
+        banner['path'] = os.path.join(settings.BANNER_ROOT, banner['name'])
         banner['exists'] = os.path.isfile(banner['path'])
-        banner['url'] = '/'.join([settings.BANNER_URL, banner['name']]).replace('//','/')
+        banner['url'] = settings.BANNER_URL + banner['name']
         return banner
 
     @property

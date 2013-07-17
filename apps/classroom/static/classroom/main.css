@@ -10,9 +10,9 @@ header {
     padding:2em;
     text-align:center;
 }
-header input[type="text"] {
+header img {
     width:100%;
-    text-align:center;
+    border:1px solid blue;
 }
 dt {
     font-weight:bold;
@@ -69,4 +69,5 @@ footer {
     right:0;
     width:150px;
     margin:8px;
+    background:#FFEEEE;
 }

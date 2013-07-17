@@ -46,7 +46,7 @@ class ContextBuilderCollection(object):
 
     def register(self, builder):
         self.models.append(builder)
-        
+
         def __unicode__(self):
             if self.activity and self.title:
                 return '{self.activity.label}: {self.title}'.format(self=self)
@@ -56,9 +56,9 @@ class ContextBuilderCollection(object):
                 return self.title
             else:
                 return '{self.__class__.__name__} #{self.pk}'.format(self=self)
-                
+
         builder.__unicode__ = __unicode__
-                
+
 context_builders = ContextBuilderCollection()
 
 from apps.classroom.models import Activity
@@ -81,7 +81,7 @@ class StudySlide(Model):
     sort_order = PositiveSmallIntegerField(default=0)
 
     title = CharField(max_length=200)
-    image_filename = CharField(max_length=200, choices=get_choices_from_path(settings.SLIDE_PATH), null=True, blank=True)
+    image_filename = CharField(max_length=200, choices=get_choices_from_path(settings.SLIDE_ROOT), null=True, blank=True)
     notes = TextField(blank=True)
     examples = ManyToManyField('ExerciseProblem', blank=True)
 
@@ -93,7 +93,7 @@ class StudySlide(Model):
         image['exists'] = os.path.isfile(image['path']),
         # image['url'] = '/'.join(settings.SLIDE_URL, image['name']),
         return image
-    
+
     def __unicode__(self):
         return self.title
 
@@ -104,19 +104,19 @@ class StudySlide(Model):
 class StudyLesson(Model):
     activity = OneToOneField(Activity, null=True, blank=True)
     title = CharField(max_length=200)
-    powerpoint = CharField(max_length=200, choices=get_choices_from_path(settings.DOCUMENT_PATH, filter='*.ppt'), null=True, blank=True)
-    banner_filename = CharField(max_length=200, choices=get_choices_from_path(settings.BANNER_PATH), null=True, blank=True)
+    powerpoint = CharField(max_length=200, choices=get_choices_from_path(settings.DOCUMENT_ROOT, filter='*.ppt'), null=True, blank=True)
+    banner_filename = CharField(max_length=200, choices=get_choices_from_path(settings.BANNER_ROOT), null=True, blank=True)
     intro = TextField(blank=True)
 
     @property
     def banner(self):
         banner = {}
         banner['name'] = self.banner_filename
-        banner['path'] = os.path.join(settings.BANNER_PATH, banner['name'])
+        banner['path'] = os.path.join(settings.BANNER_ROOT, banner['name'])
         banner['exists'] = os.path.isfile(banner['path']),
-        # banner['url'] = '/'.join(settings.SLIDE_URL, banner['name']),
+        banner['url'] = settings.BANNER_URL + banner['name']
         return banner
-        
+
     def get_examples(self):
         examples = []
         for slide in StudySlide.objects.filter(lesson=self):
@@ -223,14 +223,14 @@ class ExerciseSetModfication(Model):
     sort_order = PositiveSmallIntegerField(default=0)
     new_answer = TextField(blank=True)
     new_solution = TextField(blank=True)
-    
+
     def __unicode__(self):
         return '{self.exercise_set}: {self.problem.key}'.format(self=self)
-        
+
     class Meta:
         ordering = ['exercise_set', 'problem']
 
-        
+
 class ExerciseSet(Model):
     activity = OneToOneField(Activity, null=True, blank=True)
     title = CharField(max_length=200, blank=True)
@@ -258,10 +258,10 @@ class ExerciseSet(Model):
 
             if not answer:
                 answer = 'TBD'
-                
+
             if not solution:
                 solution = 'No solution available.'
-                
+
             problems.append({
                 'key': key,
                 'question': question,
@@ -271,7 +271,7 @@ class ExerciseSet(Model):
         print problems
         return problems
 
-    
+
     @property
     def extra_context(self):
         return {'exercise_list': self.problems}

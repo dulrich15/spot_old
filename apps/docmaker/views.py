@@ -75,7 +75,7 @@ def build_document(request, classroom_pk, docmaker_pk, activity_pk):
     else:
         filename = '{}{}.pdf'.format(classroom.tag, docmaker.tag)
 
-    filepath = os.path.join(settings.DOCUMENT_PATH, filename)
+    filepath = os.path.join(settings.DOCUMENT_ROOT, filename)
     shutil.move(pdfpath, filepath) # this will overwrite
 
     try:
@@ -96,9 +96,10 @@ def build_document(request, classroom_pk, docmaker_pk, activity_pk):
     if activity:
         activity.documents.add(doc)
 
-    print "{} saved at {}".format(doc.label, doc.filepath)
-        
-    return redirect('serve_document', classroom_pk, filename)
+    print "{} saved at {}".format(doc.label, doc.path)
+
+    return redirect(doc.url)
+#     return redirect('serve_document', classroom_pk, filename)
 
 
 @verify_user_is_staff(redirect_url_name='show_classroom')

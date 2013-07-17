@@ -16,9 +16,9 @@
 {{ '{' }}\LARGE {{ classroom.title }} {{ document_label }}{{ '}' }}
 \vskip 0.25cm
 {{ '{' }}\large {{ classroom.subtitle }}{{ '}' }}
-{% if classroom.banner %}
+{% if classroom.extension.banner %}
 \vskip 0.25cm
-\includegraphics[width=\textwidth]{{ '{' }}{{ classroom.banner.path|latex_path }}{{ '}' }}
+\includegraphics[width=\textwidth]{{ '{' }}{{ classroom.extension.banner.path|latex_path }}{{ '}' }}
 {% endif %}
 \vskip 0.25cm
 {{ '{' }}\large {{ classroom.season }} {{ classroom.year }}{{ '}' }}
@@ -27,9 +27,9 @@
 \begin{center}
 \renewcommand{\arraystretch}{1.5}
 \renewcommand{\tabcolsep}{0.2cm}
-\begin{tabular}{ll} 
+\begin{tabular}{ll}
 \hline
-Instructor & {{ classroom.instructor.public_name }} \\ 
+Instructor & {{ classroom.instructor.public_name }} \\
 {% if classroom.instructor.website %}Website & \url{{ '{' }}{{ classroom.instructor.website }}{{ '}' }} \\ {% endif %}
 {% if classroom.instructor.email %}E-mail & \texttt{{ '{' }}{{ classroom.instructor.email }}{{ '}' }} \\ {% endif %}
 {% if classroom.instructor.office_location %}Office & {{ classroom.instructor.office_location }} \\ {% endif %}

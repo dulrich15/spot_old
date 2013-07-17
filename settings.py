@@ -14,12 +14,6 @@ MY_APPS = (
 #     'schedule',
 )
 
-DOCUMENT_PATH = os.path.join(PROJECT_PATH, 'content', 'documents')
-BANNER_PATH = os.path.join(PROJECT_PATH, 'content', 'banners')
-SLIDE_PATH = os.path.join(PROJECT_PATH, 'content', 'slides')
-
-BANNER_URL = '/static/banner/'
-
 TEMP_PATH = os.path.join(PROJECT_PATH, 'apps', 'docmaker', '_')
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'apps', 'docmaker', 'templates', 'latex')
 IMAGE_PATH = os.path.join(PROJECT_PATH, 'content', 'images')
@@ -48,8 +42,17 @@ USE_I18N = False
 USE_L10N = True
 USE_TZ = True
 
-MEDIA_URL = '/uploads/'
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'uploads')    # used to hold user uploads
+MEDIA_URL = '/'
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'content')
+
+DOCUMENT_URL = MEDIA_URL + 'documents/'
+DOCUMENT_ROOT = os.path.join(MEDIA_ROOT, 'documents')
+
+BANNER_URL = MEDIA_URL + 'banners/'
+BANNER_ROOT = os.path.join(MEDIA_ROOT, 'banners')
+
+SLIDE_URL = MEDIA_URL + 'slides/'
+SLIDE_ROOT = os.path.join(MEDIA_ROOT, 'slide')
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')  # used for collecstatic command in production
