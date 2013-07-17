@@ -26,19 +26,19 @@
     text-align:center;
     line-height:2em;
 }
-.action_links li { 
+.action_links li {
     padding:0;
     margin:0;
     display:inline;
-} 
-.action_links a { 
+}
+.action_links a {
     padding:0.3em 1em;
     text-decoration:none;
     color:blue;
     border:1px solid #0000FF;
     background:#EEEEEE;
 }
-.action_links a:hover { 
+.action_links a:hover {
     background:#FFFF00;
 }
 
@@ -47,23 +47,4 @@
     padding:0.5em 2em;
     border:1px solid red;
     background:#FFCCCC;
-}
-#scratchpad {
-    position:absolute;
-    top:0;
-    right:0;
-    margin:5px;
-    padding:0 1em;
-    width:150px;
-    background:#FFFFCC;
-    border:1px solid #CC8888;
-    font-size:75%;
-}
-#scratchpad h2 {
-    border-bottom:1px solid #CC8888;
-    margin:0;
-    padding:5px 0;
-    text-align:center;
-    font-size:75%;
-    text-transform:uppercase;
 }

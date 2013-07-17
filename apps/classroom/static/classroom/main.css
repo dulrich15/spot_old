@@ -1,14 +1,14 @@
-body { 
-    background:#FFFFFF; 
-    max-width:600px; 
+body {
+    background:#FFFFFF;
+    max-width:600px;
     margin:0 auto;
-    padding:8px; 
+    padding:8px;
 }
-header { 
-    background:#EEEEEE; 
-    border:1px solid blue; 
-    padding:2em; 
-    text-align:center; 
+header {
+    background:#EEEEEE;
+    border:1px solid blue;
+    padding:2em;
+    text-align:center;
 }
 header input[type="text"] {
     width:100%;
@@ -24,25 +24,49 @@ dd {
 textarea {
     width:90%;
 }
-footer { 
-    clear:both; 
+footer {
+    clear:both;
 }
 
 #main_content {}
 #side_content {}
 
 @media screen and (min-width:480px) {
-    #main_content { 
-        width:67%; 
-        float:left; 
-        margin-left:8px; 
+    #main_content {
+        width:65%;
+        float:left;
+        margin-left:8px;
         border-right:1px solid blue;
+        padding-right:1em;
     }
-    #side_content { 
-        width:25%; 
-        float:left; 
+    #side_content {
+        width:25%;
+        float:left;
         margin-right:8px;
         padding-left:1em;
     }
 
+}
+
+.pagediv {
+    margin:1em 0;
+    padding:0 1em;
+    background:#FFFFCC;
+    border:1px solid #CC8888;
+    font-size:75%;
+}
+.pagediv h2 {
+    border-bottom:1px solid #CC8888;
+    margin:0;
+    padding:5px 0;
+    text-align:center;
+    font-size:75%;
+    text-transform:uppercase;
+}
+#scratchpad {
+    position:absolute;
+    top:0;
+    right:0;
+    width:150px;
+    margin:8px;
 }

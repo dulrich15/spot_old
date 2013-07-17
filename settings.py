@@ -5,7 +5,6 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 PROJECT_NAME = PROJECT_PATH.split(os.path.sep)[-1]
 
 MY_APPS = (
-    'extension',
     'classroom',
     'docmaker',
     'gradebook',

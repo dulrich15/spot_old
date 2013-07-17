@@ -8,6 +8,7 @@
 
 {% block header %}
     <h1>{{ classroom.title }}</h1>
+    {% if classroom.extension.banner %}<p><img href="{{ classroom.extension.banner.url }}"></p>{% endif %}
     {% if classroom.subtitle %}<p>{{ classroom.subtitle }}</p>{% endif %}
 {% endblock %}
 

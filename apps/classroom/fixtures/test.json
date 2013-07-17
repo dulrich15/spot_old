@@ -178,5 +178,53 @@
             "documents": [],
             "activity_type": 3
         }
+    },
+    {
+        "pk": 1,
+        "model": "classroom.extension",
+        "fields": {
+            "classroom": 1,
+            "room": "223/225",
+            "topic_list_also": "solid state physics, particle physics",
+            "meeting_notes": "Each Monday session will be held in Room 223. This room contains the material used for the labs. Therefore labs will fall on the Monday meetings. The Wednesday sessions will consist solely in lecture and will be held in Room 225.\r\n",
+            "chapters": "18--24 and 28--32",
+            "outline": "* ELECTRIC FORCES AND FIELDS\r\n\r\n  * Study the forces between charges and apply Coulomb's Law to solve problems.\r\n  * Distinguish insulators and conductors.\r\n  * Understand charging by conduction and induction and explain the action of an electroscope to illustrate these.\r\n  * Plot electric fields about various charge configurations, thereby coming to understand the basic concept of an electric field.\r\n \r\n* ELECTRIC POTENTIAL\r\n \r\n  * Explain electrical potential energy and to show how it is analogous to gravitational potential energy.\r\n  * Explain the central importance of potential difference as \"electrical pressure\" that moves charge.\r\n  * Relate work and potential difference, and thereby understand and define the volt.\r\n  * Explain the role of batteries as energy sources and as sources of potential difference.\r\n  * Define the electron volt as an energy unit.\r\n  * Explain the operation of capacitors, including charging and discharging, dielectrics and the energy stored therein. \r\n \r\n* DIRECT CURRENT CIRCUITS\r\n \r\n  * Discuss the concept of electric current and what is happening at the atomic level.\r\n  * Explain Ohm's Law and how it operates in both simple and complex circuits.\r\n  * Explain resistivity and resistance and relate the two.\r\n  * Explain the effect of resistors in series, parallel and series-parallel circuits and solve related problems.\r\n  * Discuss the effect of capacitors in series, parallel and series-parallel circuits and solve related problems.\r\n  * State and apply Kirchhoff's Junction Rule. \r\n  * State and apply Kirchhoff's Loop Rule.\r\n  * Describe the construction and operation of galvanometers, ammeters and voltmeters.\r\n  * Describe \"house\" circuits and discuss electrical safety.\r\n \r\n* MAGNETISM\r\n \r\n  * Plot magnetic fields and understand their nature by analogy to electric fields.\r\n  * Explain the magnetic fields caused by electric currents.\r\n  * Discuss the force on a current in a magnetic field and be able to calculate its magnitude and determine its direction from the Right Hand Rule.\r\n  * Explain the Hall effect.\r\n  * Diagram and explain the earth's magnetic field.\r\n  * Describe lines of flux and understand flux density.\r\n  * Define Ampere's Law.\r\n  * Compute the magnitude and direction of the magnetic fields about a current loop, a solenoid and a taroid.\r\n  * Explain the torque on a current loop in a magnetic field and how this is used in electric meters.\r\n \r\n* ELECTROMAGNETIC INDUCTION\r\n \r\n  * Define induced EMFs.\r\n  * Explain mutual induction and self induction.\r\n  * Explain the characteristics of an inductance-resistance circuit.\r\n  * Explain motional EMFs.\r\n  * Describe the theory and operation of an AC generator and how it can be converted to a DC generator.\r\n  * Describe the theory and operation of an electric motor.\r\n  * Describe the theory and operation of a transformer.\r\n \r\n* ALTERNATING CURRENTS AND ELECTRONICS\r\n\r\n  * Define AC quantities such as peak, effective and RMS values.\r\n  * Apply Ohm's Law to an AC resistive circuit.\r\n  * Explain the charging and discharging of capacitors and show how capacitors fit into an AC circuit.\r\n  * Explain the inductance and inductive reactance of a coil and how coils fit into AC circuits.\r\n  * Apply Ohm's law to problem solving in a combined RCL circuit.\r\n  * Explain the phenomenon of electrical resonance.\r\n  * Explain the phenomenon of thermionic emission.\r\n  * Explain the diode, the semiconductor diode and rectification.\r\n  * Discuss various electronic devices such as the x-ray machine, oscilloscope, etc.\r\n \r\n* ELECTROMAGNETIC WAVES\r\n\r\n  * Explain the generation of EM waves.\r\n  * Discuss the reception of radio waves.\r\n  * Discuss the speed of EM waves.\r\n  * Diagram and explain the EM spectrum.\r\n  * Describe the ability of EM waves to transport energy.\r\n \r\n* MODERN PHYSICS\r\n\r\n  * Identify the circumstances, discoveries and people that launched Modern Physics.\r\n  * Enumerate and understand the postulate of relativity.\r\n  * Learn about the speed of light as a natural limit to speed.\r\n  * Explain the problem of simultaneity and calculate time changes from one frame of reference to another.\r\n  * Describe relativistic length contraction.\r\n  * Describe the relativistic mass-energy relation.\r\n  * Explain the work of Planck and Compton.\r\n  * Explain the uncertainty principle and the other features of Quantum Mechanics.\r\n \r\n* ATOMIC STRUCTURE AND THE EMISSION OF EM ENERGY\r\n\r\n  * Identify the nuclear atom and the Bohr model.\r\n  * Describe the spectrum of hydrogen and to show how the Bohr model can be used to explain its emission.\r\n  * Draw energy level diagrams.\r\n  * Explain absorption of light by the Bohr model.\r\n  * Relate De Broglie's waves to the Bohr atom.\r\n  * Describe Quantum numbers and the Pauli exclusion principle.\r\n  * Explain the production of x-rays and the principle of the x-ray machine.\r\n  * Summarize our knowledge of bright line, band, absorption and continuous spectra.\r\n \r\n* THE NUCLEUS\r\n\r\n  * Describe the structure of atomic nuclei.\r\n  * Explain the formation of isotopes\r\n  * Relate mass defect and binding energy.\r\n  * Explain the phenomena of radioactivity including decay products and radioactive series.\r\n  * Explain nuclear reactions and transmutations.\r\n  * Explain the nuclear force.\r\n  * Describe nuclear fission and explain how this relates to bombs and reactors.\r\n  * Describe nuclear fusion and explain how this relates to bombs and reactors.\r\n  * Explain radiation damage and radiation detection.\r\n  * Summarize the known nuclear particles including the probable quarks.",
+            "topic_list_main": "electromagnetism, relativity, quantum mechanics, nuclear science",
+            "textbook": 1,
+            "outcomes": "* Apply knowledge of electricity, magnetism, and modern physics to explain natural physical processes and related technological advances.\r\n* Use an understanding of algebraic mathematics along with physical principles to effectively solve problems encountered in everyday life, further study in science, and in the professional world.\r\n* Design experiments and acquire data in order to explore physical principles, effectively communicate results, and critically evaluate related scientific studies.\r\n* Assess the contributions of physics to our evolving understanding of global change and sustainability while placing the development of physics in its historical and cultural context.\r\n",
+            "meeting_time": "6:00 pm",
+            "address": "PCC Rock Creek, Bldg 7",
+            "crn_list": "30806, 30813",
+            "banner_filename": "203.jpg"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "classroom.textbook",
+        "fields": {
+            "edition": 9,
+            "author": "Cutnell and Johnson",
+            "title": "Physics"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "classroom.pagediv",
+        "fields": {
+            "classroom": 1,
+            "text": "* http://google.com\r\n* http://en.wikipedia.org\r\n* http://physicsforums.com",
+            "access_index": 0,
+            "title": "Handy Links"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "classroom.pagediv",
+        "fields": {
+            "classroom": 1,
+            "text": "* `Lecture 1 Video <https://www.youtube.com/watch?v=6uCNqah9Zyo&amp;list=PLlYcgqgbfFD_1fEaBTsCN7IyLcjmEzBoO>`_\r\n* `Lecture 2 Video <https://www.youtube.com/watch?v=U8Ghe2UgMes&amp;list=PLlYcgqgbfFD-V0Z34a-uMISj5o0GsX01l>`_\r\n* `Lecture 3 Video <https://www.youtube.com/watch?v=mkDCW0LJkls&amp;list=PLlYcgqgbfFD9v3ptKrBUBvCaOh7lK6EYr>`_\r\n* `Lecture 4 Video <https://www.youtube.com/watch?v=bgeQU2u9OF8&amp;list=PLlYcgqgbfFD83W4q_grShwMNOXPb5ibgz>`_\r\n* `Lecture 5 Video <https://www.youtube.com/watch?v=zGdrR9FY9d8&amp;list=PLlYcgqgbfFD9U_-yViptzmbbKOxuWpDtg>`_\r\n* `Lecture 6 Video <https://www.youtube.com/watch?v=8ORYUq_vDpo&amp;list=PLlYcgqgbfFD9vX7YQec_CbV1tlZjnrSnP>`_\r\n* `Lecture 7 Video <https://www.youtube.com/watch?v=RH3E0wCQhWk&amp;list=PLlYcgqgbfFD_xBO3IPMBJ8JAHtbrBOfLO>`_\r\n* `Lecture 8 Video <https://www.youtube.com/watch?v=M4Rd3S9Ki2U&amp;list=PLlYcgqgbfFD9iBvcQMMUcFcZSKJnfwHtb>`_\r\n",
+            "access_index": 1,
+            "title": "Lecture Videos"
+        }
     }
 ]

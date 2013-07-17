@@ -15,9 +15,25 @@
 
     <h2>Course Overview</h2>
     {{ classroom.overview|rst2html }}
-    
-    <div id="scratchpad" onClick="Toggle('scratchpad')">
-    <h2>Scratchpad</h2>
-    {{ classroom.scratchpad|rst2html }}
+
+    {% if classroom.scratchpad and user.is_staff %}
+    <div class="pagediv" id="scratchpad" onClick="Toggle('scratchpad')">
+        <h2>Scratchpad</h2>
+        {{ classroom.scratchpad|rst2html }}
     </div>
+    {% endif %}
+
+    {% for pagediv in classroom.pagediv_set.all %}
+    {% if pagediv.access_index == 0 or pagediv.access_index == 1 or user.is_staff %}
+    {% if pagediv.access_index == 0 or user.is_active %}
+    {% if pagediv.sort_order != 0 %}
+    <div class="pagediv"{% if pagediv.label %} id="{{ pagediv.label }}"{% endif %}>
+        <h2>{{ pagediv.title }}</h2>
+        {{ pagediv.text|rst2html }}
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+
 {% endblock %}

@@ -27,6 +27,15 @@ class DocumentAdmin(ModelAdmin):
 
 site.register(Document, DocumentAdmin)
 
+site.register(Extension)
+site.register(Textbook)
+
+class PageDivAdmin(ModelAdmin):
+    list_filter = ['classroom']
+    list_display = ['title', 'classroom', 'access', 'sort_order']
+
+site.register(PageDiv, PageDivAdmin)
+
 
 ## split below to separate app??
 
