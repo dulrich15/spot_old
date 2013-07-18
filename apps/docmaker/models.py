@@ -238,10 +238,8 @@ class ExerciseSet(Model):
 
     @property
     def problems(self):
-        print "hi"
         problems = []
         for problem in self.problems_unmodified.all():
-            print problem
             key = problem.key
             question = problem.question
             answer = problem.answer
@@ -268,9 +266,7 @@ class ExerciseSet(Model):
                 'answer': answer,
                 'solution': solution,
             })
-        print problems
         return problems
-
 
     @property
     def extra_context(self):

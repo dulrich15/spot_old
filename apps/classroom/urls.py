@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     url(r'^classroom/(\d+)/$', views.show_classroom, name='show_classroom'),
     url(r'^classroom/(\d+)/schedule/$', views.show_schedule, name='show_schedule'),
     url(r'^classroom/(\d+)/document/$', views.list_documents, name='list_documents'),
-    url(r'^classroom/(\d+)/document/([^/]+)$', views.serve_document, name='serve_document'),
+#     url(r'^classroom/(\d+)/document/([^/]+)$', views.serve_document, name='serve_document'),
     url(r'^classroom/(\d+)/students/$', views.list_students, name='list_students'),
 #     url(r'^classroom/(\d+)/instructors/$', views.list_instructors, name='list_instructors'),
 )

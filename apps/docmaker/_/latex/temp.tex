@@ -1,87 +1,304 @@
 
 \documentclass{article}
 
-\usepackage[margin=1.33in]{geometry}
+\usepackage[margin=0.625in, rmargin=3in]{geometry}
 \usepackage{p200}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 
-\hypersetup{pdftitle = {Physics 203 } }
+\hypersetup{pdftitle = {Physics 203 Homework Solutions} }
 \hypersetup{pdfauthor = {}, pdfsubject = {Physics} }
 
 \pagestyle{plain}
 
 \begin{document}
 
+\newpage
+
 \begin{center}
-{\LARGE Physics 203 }
-\vskip 0.25cm
-{\large The microscopic source of force}
-
-\vskip 0.25cm
-\includegraphics[width=\textwidth]{/home/dave/Repos/github/spot/content/banners/203.jpg}
-
-\vskip 0.25cm
-{\large Summer 2013}
+\LARGE{Physics 203 Homework 1} \\[2mm]
+\small{\sf Jun 24, 2013}
 \end{center}
 
+
+\textbf{1.}
+\marginpar{\footnotesize\sf \newcounter{listcnt0}
+\begin{list}{(\alph{listcnt0})}
+{
+\usecounter{listcnt0}
+\setlength{\rightmargin}{\leftmargin}
+}
+
+\item 8.0 yr
+
+\item 6.4 yr
+
+\item 3.6 yr
+\end{list}}
+\quad An earthbound sibling observers her twin to depart from earth at a
+speed 60\% the speed of light. After 10.0 years, the travelling twin
+returns having travelled 3.0 light-years and back. (a) Calculate the
+proper time the travelling twin was aboard the spaceship. (b) From the
+traveler's vantage point, the earth-bound twin's clocks tick slow. How
+much time does she observe to pass on earth? (c) During the moment of
+acceleration 3.0 light-years out, the clocks aboard ship go out of
+synch with those on earth. Calculate how far ahead the
+desynchronization put the clocks on the ship.
+\par \textbf{Solution}
+\par (a) The gamma factor for the travelling twin is
+%
+\begin{equation*}
+\gamma = \frac{1}{\sqrt{1 - (0.60)^2}} = 1.25
+\end{equation*}
+The proper time of the travelling twin is
+%
+\begin{equation*}
+(10) = (1.25) \Delta \tau \implies \tau = 8.0
+\end{equation*}
+As the earth-bound twin watches, only 8.0 years pass on the ship.
+
+(b) From the \emph{traveler's} point of view it is the earth that is moving
+away with a speed of $0.60c$. The gamma factor is also 1.25.
+Since the travelling twin is measuring events on earth, her clocks are
+not measuring proper time on earth. Using the time dilation formula,
+the proper time is
+%
+\begin{equation*}
+(8) = (1.25) \Delta \tau \implies \tau = 6.4
+\end{equation*}
+In other words, as the travelling twin watches, only 6.4 years pass on
+earth.
+
+(c) When the traveller returns either 6.4 years or 10.0 years have
+passed. Which is it? The truth is that the trip has two legs with a
+brief period of acceleration in the middle. As the question points out,
+this acceleration must cover the gap by introducing 3.6 years of
+percieved time for the traveller. This is the desynchronization effect.
+We can calculate the amount that the clocks on earth appear to shift as:
+%
+\begin{equation*}
+\Delta t = \frac{Lv}{c^2} = \frac{(3.0c)(0.60c)}{c^2} = 1.8
+\end{equation*}
+Notice the shortcut that $L = 3.0c$. This works because 3.0
+light-years is the distance light travels in 3.0 years. Since
+$x = vt$, the distance is $L = (c)(3.0)$.
+
+This is the amount of desynchronization introduced by going from rest
+to a speed of $0.60c$. But we are slowing down to rest then
+accelerating in the other direction up to the same speed so the time
+shift is double: 3.6 yr.
+
+\textbf{2.}
+\marginpar{\footnotesize\sf \newcounter{listcnt0}
+\begin{list}{(\alph{listcnt0})}
+{
+\usecounter{listcnt0}
+\setlength{\rightmargin}{\leftmargin}
+}
+
+\item 34.9 AU
+
+\item 74.8 yr
+\end{list}}
+\quad Halley's comet has a highly elongated orbit. The eccentricity of
+its orbit is 0.967 with a distance of closest approach equal to
+0.586 AU. (a) What is the maximum distance Halley's comet reaches
+before it turns around toward the sun? Express your answer in units
+of AU. (For reference, Neptune's average distance from the sun is
+30 AU.) (b) When distances are measured in astronomical units (AU)
+and time is measured in years, Kepler's Third Law simplifies to
+$T^2 = a^3$ for orbits around the sun. Determine the period
+of Halley's comet in years. (Hint: Halley's original estimate was
+76 years).
+\par \textbf{Solution}
+\par (a) In terms of orbital parameters we are given $e = 0.967$ and
+$r_0 = 0.586$. The equation for the orbit (in polar coordinates)
+in general is
+%
+\begin{equation*}
+r = r_0 \frac{1 + e}{1 + e \cos \theta}
+\end{equation*}
+Clearly when $\theta$ is zero, $r = r_0$ which is the point
+of closest approach. When $\theta$ = 180°, we have the point of
+farthest distance. Thus,
+%
+\begin{equation*}
+r_1 = r_0 \frac{1 + e}{1 - e} = (0.586)\frac{1.967}{0.033} = 34.93
+\end{equation*}
+To three significant digits we have $r_1$ = 34.9 AU.
+
+(b) The semi-major axis is the average between closest and farthest
+distances. Thus,
+%
+\begin{equation*}
+a = (r_0 + r_1) / 2 = 17.76
+\end{equation*}
+Using the modified form of Kepler's law we get:
+%
+\begin{equation*}
+T^2 = (17.76)^3 \implies T = 74.8
+\end{equation*}
+
+\textbf{3.}
+\marginpar{\footnotesize\sf $\pi^-$ = $\bar{u}d$}
+\quad The pion used to be thought of as the particle that mediates the
+attractive interaction between nucleons. For example, a proton can
+convert into a neutron by absorbing a negative pion. Knowing that the
+quark content of the proton is $uud$ and the neutron is
+$udd$, what must the quark content of the negative pion be?
+Justify your answer.
+\par \textbf{Solution}
+\par In symbols, the reaction we are interested in is:
+%
+\begin{equation*}
+p^+ + \pi^- \rightarrow n
+\end{equation*}
+The pion is a meson which means that it is a combination of a quark and
+an anti-quark. The anti-quark will annihilate one of the quarks in the
+proton. The left over quark will combine with the others to form the
+neutron. When we write the reaction with quarks, it looks like:
+%
+\begin{equation*}
+uud + \bar{u}d \rightarrow udd
+\end{equation*}
+The pion must destroy a $u$ quark and bring a $d$.
+
+\textbf{4.}
+\marginpar{\footnotesize\sf \newcounter{listcnt0}
+\begin{list}{(\alph{listcnt0})}
+{
+\usecounter{listcnt0}
+\setlength{\rightmargin}{\leftmargin}
+}
+
+\item $p_x$ = 0 kg-m/s
+
+\item $p_y$ = 0.0684 kg-m/s
+
+\item $KE$ = 10 joules
+\end{list}}
+\quad Figure \hyperref[fig:elas-col]{\ref*{fig:elas-col}} illustrates a possible elastic collision
+of two identical particles. They both have an initial speed of
+100 m/s, but the final speeds are different. This shows that even
+if we could make the molecular speeds in an ideal gas the same,
+over time the internal elastic collisions will spread the speed
+distribution.
+
+
 \begin{center}
+\def\vx{0}
+\def\vy{0.684}
+\begin{tikzpicture}
+\node (c) at (0,0) [draw,starburst] {};
+\node (v1) at ($(c)+(180:2)+(-\vx,-\vy)$) [fill,circle] {};
+\node (v2) at ($(c)+(0:2)+(-\vx,-\vy)$) [draw,circle] {};
+\node (u1) at ($(c)+(60:2)+(\vx,\vy)$) [fill,circle] {};
+\node (u2) at ($(c)+(240:2)+(\vx,\vy)$) [draw,circle] {};
+\draw [->-] (v1) -- (c) node [pos=0.5,above=1mm] {$v_1$};
+\draw [->-] (v2) -- (c) node [pos=0.5,above=1mm] {$v_2$};
+\draw [->-] (c) -- (u1) node [pos=0.5,above left] {$u_1$};
+\draw [->-] (c) -- (u2) node [pos=0.5,below right] {$u_2$};
+\end{tikzpicture}
+\captionof{figure}{Elastic collision}
+\label{fig:elas-col}
+\end{center}
+
+
+In this example the initial velocity vectors are
+%
+\begin{equation*}
+v_1 = 100.0 \text{ at }  20\dg \qquad
+v_2 = 100.0 \text{ at } 160\dg
+\end{equation*}
+and the final velocity vectors are
+%
+\begin{equation*}
+u_1 =  66.6 \text{ at } 225\dg \qquad
+u_2 = 124.8 \text{ at }  68\dg
+\end{equation*}
+Confirm that this collision is elastic by showing that both
+momentum and kinetic energy are conserved. For your answer,
+assume each a mass is one gram.
+\par \textbf{Solution}
+\par We will need to calculate some components. Let's just do them
+all at once right now using $v_x = v \cos \theta$ and
+$v_y = v \sin \theta$:
+
+
+\begin{center}
+
 \renewcommand{\arraystretch}{1.5}
 \renewcommand{\tabcolsep}{0.2cm}
-\begin{tabular}{ll}
+
+\begin{tabular}{ccccc}
 \hline
-Instructor & David J. Ulrich \\
-
-
-
-
+\textbf{Vector} & \textbf{Mag.} & \textbf{Ang.} & \textbf{$x$} & \textbf{$y$} \\ 
+\hline
+ $v_1$ &  100.0 &  20° &  93.97 &  34.20 \\ 
+ $v_2$ &  100.0 &  160° &  -93.97 &  34.20 \\ 
+ $u_1$ &  66.6 &  225° &  -46.98 &  -47.18 \\ 
+ $u_2$ &  124.8 &  68° &  46.98 &  115.58 \\ 
 \hline
 \end{tabular}
+
+
+
 \end{center}
 
-\section{Course Overview}
 
-This class rocks!
+It is now pretty straight-forward to calculate the momentum and
+kinetic energy for each particle:
 
-\clearpage
-
-
-
-\section{Class Schedule}
-
-This following schedule should be considered tentative. In particular, based on class progress, we may slow down or speed up the lecture schedule.
 
 \begin{center}
 
 \renewcommand{\arraystretch}{1.5}
 \renewcommand{\tabcolsep}{0.2cm}
 
-\begin{tabular}{@{}cccp{16mm}p{64mm}@{}}
-%\begin{tabular}{cccll}
+\begin{tabular}{cccc}
 \hline
-\textbf{Wk} &
-\textbf{Day} &
-\textbf{Date} &
-\textbf{Type} &
-\textbf{Title} &
+\textbf{Vector} & \textbf{$p_x$} & \textbf{$p_y$} & \textbf{$KE$} \\ 
 \hline
-
-1 &
-Mon &
-Jun 24 &
-Lecture 1 &
-Electric Field and Potential \\
-
-1 &
-Wed &
-Jun 26 &
-Lab 1 &
-Projectiles and Free-Fall \\
-
+ $v_1$ &  0.09397 &  0.03420 &  5.0000 \\ 
+ $v_2$ &  -0.09397 &  0.03420 &  5.0000 \\ 
+ $u_1$ &  -0.04698 &  -0.04718 &  2.2166 \\ 
+ $u_2$ &  0.04698 &  0.11558 &  7.7834 \\ 
 \hline
 \end{tabular}
 
+
+
 \end{center}
 
+
+Adding up the first pair of rows give the initial quantities:
+%
+\begin{equation*}
+p_x = 0 \qquad \text{and} \qquad p_y = 0.06840
+\end{equation*}
+and
+%
+\begin{equation*}
+KE = 10.0000
+\end{equation*}
+Adding up the second pair of rows gives the same numbers which
+shows that both momentum and kinetic energy are conserved in
+this collision.
+
+\textbf{5.}
+\marginpar{\footnotesize\sf \(5.57 \times 10^{-13}\) tesla}
+\quad An electron is travelling east at a speed of 100 m/s. It encounters a magnetic field pointing north. What magnitude of magnetic field is required to overcome the acceleration due to gravity effectively levitating the electron?
+\par \textbf{Solution}
+\par The force experienced due to gravity is simply the weight:
+%
+\begin{equation*}
+W = mg = (\sci{9.109}{-31})(9.8) = \sci{8.927}{-30}
+\end{equation*}
+The magnetic force needs to counter-balance this force. The magnitude of the magnetic force is given by $F = qvB$. In this case:
+%
+\begin{equation*}
+(\sci{8.927}{-30}) = (\sci{1.602}{-19})(100)(B) \implies B = \sci{5.57}{-13}
+\end{equation*}
+This is a miniscule amount of field. This shows how much more powerful the electromagnetic force is than gravity
 
 
 \end{document}

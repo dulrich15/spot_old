@@ -5,7 +5,7 @@
 \usepackage{p200}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 
-\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} {{ document_label }}{{ '}' }} }
+\hypersetup{pdftitle = {{ '{' }}{{ classroom.title }} {{ docmaker.label }}{{ '}' }} }
 \hypersetup{pdfauthor = {{ '{' }}{{ classroom.instructor.name }}{{ '}' }}, pdfsubject = {Physics} }
 
 \pagestyle{plain}
@@ -13,7 +13,7 @@
 \begin{document}
 
 \begin{center}
-{{ '{' }}\LARGE {{ classroom.title }} {{ document_label }}{{ '}' }}
+{{ '{' }}\LARGE {{ classroom.title }} Syllabus{{ '}' }}
 \vskip 0.25cm
 {{ '{' }}\large {{ classroom.subtitle }}{{ '}' }}
 {% if classroom.extension.banner %}

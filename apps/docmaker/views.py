@@ -53,6 +53,7 @@ def build_document(request, classroom_pk, docmaker_pk, activity_pk):
     context = {
         'classroom': classroom,
         'activity': activity,
+        'docmaker': docmaker,
     }
 
     for model in context_builders.models:

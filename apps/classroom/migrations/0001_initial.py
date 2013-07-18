@@ -60,6 +60,46 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('classroom', ['Document'])
 
+        # Adding model 'Extension'
+        db.create_table('classroom_extension', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('classroom', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['classroom.Classroom'], unique=True)),
+            ('banner_filename', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
+            ('crn_list', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('address', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('room', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('meeting_time', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('meeting_notes', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('textbook', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Textbook'], null=True, blank=True)),
+            ('chapters', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
+            ('topic_list_main', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
+            ('topic_list_also', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
+            ('outcomes', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('outline', self.gf('django.db.models.fields.TextField')(blank=True)),
+        ))
+        db.send_create_signal('classroom', ['Extension'])
+
+        # Adding model 'Textbook'
+        db.create_table('classroom_textbook', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('author', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('edition', self.gf('django.db.models.fields.PositiveSmallIntegerField')(null=True, blank=True)),
+        ))
+        db.send_create_signal('classroom', ['Textbook'])
+
+        # Adding model 'PageDiv'
+        db.create_table('classroom_pagediv', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('classroom', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['classroom.Classroom'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('text', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('label', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
+            ('access_index', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0, blank=True)),
+            ('sort_order', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0, blank=True)),
+        ))
+        db.send_create_signal('classroom', ['PageDiv'])
+
         # Adding model 'ActivityBlock'
         db.create_table('classroom_activityblock', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -113,6 +153,15 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Document'
         db.delete_table('classroom_document')
+
+        # Deleting model 'Extension'
+        db.delete_table('classroom_extension')
+
+        # Deleting model 'Textbook'
+        db.delete_table('classroom_textbook')
+
+        # Deleting model 'PageDiv'
+        db.delete_table('classroom_pagediv')
 
         # Deleting model 'ActivityBlock'
         db.delete_table('classroom_activityblock')
@@ -206,6 +255,23 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },
+        'classroom.extension': {
+            'Meta': {'object_name': 'Extension'},
+            'address': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'banner_filename': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'chapters': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'classroom': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Classroom']", 'unique': 'True'}),
+            'crn_list': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'meeting_notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'meeting_time': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'outcomes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'outline': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'room': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
+            'textbook': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Textbook']", 'null': 'True', 'blank': 'True'}),
+            'topic_list_also': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'topic_list_main': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+        },
         'classroom.instructor': {
             'Meta': {'ordering': "[u'user__last_name', u'user__first_name']", 'object_name': 'Instructor'},
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
@@ -216,11 +282,28 @@ class Migration(SchemaMigration):
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'})
         },
+        'classroom.pagediv': {
+            'Meta': {'ordering': "[u'classroom', u'sort_order', u'access_index']", 'object_name': 'PageDiv'},
+            'access_index': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0', 'blank': 'True'}),
+            'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'label': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0', 'blank': 'True'}),
+            'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+        },
         'classroom.student': {
             'Meta': {'ordering': "[u'user__last_name', u'user__first_name']", 'object_name': 'Student'},
             'classroom': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['classroom.Classroom']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+        },
+        'classroom.textbook': {
+            'Meta': {'ordering': "[u'author', u'title', u'-edition']", 'object_name': 'Textbook'},
+            'author': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'edition': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'contenttypes.contenttype': {
             'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
