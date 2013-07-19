@@ -13,7 +13,8 @@ from django.template import RequestContext
 from django.template import loader
 from django.shortcuts import redirect
 
-from apps.classroom.models import Classroom, Document
+from apps.classroom.models import Classroom
+from apps.classroom.models import Document
 from utils import make_pdf
 from website.decorators import *
 
@@ -93,14 +94,12 @@ def build_document(request, classroom_pk, docmaker_pk, activity_pk):
             doc.label = docmaker.label
             doc.access_index = docmaker.access_index
     doc.save()
+    print "{doc.label} saved at {doc.filepath}".format(doc=doc)
 
     if activity:
         activity.documents.add(doc)
 
-    print "{} saved at {}".format(doc.label, doc.path)
-
     return redirect(doc.url)
-#     return redirect('serve_document', classroom_pk, filename)
 
 
 @verify_user_is_staff(redirect_url_name='show_classroom')

@@ -16,7 +16,7 @@
         {% if document.access_index == 0 or document.access_index == 1 or user.is_staff %}
         {% if document.access_index == 0 or user.is_active %}
         {% if document.exists %}
-        <li><a href="{% url serve_document classroom.pk document.filename %}">{{ document }}</a></li>
+        <li><a href="{{ document.url }}">{{ document }}</a></li>
         {% else %}
         <li>[ {{ document }} ]</li>
         {% endif %}
@@ -41,7 +41,7 @@
                 {% if document.access_index == 0 or document.access_index == 1 or user.is_staff %}
                 {% if document.access_index == 0 or user.is_active %}
                 {% if document.exists %}
-                <li><a href="{% url serve_document classroom.pk document.filename %}">{{ document }}</a></li>
+                <li><a href="{{ document.url }}">{{ document }}</a></li>
                 {% else %}
                 <li>[ {{ document }} ]</li>
                 {% endif %}
@@ -56,7 +56,7 @@
         <dd>
             {{ block.heading }}
         </dd>
-        {% endif %}        
+        {% endif %}
         {% endfor %}
     </dl>
     {% else %}

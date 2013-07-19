@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 import copy
 import datetime
 import os
-import posixpath
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -132,7 +131,7 @@ class Document(Model):
         return access_choices[self.access_index][1]
 
     @property
-    def path(self):
+    def filepath(self):
         return os.path.join(settings.DOCUMENT_ROOT, self.filename)
 
     @property
@@ -141,12 +140,12 @@ class Document(Model):
 
     @property
     def exists(self):
-        return os.path.isfile(os.path.join(settings.DOCUMENT_ROOT, self.filepath))
+        return os.path.isfile(self.filepath)
 
     def delete(self):
-        print 'attmpting to remove ' + self.filepath
         if self.exists:
             os.remove(self.filepath)
+            print "{self.label} deleted from {self.filepath}".format(self=self)
         super(Document, self).delete()
 
     def __unicode__(self):
@@ -181,11 +180,11 @@ class Extension(Model):
 
     @property
     def banner(self):
-        banner = {}
-        banner['name'] = self.banner_filename
-        banner['path'] = os.path.join(settings.BANNER_ROOT, banner['name'])
-        banner['exists'] = os.path.isfile(banner['path'])
-        banner['url'] = settings.BANNER_URL + banner['name']
+        banner = dict()
+        banner['filename'] = self.banner_filename
+        banner['filepath'] = os.path.join(settings.BANNER_ROOT, banner['filename'])
+        banner['exists'] = os.path.isfile(banner['filepath'])
+        banner['url'] = settings.BANNER_URL + banner['filename']
         return banner
 
     @property
@@ -195,8 +194,8 @@ class Extension(Model):
     @property
     def topics(self):
         return {
-            'main': [x.strip() for x in self.topics_list_main.split(',')],
-            'also': [x.strip() for x in self.topics_list_also.split(',')],
+            'main': [x.strip() for x in self.topic_list_main.split(',')],
+            'also': [x.strip() for x in self.topic_list_also.split(',')],
         }
 
     def __unicode__(self):
@@ -208,6 +207,7 @@ class Textbook(Model):
     author = CharField(max_length=200)
     edition = PositiveSmallIntegerField(null=True, blank=True)
 
+    @property
     def full_title(self):
         if self.edition:
             ordinals = ['th','st','nd','rd'] + 6 * ['th']
@@ -217,7 +217,7 @@ class Textbook(Model):
             return self.title
 
     def __unicode__(self):
-        return '{0} by {1}'.format(self.full_title(), self.author)
+        return '{0} by {1}'.format(self.full_title, self.author)
 
     class Meta:
         ordering = ['author', 'title', '-edition']

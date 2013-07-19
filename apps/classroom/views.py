@@ -67,25 +67,6 @@ def list_documents(request, classroom_pk):
     return HttpResponse(t.render(c))
 
 
-# def serve_document(request, classroom_pk, filename):
-#     classroom = Classroom.objects.get(pk=classroom_pk)
-#     document = Document.objects.get(filename=filename)
-#
-#     if request.user.is_staff:
-#         user_access_index = 2
-#     elif request.user.is_active:
-#         user_access_index = 1
-#     else:
-#         user_access_index = 0
-#
-#     if user_access_index >= document.access_index:
-#         f = open(document.filepath, 'rb')
-#         response = HttpResponse(f.read(), mimetype=guess_type(document.filename)[0])
-#         return response
-#     else:
-#         return redirect('show_documents', classroom_pk)
-
-
 @verify_user_is_staff(redirect_url_name='show_classroom')
 def list_students(request, classroom_pk):
     classroom = Classroom.objects.get(pk=classroom_pk)

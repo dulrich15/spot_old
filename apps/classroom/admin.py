@@ -23,7 +23,7 @@ site.register(Instructor, ClassroomUserAdmin)
 
 class DocumentAdmin(ModelAdmin):
     list_filter = ['classroom']
-    list_display = ['__unicode__', 'classroom', 'access']
+    list_display = ['__unicode__', 'access', 'classroom']
 
 site.register(Document, DocumentAdmin)
 
@@ -32,7 +32,7 @@ site.register(Textbook)
 
 class PageDivAdmin(ModelAdmin):
     list_filter = ['classroom']
-    list_display = ['title', 'classroom', 'access', 'sort_order']
+    list_display = ['title', 'access', 'sort_order', 'classroom']
 
 site.register(PageDiv, PageDivAdmin)
 
@@ -50,7 +50,7 @@ class ActivityBlockAdmin(ModelAdmin):
         return len(obj.activities.all())
 
     list_filter = ['classroom']
-    list_display = ['__unicode__', 'classroom', 'nbr_activities']
+    list_display = ['__unicode__', 'nbr_activities', 'classroom']
     inlines = [ActivityInline]
 
 site.register(ActivityBlock, ActivityBlockAdmin)
@@ -65,11 +65,7 @@ class ActivityAdmin(ModelAdmin):
         return len(obj.documents.all())
 
     list_filter = ['classroom']
-    list_display = ['__unicode__', 'classroom', 'nbr_documents']
+    list_display = ['__unicode__', 'nbr_documents', 'classroom']
     filter_horizontal = ['documents']
 
 site.register(Activity, ActivityAdmin)
-
-
-
-

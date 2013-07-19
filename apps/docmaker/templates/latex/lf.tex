@@ -58,7 +58,7 @@ FILLED BY: & \underline{\makebox[1in]{}}
 
 Special Instructions: \par
 
-{% for line in lab.notes_list %}
+{% for line in lab.notes_as_list %}
 \underline{\makebox[\textwidth]{\textbf{ {{ line }} }}} \par
 {% endfor %}
 \vspace{0.2in}

@@ -1,4 +1,4 @@
-{% load restructuredtext_tags %}
+{% load restructuredtext_tags format_helpers %}
 \documentclass{article}
 
 \usepackage[margin=1.33in]{geometry}
@@ -18,7 +18,7 @@
 {{ '{' }}\large {{ classroom.subtitle }}{{ '}' }}
 {% if classroom.extension.banner %}
 \vskip 0.25cm
-\includegraphics[width=\textwidth]{{ '{' }}{{ classroom.extension.banner.path|latex_path }}{{ '}' }}
+\includegraphics[width=\textwidth]{{ '{' }}{{ classroom.extension.banner.filepath|latex_path }}{{ '}' }}
 {% endif %}
 \vskip 0.25cm
 {{ '{' }}\large {{ classroom.season }} {{ classroom.year }}{{ '}' }}
@@ -34,21 +34,77 @@ Instructor & {{ classroom.instructor.public_name }} \\
 {% if classroom.instructor.email %}E-mail & \texttt{{ '{' }}{{ classroom.instructor.email }}{{ '}' }} \\ {% endif %}
 {% if classroom.instructor.office_location %}Office & {{ classroom.instructor.office_location }} \\ {% endif %}
 {% if classroom.instructor.office_hours %}Office Hours & {{ classroom.instructor.office_hours }} \\ {% endif %}
+{% if classroom.extension.address %}Campus & {{ classroom.extension.address }} \\ {% endif %}
+{% if classroom.extension.room %}Room & {{ classroom.extension.room }} \\ {% endif %}
+{% if classroom.extension.meeting_time %}Time & {{ classroom.extension.meeting_time }} \\ {% endif %}
 \hline
 \end{tabular}
 \end{center}
 
 \section{Course Overview}
 
+{% if classroom.extension.topics %}%
+This course will cover such topics as {{ classroom.extension.topics.main|list2text }}.
+{% if classroom.extension.topics.also %}%
+In addition, we will touch on some subjects related to {{ classroom.extension.topics.also|list2text }}.
+{% endif %}%
+{% endif %}%
+
+{% if classroom.extension.textbook %}%
+Our textbook will be \emph{{ '{' }}{{ classroom.extension.textbook.full_title }}{{ '}' }} by {{ classroom.extension.textbook.author }}.
+{% if classroom.extension.chapters %}%
+We will be covering chapters {{ classroom.extension.chapters }} in this course.
+{% endif %}%
+{% endif %}%
+
+{{ classroom.extension.meeting_notes|rst2latex }}
+
 {{ classroom.overview|rst2latex }}
 
+{% if classroom.extension.outcomes %}
+
+\section{Intended Outcomes}
+
+After completion of this course, students will
+
+{{ classroom.extension.outcomes|rst2latex }}
+
+{% endif %}
+
+{% if classroom.gradescheme %}
+
+\section{Grading Scheme}
+
+Your total grade will be a weighted average of all the assignments in class. The weight for each category of assignments is in the following table.
+
+\begin{center}
+
+\renewcommand{\arraystretch}{1.5}
+\renewcommand{\tabcolsep}{0.2cm}
+
+\begin{tabular}{lc}
+\hline
+\textbf{Category} & \textbf{Weight} \\
+\hline
+{% for gw in classroom.gradescheme.gradeweight_set.all %}
+{{ gw.category }} & {{ gw.weight|pct0|rst2latex }} \\
+{% endfor %}
+\hline
+\end{tabular}
+
+\end{center}
+
+{{ classroom.gradescheme.notes|rst2latex }}
+
 \clearpage
+
+{% endif %}
 
 {% if classroom.activityblock_set.all %}
 
 \section{Class Schedule}
 
-This following schedule should be considered tentative. In particular, based on class progress, we may slow down or speed up the lecture schedule.
+This following schedule should be considered tentative. Based on class progress, we may slow down or speed up the schedule.
 
 \begin{center}
 
@@ -75,6 +131,18 @@ This following schedule should be considered tentative. In particular, based on 
 \end{tabular}
 
 \end{center}
+
+\clearpage
+
+{% endif %}
+
+{% if classroom.extension.outline %}
+
+\section{Course Content}
+
+{{ classroom.extension.outline|rst2latex }}
+
+\clearpage
 
 {% endif %}
 

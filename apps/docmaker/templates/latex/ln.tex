@@ -16,7 +16,7 @@
 \LARGE{{ '{' }}{{ lecture.title }}{{ '}' }} \\[5mm]
 {% if lecture.banner %}
 \vskip 0.25cm
-\includegraphics[width=\textwidth]{{ '{' }}{{ lecture.banner.path|latex_path }}{{ '}' }}
+\includegraphics[width=\textwidth]{{ '{' }}{{ lecture.banner.filepath|latex_path }}{{ '}' }}
 {% endif %}
 \vskip 0.25cm
 \small{{ '{' }}\sf {{ classroom.title }} {{ activity.label }}{{ '}' }} \\[2mm]
@@ -35,7 +35,7 @@
 
 {% if slide.image %}
 \begin{center}
-\includegraphics[width=\textwidth]{{ '{' }}{{ slide.image.path|latex_path }}{{ '}' }}
+\includegraphics[width=\textwidth]{{ '{' }}{{ slide.image.filepath|latex_path }}{{ '}' }}
 \end{center}
 {% endif %}
 

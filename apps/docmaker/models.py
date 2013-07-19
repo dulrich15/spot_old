@@ -87,11 +87,11 @@ class StudySlide(Model):
 
     @property
     def image(self):
-        image = {}
-        image['name'] = self.image_filename
-        image['path'] = os.path.join(settings.SLIDE_PATH, image['name'])
-        image['exists'] = os.path.isfile(image['path']),
-        # image['url'] = '/'.join(settings.SLIDE_URL, image['name']),
+        image = dict()
+        image['filename'] = self.image_filename
+        image['filepath'] = os.path.join(settings.SLIDE_PATH, image['filename'])
+        image['exists'] = os.path.isfile(image['filepath'])
+        image['url'] = settings.SLIDE_URL + image['filename']
         return image
 
     def __unicode__(self):
@@ -110,11 +110,11 @@ class StudyLesson(Model):
 
     @property
     def banner(self):
-        banner = {}
-        banner['name'] = self.banner_filename
-        banner['path'] = os.path.join(settings.BANNER_ROOT, banner['name'])
-        banner['exists'] = os.path.isfile(banner['path']),
-        banner['url'] = settings.BANNER_URL + banner['name']
+        banner = dict()
+        banner['filename'] = self.banner_filename
+        banner['filepath'] = os.path.join(settings.BANNER_ROOT, banner['filename'])
+        banner['exists'] = os.path.isfile(banner['filepath'])
+        banner['url'] = settings.BANNER_URL + banner['filename']
         return banner
 
     def get_examples(self):
@@ -168,8 +168,8 @@ class LabProject(Model):
     equipment = ManyToManyField(LabEquipment, through='LabEquipmentRequest')
 
     @property
-    def notes_list(self):
-        notes_list = self.notes.splitlines()
+    def notes_as_list(self):
+        notes_as_list = self.notes.splitlines()
         if len(notes_list) < 3:
             notes_list += (3 - len(notes_list))*['']
         return notes_list
