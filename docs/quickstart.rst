@@ -1,5 +1,5 @@
-Now what?
-=========
+Quick start
+===========
 
 1. Clone the repo
 2. Sync and migrate the database (be sure to add a superuser)
@@ -11,12 +11,12 @@ Now what?
 
 
 But [[---]] doesn't work!
-=========================
+-------------------------
 
 Create a new issue `here <https://github.com/dulrich15/spot/issues>`_.
 
 
 How could I ever thank you?
-===========================
+---------------------------
 
 Piles of cash work fine. Patches are also welcome.
