@@ -11,5 +11,15 @@
 local/*
 !__init__.py
 
-content/*
-!__init__.py
+content/banners/*
+!touch
+
+content/documents/*
+!touch
+
+content/images/*
+!touch
+
+content/slides/*
+!touch
+
