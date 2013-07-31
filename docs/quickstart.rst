@@ -1,3 +1,6 @@
+Now what?
+=========
+
 1. Clone the repo
 2. Sync and migrate the database (be sure to add a superuser)
 3. Fire up the admin and add your first classroom
@@ -8,3 +11,17 @@
 
    You'll already be logged in since you were just in the admin. You can log out to see what the site will look 
    like to the public.
+
+6. If you want a different look and feel, modify "website/static/website/main.css"
+
+
+But [[---]] doesn't work!
+=========================
+
+Create a new issue `here <https://github.com/dulrich15/spot/issues>`_.
+
+
+How could I ever thank you?
+===========================
+
+Piles of cash work fine. Patches are also welcome.
