@@ -11,3 +11,5 @@
 local/*
 !__init__.py
 
+content/*
+!__init__.py
