@@ -170,9 +170,9 @@ class LabProject(Model):
     @property
     def notes_as_list(self):
         notes_as_list = self.notes.splitlines()
-        if len(notes_list) < 3:
-            notes_list += (3 - len(notes_list))*['']
-        return notes_list
+        if len(notes_as_list) < 3:
+            notes_as_list += (3 - len(notes_as_list))*['']
+        return notes_as_list
 
     @property
     def extra_context(self):
