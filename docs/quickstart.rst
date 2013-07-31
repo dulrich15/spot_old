@@ -7,7 +7,7 @@ Quick start
 4. Futz through the admin and add more stuff
 5. Surf to your new website! Note that you'll already be logged in since you were just in the admin. 
    You can log out to see what the site will look like to the public.
-6. If you don't like the default look and feel, modify "website/static/website/main.css"
+6. If you don't like the default look and feel, modify the various css files in website/static/website or in each app.
 
 
 But [[---]] doesn't work!
