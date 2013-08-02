@@ -74,7 +74,7 @@ class AssignmentGrade(Model):
 
 class GradeScheme(Model):
     classroom = OneToOneField(Classroom)
-    grade_notes = TextField(blank=True)
+    notes = TextField(blank=True)
 
     def __unicode__(self):
         return '{self.classroom}'.format(self=self)

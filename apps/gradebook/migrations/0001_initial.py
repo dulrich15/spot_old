@@ -44,7 +44,7 @@ class Migration(SchemaMigration):
         db.create_table('gradebook_gradescheme', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('classroom', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['classroom.Classroom'], unique=True)),
-            ('grade_notes', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('notes', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal('gradebook', ['GradeScheme'])
 
@@ -175,8 +175,8 @@ class Migration(SchemaMigration):
         'gradebook.gradescheme': {
             'Meta': {'ordering': "[u'classroom']", 'object_name': 'GradeScheme'},
             'classroom': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['classroom.Classroom']", 'unique': 'True'}),
-            'grade_notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notes': ('django.db.models.fields.TextField', [], {'blank': 'True'})
         },
         'gradebook.gradeweight': {
             'Meta': {'ordering': "[u'scheme', u'-weight_raw', u'category']", 'object_name': 'GradeWeight'},
