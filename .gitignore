@@ -5,11 +5,18 @@
 *.db
 
 */temp.*
-*/fixtures/*
-!test.json
+
+static/*
 
 local/*
 !__init__.py
+
+##########################################
+##  delete the following in production  ##
+##########################################
+
+*/fixtures/*
+!test.json
 
 content/banners/*
 !touch
