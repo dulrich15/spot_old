@@ -8,5 +8,16 @@
     {% endif %}
 
     <h2>Assignments</h2>
-    {{ assignment }}
+    <dl>{{ assignment }}
+        <dt>Category </dt>
+        <dd>{{ assignment.category.gradeweight }}</dd>
+        {% if assignment.due_date %}
+        <dt>Due Date</dt>
+        <dd>{{ assignment.due_date }}</dd>
+        {% endif %}
+        <dt>Max Points</dt>
+        <dd>{{ assignment.max_points }}{% if assignment.curve_points %} with {{ assignment.curve_points}} point curve{% endif %}<dd>
+        <dt>Is Graded?</dt>
+        <dd>{{ assignment.is_graded }}</dd>
+    <dl>
 {% endblock %}

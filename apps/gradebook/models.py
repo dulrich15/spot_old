@@ -26,8 +26,17 @@ class Assignment(Model):
     is_graded = BooleanField(default=False)
 
     @property
+    def nbr(self):
+        x = self.__class__.objects.filter(classroom=self.classroom, category=self.category)
+        x = sorted(x, key=lambda a: a.due_date)
+        return x.index(self) + 1
+
+    @property
     def label(self):
-        return self.category
+        if self.title:
+            return self.title
+        else:
+            return '{self.category} {self.nbr}'.format(self=self)
 
     @property
     def grades(self):
