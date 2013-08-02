@@ -93,6 +93,7 @@ def build_document(request, classroom_pk, docmaker_pk, activity_pk):
             doc.filename = filename
             doc.label = docmaker.label
             doc.access_index = docmaker.access_index
+    assert False
     doc.save()
     print "{doc.label} saved at {doc.filepath}".format(doc=doc)
 

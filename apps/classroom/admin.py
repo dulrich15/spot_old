@@ -4,6 +4,10 @@ from models import *
 
 site.register(Department)
 
+class PageDivInline(StackedInline):
+    model = PageDiv
+    extra = 0
+
 class ClassroomAdmin(ModelAdmin):
     def copy_classroom(self, request, queryset):
         for classroom in queryset:
@@ -12,6 +16,7 @@ class ClassroomAdmin(ModelAdmin):
     copy_classroom.short_description = 'Copy selected classroom'
 
     actions = [copy_classroom]
+    inlines = [PageDivInline]
 
 site.register(Classroom, ClassroomAdmin)
 
