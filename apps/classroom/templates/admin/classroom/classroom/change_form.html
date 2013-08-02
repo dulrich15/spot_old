@@ -34,7 +34,9 @@
 
 
     {% if original.extension %}
-    <li><a href="{% url 'admin:classroom_extension_change' original.extension.pk %}" class="historylink">{% trans "Extension" %}</a></li>
+    <li><a href="{% url 'admin:classroom_extension_change' original.extension.pk %}" class="historylink">{% trans "See Extension" %}</a></li>
+    {% else %}
+    <li><a href="{% url 'admin:classroom_extension_add' %}" class="historylink">{% trans "Add Extension" %}</a></li>
     {% endif %}
 
 
