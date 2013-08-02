@@ -1,7 +1,7 @@
 Quick start
 ===========
 
-1. Download a copy of the latest project and install the prerequisites (see ``requirements.txt``).
+1. Download a copy of the latest project and install the prereqs (see ``requirements.txt``).
 2. Sync and migrate the database (be sure to add a superuser).
 3. Fire up the admin and add your first classroom.
 4. Futz through the admin and add more stuff.
@@ -9,6 +9,8 @@ Quick start
    You can log out to see what the site will look like to the public.
 6. If you don't like the default look and feel, modify the various css files in ``website/static/website`` or 
    in the static folder of each app.
+7. If you are using git for your project you'll probably want to remove the references to the ``fixtures`` 
+   and ``content`` folders.
 
 
 But [[---]] doesn't work!
