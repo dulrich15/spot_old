@@ -47,7 +47,7 @@ class ActivityInline(StackedInline):
 
 class ActivityBlockAdmin(ModelAdmin):
     def nbr_activities(self, obj):
-        return len(obj.activities.all())
+        return len(obj.activity_set.all())
 
     list_filter = ['classroom']
     list_display = ['__unicode__', 'nbr_activities', 'classroom']
