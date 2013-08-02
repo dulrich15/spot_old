@@ -18,7 +18,7 @@ from website.utils import get_choices_from_path
 class Docmaker(Model):
     activity_type = ForeignKey(ActivityType, null=True, blank=True)
     label = CharField(max_length=200)
-    tag = CharField(max_length=2)
+    tag = CharField(max_length=2, help_text='Used to distinguish default filname')
     template_filename = CharField(max_length=200, choices=get_choices_from_path(settings.TEMPLATE_PATH), verbose_name='template')
     access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
 

@@ -123,7 +123,7 @@ class Student(Model):
 class Document(Model):
     classroom = ForeignKey('Classroom')
     filename = CharField(max_length=200, choices=get_choices_from_path(settings.DOCUMENT_ROOT))
-    label = CharField(max_length=200, null=True, blank=True)
+    label = CharField(max_length=200, help_text='Used as anchor text for hyperlink', null=True, blank=True)
     access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0)
 
     @property
