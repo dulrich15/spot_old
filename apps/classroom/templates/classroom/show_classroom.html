@@ -26,7 +26,7 @@
     {% for pagediv in classroom.pagediv_set.all %}
     {% if pagediv.access_index == 0 or pagediv.access_index == 1 or user.is_staff %}
     {% if pagediv.access_index == 0 or user.is_active %}
-    {% if pagediv.sort_order != 0 %}
+    {% if pagediv.show %}
     <div class="pagediv"{% if pagediv.label %} id="{{ pagediv.label }}"{% endif %}>
         <h2>{{ pagediv.title }}</h2>
         {{ pagediv.text|rst2html }}

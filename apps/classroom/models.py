@@ -230,6 +230,7 @@ class PageDiv(Model):
     label = CharField(max_length=200, help_text='Used in HTML as id for div', null=True, blank=True)
     access_index = PositiveSmallIntegerField(choices=access_choices, verbose_name='access', default=0, blank=True)
     sort_order = PositiveSmallIntegerField(default=0, blank=True)
+    show = BooleanField(default=True)
 
     @property
     def access(self):
