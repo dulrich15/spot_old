@@ -6,7 +6,7 @@ from django.db.models import *
 from apps.classroom.models import Classroom, Student
 
 
-class AssignmentCategory(Model):
+class AssignmentCategory(Model): # are these the same as ActivityType ???
     label = CharField(max_length=200)
 
     def __unicode__(self):

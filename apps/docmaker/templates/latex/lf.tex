@@ -38,13 +38,13 @@ FILLED BY: & \underline{\makebox[1in]{}}
 \makebox[2.5in]{\textbf{\centering Items}} &
 \makebox[1.0in]{\textbf{Location}} \\
 \hline
-{% for e in lab.equipment.all %}
-{{ e.quantity }} &
-{{ e.item|rst2latex }} &
+{% for r in lab.labequipmentrequest_set.all %}
+{{ r.quantity }} &
+{{ r.equipment.item|rst2latex }} &
 \begin{minipage}{1.0in}
 \raggedright
 \vspace{1ex}
-{{ e.location|rst2latex }} \par
+{{ r.equipment.location|rst2latex }} \par
 \vspace{1ex}
 \end{minipage}
 \\
