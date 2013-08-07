@@ -4,6 +4,10 @@
 {% block meta_title %}List classrooms{% endblock %}
 
 {% block body %}
+<ul class="action_links">
+    <li><a href="{% url admin:classroom_classroom_add %}" target="_blank">New</a></li>
+</ul>
+
 <h1>Classrooms</h1>
 <ul>
 {% for classroom in classrooms %}
