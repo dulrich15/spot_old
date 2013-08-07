@@ -16,7 +16,7 @@ local/*
 ##  delete the following in production  ##
 ##########################################
 
-*/fixtures/*
+apps/*/fixtures/*
 !test.json
 
 content/banners/*
